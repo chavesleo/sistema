@@ -1,0 +1,6 @@
+#user-list > tbody > tr > td{
+	vertical-align: middle;
+}
+.modal-header, .panel-heading{
+    background-color: #E7E7E7 !important;
+}
