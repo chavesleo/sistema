@@ -50,6 +50,16 @@ class ExpansionPlanController extends BaseController {
 			$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp;Plano de Expansão <strong>criado</strong> com sucesso!';
 		}
 
+		if (is_array($data['format'])) {
+			$separador = '';
+			$listaFormato = '';
+			foreach ($data['format'] as $formato => $valor) {
+				$listaFormato .= $separador.$valor;
+				$separador = ',';
+			}
+			$expansionPlan->format = $listaFormato;			
+		}
+
 		$expansionPlan->title = $data['title'];
 		$expansionPlan->start_date = $data['start_date'];
 		$expansionPlan->end_date = $data['end_date'];

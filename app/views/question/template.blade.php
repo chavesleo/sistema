@@ -11,7 +11,7 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-md-10">
-									<h4>{{Lang::get('textos.tit_usuarios')}}</h4>
+									<h4>Perguntas</h4>
 								</div>
 								<div class="col-md-2">
 									<button type="button" class="btn btn-primary pull-right action-usr" pk="1" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalAdicionarPergunta">
@@ -42,7 +42,7 @@
 								    	</tr>
 									@empty
 									<tr>
-										<td colspan="5">{{Lang::get('textos.nenhum_usuario_cadastrado')}}.</td>
+										<td colspan="5">Nenhuma pergunta cadastrada.</td>
 									</tr>
 									@endforelse
 								</tbody>

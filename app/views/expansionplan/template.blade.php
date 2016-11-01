@@ -43,37 +43,56 @@
 						<div class="panel-body">
 							{{Form::open(array('url' => 'expansionplan/action', 'method' => 'post', 'role'=>'form', 'autocomplete' => 'off'))}}
 								<input id="id_pe" type="hidden" name="id" value="0">
-								<div class="col-lg-12">
+								<div class="col-lg-4">
 									<div class="form-group">
 										<label>Título</label>
 										<input id="title" type="text" name="title" class="form-control" maxlength="45" required="">
 									</div>
 								</div>
-								<div class="col-lg-4 col-sm-4">
+								<div class="col-lg-3">
 									<div class="form-group">
 										<label>Data Inicial</label>
 										<input id="start_date" type="date" name="start_date" class="form-control" required="">
 									</div>
 								</div>
-								<div class="col-lg-4 col-sm-4">
+								<div class="col-lg-3">
 									<div class="form-group">
 										<label>Data Final</label>
 										<input id="end_date" type="date" name="end_date" class="form-control" required="">
 									</div>
 								</div>
-								<div class="col-lg-4 col-sm-4">
+								<div class="col-lg-2">
 									<div class="form-group">
 										<label>Meta <small>(unidades)</small></label>
 										<input id="general_goal_units" type="number" name="general_goal_units" class="form-control">
 									</div>
 								</div>
+								<div class="col-lg-5">
+									<label>Formato</label>
+									<br/>
+									<label class="checkbox-inline">
+										<input type="checkbox" name="format[loja]" value="1"> Loja
+									</label>
+									<label class="checkbox-inline">
+										<input type="checkbox" name="format[micro]" value="2"> Micro
+									</label>
+									<label class="checkbox-inline">
+										<input type="checkbox" name="format[sala]" value="3"> Sala
+									</label>
+									<label class="checkbox-inline">
+										<input type="checkbox" name="format[quiosque]" value="4"> Quiosque
+									</label>
+									<label class="checkbox-inline">
+										<input type="checkbox" name="format[movel]" value="5"> Móvel
+									</label>
+								</div>
 								<div class="col-lg-12 col-sm-12">
 									<button id="btn-adicionar" type="submit" class="btn btn-primary pull-right">
 										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-										&nbsp;&nbsp;{{Lang::get('textos.tit_adicionar')}}
+										&nbsp;&nbsp;Cadastrar
 									</button>
 
-									<div id="grp-btn-edicao" class="btn-group pull-right" style="display:none;" role="group">
+									<!--div id="grp-btn-edicao" class="btn-group pull-right" style="display:none;" role="group">
 										<button type="submit" class="btn btn-warning">
 											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 											&nbsp;&nbsp;Salvar
@@ -82,7 +101,7 @@
 											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 											&nbsp;&nbsp;Cancelar
 										</button>
-									</div>
+									</div-->
 
 								</div>
 							{{Form::close()}}
@@ -96,7 +115,7 @@
 									<td class="col-md-2 text-center"><strong>Data Inicial</strong></td>
 									<td class="col-md-2 text-center"><strong>Data Final</strong></td>
 									<td class="col-md-1 text-center"><strong>Meta</strong></td>
-									<td class="col-md-3 text-center"><strong>{{Lang::get('textos.tit_acao')}}</strong></td>
+									<!--td class="col-md-3 text-center"><strong>{{Lang::get('textos.tit_acao')}}</strong></td-->
 								</tr>
 							</thead>
 							<tbody>
@@ -106,7 +125,7 @@
 										<td class="text-center"><p class="startdate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->start_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->start_date)))}}</p></td>
 										<td class="text-center"><p class="enddate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->end_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->end_date)))}}</p></td>
 										<td class="text-center"><p class="goal-{{$expansionPlan->id}}">{{$expansionPlan->general_goal_units}}</p></td>
-										<td class="text-center">
+										<!--td class="text-center">
 											<div class="btn-group" role="group" aria-label="...">
 												<a href="#" class="btn btn-warning btn-editar" pk="{{$expansionPlan->id}}" role="button" title="{{Lang::get('textos.tit_editar')}} {{ $expansionPlan->title }}">
 													<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
@@ -118,7 +137,7 @@
 													</a>
 												</a>
 											</div>
-										</td>
+										</td-->
 							    	</tr>
 								@empty
 								<tr>
