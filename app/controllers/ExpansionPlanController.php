@@ -7,10 +7,13 @@ class ExpansionPlanController extends BaseController {
 		$cssPagina = false;
 		$jsPagina = 'js/expansionplan/list.js';
 		$tituloPagina = 'Planos de Expansão';
+		$listaUf = State::orderBy('name')->get();
+
+		//echo "<pre>";print_r($listaUf);exit;
 
 		$expansionPlans = Company::find(Auth::user()->company_id)->expansionPlans;
 
-		return View::make('expansionplan.template', compact('expansionPlans','menuAtivo', 'cssPagina', 'jsPagina', 'tituloPagina'));
+		return View::make('expansionplan.template', compact('expansionPlans','menuAtivo', 'cssPagina', 'jsPagina', 'tituloPagina', 'listaUf'));
 	}
 
 	function action(){
@@ -50,23 +53,23 @@ class ExpansionPlanController extends BaseController {
 			$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp;Plano de Expansão <strong>criado</strong> com sucesso!';
 		}
 
-		if (is_array($data['format'])) {
-			$separador = '';
-			$listaFormato = '';
-			foreach ($data['format'] as $formato => $valor) {
-				$listaFormato .= $separador.$valor;
-				$separador = ',';
-			}
-			$expansionPlan->format = $listaFormato;			
-		}
-
 		$expansionPlan->title = $data['title'];
 		$expansionPlan->start_date = $data['start_date'];
 		$expansionPlan->end_date = $data['end_date'];
-		$expansionPlan->general_goal_units = $data['general_goal_units'];
 
 		$expansionPlan->save();
 		$mensagem['tipo'] = "success";
+
+		if (is_array($data['cidade']) && count($data['cidade'] > 0)) {
+			foreach ($data['cidade'] as $ordem => $dadosCidade) {
+				$expansionPlanCity = new ExpansionPlanCity;
+				$expansionPlanCity->city_id = $dadosCidade['id'];
+				$expansionPlanCity->expansion_plan_id = $expansionPlan->id;
+				$expansionPlanCity->format = $dadosCidade['formato'];
+				$expansionPlanCity->goal = $dadosCidade['meta'];
+				$expansionPlanCity->save();
+			}
+		}
 
 		Session::put('alert', $mensagem);
 		return Redirect::to('expansionplan/list');

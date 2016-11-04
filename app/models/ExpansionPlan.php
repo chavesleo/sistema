@@ -8,4 +8,8 @@ class ExpansionPlan extends Eloquent {
         return $this->belongsTo('Company');
     }
 
+    public function expansionplancities() {
+        return $this->belongsToMany('ExpansionPlanCity');
+    }
+
 }

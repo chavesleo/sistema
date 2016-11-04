@@ -183,7 +183,7 @@ CREATE TABLE `evaluation` (
   KEY `fk_company_id_idx` (`company_id`),
   KEY `fk_evaluation_1_idx` (`company_id`),
   CONSTRAINT `fk_evaluation_1` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +192,7 @@ CREATE TABLE `evaluation` (
 
 LOCK TABLES `evaluation` WRITE;
 /*!40000 ALTER TABLE `evaluation` DISABLE KEYS */;
-INSERT INTO `evaluation` VALUES (1,1,'Seleção 2016/1','Formulário destinados a interessados do evento de Março',NULL,NULL,NULL),(2,1,'Geral 2015','Formulário de inscritos em 2015',NULL,NULL,NULL);
+INSERT INTO `evaluation` VALUES (4,1,'Seleção 2016/1','Formulário destinados a interessados do evento de Março','2016-11-04 02:28:40','2016-11-04 02:28:40',NULL);
 /*!40000 ALTER TABLE `evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,15 +209,13 @@ CREATE TABLE `expansion_plan` (
   `title` varchar(45) DEFAULT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `general_goal_units` int(11) NOT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
-  `format` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`,`company_id`),
   KEY `fk_expansion_plan_1_idx` (`company_id`),
   CONSTRAINT `fk_expansion_plan_1` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,8 +224,42 @@ CREATE TABLE `expansion_plan` (
 
 LOCK TABLES `expansion_plan` WRITE;
 /*!40000 ALTER TABLE `expansion_plan` DISABLE KEYS */;
-INSERT INTO `expansion_plan` VALUES (1,1,'Inverno 2016','2016-04-01','2016-10-30',10,'0000-00-00 00:00:00',NULL,NULL,NULL),(2,1,'Evento Franquias 2011','2016-05-01','2016-05-30',8,'2016-09-06 01:51:16','2016-09-06 13:08:09',NULL,NULL),(3,1,'Mais um teste 2016','2015-03-15','2015-04-15',11,'2016-09-06 01:51:55','2016-09-06 01:51:55',NULL,NULL),(4,1,'ExpoFranquias Miami','2010-01-12','2011-02-12',0,'2016-09-06 13:18:29','2016-09-06 16:47:54',NULL,NULL),(5,2,'Teste','1988-01-15','2015-01-15',22,'2016-11-01 00:48:16','2016-11-01 00:48:16',NULL,NULL),(6,2,'2222222','2002-12-12','2014-02-22',15,'2016-11-01 01:38:43','2016-11-01 01:38:43',NULL,',5');
+INSERT INTO `expansion_plan` VALUES (9,1,'teste','2015-01-01','2016-01-01','2016-11-04 01:32:22','2016-11-04 01:32:22',NULL);
 /*!40000 ALTER TABLE `expansion_plan` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `expansion_plan_city`
+--
+
+DROP TABLE IF EXISTS `expansion_plan_city`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `expansion_plan_city` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `city_id` int(11) NOT NULL,
+  `expansion_plan_id` int(11) NOT NULL,
+  `format` varchar(10) NOT NULL,
+  `goal` int(11) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_expansion_plan_city_1_idx` (`city_id`),
+  KEY `fk_expansion_plan_city_2_idx` (`expansion_plan_id`),
+  CONSTRAINT `fk_expansion_plan_city_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_expansion_plan_city_2` FOREIGN KEY (`expansion_plan_id`) REFERENCES `expansion_plan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expansion_plan_city`
+--
+
+LOCK TABLES `expansion_plan_city` WRITE;
+/*!40000 ALTER TABLE `expansion_plan_city` DISABLE KEYS */;
+INSERT INTO `expansion_plan_city` VALUES (1,46,9,'loja',22,'2016-11-04 01:32:22','2016-11-04 01:32:22',NULL),(2,349,9,'sala',5,'2016-11-04 01:32:22','2016-11-04 01:32:22',NULL),(3,283,9,'movel',1,'2016-11-04 01:32:22','2016-11-04 01:32:22',NULL);
+/*!40000 ALTER TABLE `expansion_plan_city` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -385,7 +417,7 @@ CREATE TABLE `question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
   `text` varchar(255) NOT NULL,
-  `type` char(1) NOT NULL COMMENT 't = text,\no = option,\np = paragraph,\nm = multiple selection,\nt = telephone,\nd = date,\nc = cpf or cnpj',
+  `type` char(1) NOT NULL COMMENT 't = text,\no = option,\np = paragraph,\nm = multiple selection,\nt = telephone,\nd = date,\nc = cpf or cnpj,\ni = city of interest,\nj = common city\n',
   `mandatory` enum('s','n') NOT NULL DEFAULT 'n',
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
@@ -516,7 +548,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-09-09 18:22:56',NULL,'wSwU6DuezgtAEMFl44qLPnwAoE8bdP3fCQsyB5QnRGoUzBvaB3D6LsQtoaJZ'),(2,2,'Usuario 2','$2y$10$NMZo.KN0CZXG3SnB9ROEgee0u/GBfcdotZEpV2/gh4/vGYTdjPJUC','email@email.com2','2016-09-01 13:02:22','2016-09-02 01:26:24',NULL,'Ax9dX1MiBZqWxsTBEEGZk3CyvsmPvF5DG1r8tDKclN1AacGgfnaALDErQbaw'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb'),(5,5,'Usuario','$2y$10$jLb2DhiXv0Hk8IbyU776G.8iOL48JVVhQ/OS2GjhOkavykwsd6MIC','teste@teste.teste','2016-09-09 18:38:07','2016-09-09 18:38:07',NULL,NULL),(6,6,'Teste','$2y$10$V48ZkKa5Ie2hlkPMZ8YcP.Rdax8F/3X6Y.LzjxujIqm1bdjvzj/f.','teste@teste.teste2','2016-09-09 18:41:16','2016-09-09 18:42:36',NULL,'0fy4Bpc0aFv9hIpSUkCRo8dEiWbPHVegQ2ZxBNpX6fuz8sbyWJgTsKGoE92j'),(7,7,'Usuario ABC','$2y$10$Vu.4R2fLF4J8du6R8bDEWOLimcM1GmmqiJqngZZDQ3EO8FC0WhD5S','teste@teste.teste23','2016-09-09 18:42:56','2016-09-09 18:43:07',NULL,'6sr40r5Kn0rkTQ1HDLpnLhBPR8LUuUiBoI7QI5uAchK2sUw91iePqdLcrO43');
+INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-09-09 18:22:56',NULL,'wSwU6DuezgtAEMFl44qLPnwAoE8bdP3fCQsyB5QnRGoUzBvaB3D6LsQtoaJZ'),(2,2,'Usuario 2','$2y$10$NMZo.KN0CZXG3SnB9ROEgee0u/GBfcdotZEpV2/gh4/vGYTdjPJUC','email@email.com2','2016-09-01 13:02:22','2016-11-03 21:13:13',NULL,'9gPSfBoxweNeoBe83oKal9RZccRx5D8CdeSzxj8rtidVny8guMxYk84YLAaz'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb'),(5,5,'Usuario','$2y$10$jLb2DhiXv0Hk8IbyU776G.8iOL48JVVhQ/OS2GjhOkavykwsd6MIC','teste@teste.teste','2016-09-09 18:38:07','2016-09-09 18:38:07',NULL,NULL),(6,6,'Teste','$2y$10$V48ZkKa5Ie2hlkPMZ8YcP.Rdax8F/3X6Y.LzjxujIqm1bdjvzj/f.','teste@teste.teste2','2016-09-09 18:41:16','2016-09-09 18:42:36',NULL,'0fy4Bpc0aFv9hIpSUkCRo8dEiWbPHVegQ2ZxBNpX6fuz8sbyWJgTsKGoE92j'),(7,7,'Usuario ABC','$2y$10$Vu.4R2fLF4J8du6R8bDEWOLimcM1GmmqiJqngZZDQ3EO8FC0WhD5S','teste@teste.teste23','2016-09-09 18:42:56','2016-09-09 18:43:07',NULL,'6sr40r5Kn0rkTQ1HDLpnLhBPR8LUuUiBoI7QI5uAchK2sUw91iePqdLcrO43');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -529,4 +561,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-01  7:25:13
+-- Dump completed on 2016-11-04  0:42:40

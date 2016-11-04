@@ -4,11 +4,12 @@
 * 1 - Cadastro de Empresas - OK
 * 2 - Cadastro de Usuários - OK
 * 3 - Cadastro de Formulários
-* 4 - Cadastro de Perguntas
+* 4 - Cadastro de Perguntas - OK
 * 5 - Cadastro de Plano de Expansão - OK
 * 6 - Relatórios
 * 7 - Responder Fomulários
-* 8 - Web Services
+* 8 - Web Services Exportar
+* 9 - Análisar Candidatos / Sugerir
 */
 
 ######################
@@ -76,8 +77,7 @@ Route::group(array('prefix' => 'evaluation'), function(){
 	Route::get('list', 'EvaluationController@listar');
 
 	#Edição
-	Route::post('add', 'EvaluationController@adicionar');
-	Route::get('add', function(){return Redirect::to('evaluation/list');});
+	Route::get('questionadd/{id}', 'EvaluationController@questionadd');
 
 	#Remoção
 	Route::post('delete', 'EvaluationController@delete');
@@ -107,6 +107,13 @@ Route::group(array('prefix' => 'question'), function(){
 ######################
 Route::group(array('prefix' => 'empresa'), function(){
 	Route::post('cadastrar', 'CompanyController@cadastrar');
+});
+
+######################
+# AJAX
+######################
+Route::group(array('prefix' => 'ajax'), function(){
+	Route::get('listCitiesByStateId/{stateId}', 'CityController@ajaxListByStateId');
 });
 
 #################

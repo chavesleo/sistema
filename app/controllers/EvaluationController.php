@@ -42,7 +42,42 @@ class EvaluationController extends BaseController {
 	}
 
 	function adicionar(){
-		
+
+		//echo "<pre>";print_r($data);exit;
+
+	    $rules = array( 'title' => 'required');
+
+	    $validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::to('evaluation/list')->withErrors($validator);
+		}
+
+		$dados = Input::all();
+
+		$evaluation = new Evaluation;
+		$evaluation->title = $dados['title'];
+		$evaluation->company_id = Auth::user()->company_id;
+		$evaluation->description = $dados['description'];
+		$evaluation->save();
+
+		return Redirect::to('evaluation/questionadd/'.$evaluation->id);
+
+	}
+
+	function questionadd($idEvaluation){
+		$menuAtivo = 2;
+		$cssPagina = '';
+		$jsPagina = '';
+		$tituloPagina = 'Formulários';
+		$evaluation = Evaluation::find($idEvaluation);
+		$questions = Question::where('company_id', Auth::user()->company_id)
+								->with('options')
+								->get();
+
+		//echo "<pre>";print_r($questions);exit;
+
+		return View::make('evaluation.questionadd', compact('menuAtivo','questions', 'evaluation', 'cssPagina', 'jsPagina','tituloPagina'));
 	}
 
 }

@@ -1,45 +1,43 @@
 $(function() {
 
-	$('.btn-apagar').on('click', function(){
-		var pk = $(this).attr('pk');
-		var name = $(this).attr('title')+"?";
+	$('#comboUf').on('change', function(){
+		
+		var idUf = $(this).val();
+		var url = $('#defaultRoute').val();
 
-		swal({
-			title: "Você tem certeza?",
-			text: name,
-			type: 'warning',
-			showCancelButton: true,
-			confirmButtonColor: '#C9302C',
-			cancelButtonColor: '#31B0D5',
-			confirmButtonText: 'Sim'
-		}).then(function() {
-			$('#pkdelplan').val(pk);
-			$('#remove-form').submit();
-		})
+		if (idUf != '') {
+			$.get(url + '/' + idUf, function(data, status){
+		        if (status == 'success') {
+		       	 	$('#comboCidades').html(data);
+		        }
+		    });
+		}else{
+			$('#comboCidades').html('<option value="">Selecione uma UF</option>');
+		}
 	});
 
-	$('.btn-editar').on('click', function(){
-		$('#btn-adicionar').hide();
-		$('#grp-btn-edicao').show();
+	$('#btn-adicionar-cidade').on('click', function(){
+		
+		var formatoId = $('#comboFormato').val();
+		var cidadeId = $('#comboCidades').val();
+		var meta = $('#inputmeta').val();
+		var formatoText = $('#comboFormato option:selected').text();
+		var cidadeText = $('#comboCidades option:selected').text();
+		var ufText = $('#comboUf option:selected').text();
+		var contador = $('.cidade-adicionada').length + 1;
 
-		var pk = $(this).attr('pk');
-		var title = $('.title-'+pk).text();
-		var startdate = $('.startdate-'+pk).attr('originalval');
-		var enddate = $('.enddate-'+pk).attr('originalval');
-		var goal = $('.goal-'+pk).text();
+		$('#tbCidades').children('tbody').append('<tr class="cidade-adicionada linha-'+contador+'"> <input type="hidden" name="cidade['+contador+'][formato]" value="'+formatoId+'"> <input type="hidden" name="cidade['+contador+'][id]" value="'+cidadeId+'"> <input type="hidden" name="cidade['+contador+'][meta]" value="'+meta+'"> <td>'+cidadeText+ '/'+ ufText+'</td> <td>'+formatoText+'</td> <td>'+meta+'</td> <td> <button type="button" class="btn btn-danger apagarlinha" linha="'+contador+'" title="Apagar"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> </td> </tr>');
 
-		$('#id_pe').val(pk);
-		$('#title').val(title);
-		$('#start_date').val(startdate);
-		$('#end_date').val(enddate);
-		$('#general_goal_units').val(goal);
-
+		$('.badge-cidades-selecionadas').text(contador);
 	});
 
-	$('#btn-cancelar-edicao').on('click', function(){
-		$('#id_pe').val(0);
-		$('#btn-adicionar').show();
-		$('#grp-btn-edicao').hide();
+	$( "body" ).on( "click", ".apagarlinha", function(){
+		var linha = $(this).attr('linha');
+		var contador = $('.cidade-adicionada').length - 1;
+
+		$('.linha-'+linha).remove();
+		$('.badge-cidades-selecionadas').text(contador);
+
 	});
 
 });

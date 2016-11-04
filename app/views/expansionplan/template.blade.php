@@ -43,7 +43,7 @@
 						<div class="panel-body">
 							{{Form::open(array('url' => 'expansionplan/action', 'method' => 'post', 'role'=>'form', 'autocomplete' => 'off'))}}
 								<input id="id_pe" type="hidden" name="id" value="0">
-								<div class="col-lg-4">
+								<div class="col-lg-6">
 									<div class="form-group">
 										<label>Título</label>
 										<input id="title" type="text" name="title" class="form-control" maxlength="45" required="">
@@ -61,52 +61,105 @@
 										<input id="end_date" type="date" name="end_date" class="form-control" required="">
 									</div>
 								</div>
-								<div class="col-lg-2">
-									<div class="form-group">
-										<label>Meta <small>(unidades)</small></label>
-										<input id="general_goal_units" type="number" name="general_goal_units" class="form-control">
-									</div>
-								</div>
-								<div class="col-lg-5">
-									<label>Formato</label>
-									<br/>
-									<label class="checkbox-inline">
-										<input type="checkbox" name="format[loja]" value="1"> Loja
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" name="format[micro]" value="2"> Micro
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" name="format[sala]" value="3"> Sala
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" name="format[quiosque]" value="4"> Quiosque
-									</label>
-									<label class="checkbox-inline">
-										<input type="checkbox" name="format[movel]" value="5"> Móvel
-									</label>
-								</div>
-								<div class="col-lg-12 col-sm-12">
+								<div class="col-lg-6">
+									<button class="btn btn-block btn-warning" type="button" data-toggle="modal" data-target="#modalCidadeInteresse">
+									  Cidades de Interesse <span class="badge badge-cidades-selecionadas">0</span>
+									</button>
+								</div>	
+								<div class="col-lg-6">
 									<button id="btn-adicionar" type="submit" class="btn btn-primary pull-right">
 										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 										&nbsp;&nbsp;Cadastrar
 									</button>
-
-									<!--div id="grp-btn-edicao" class="btn-group pull-right" style="display:none;" role="group">
-										<button type="submit" class="btn btn-warning">
-											<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-											&nbsp;&nbsp;Salvar
-										</button>
-										<button id="btn-cancelar-edicao" type="reset" class="btn btn-info">
-											<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
-											&nbsp;&nbsp;Cancelar
-										</button>
-									</div-->
-
 								</div>
+
+								<div class="modal fade in" id="modalCidadeInteresse" tabindex="-1" role="dialog" aria-labelledby="modalCidadeInteresse">
+									<div class="modal-dialog  modal-lg" role="document">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+												<h4 class="modal-title text-center">Cidades de Interesse</h4>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-lg-3">
+														<div class="form-group">
+					    									<label>UF:</label>
+															<select id="comboUf" class="form-control">
+																<option value="">Selecione</option>
+															@forelse($listaUf as $dadosUf)
+														    	<option value="{{$dadosUf->id}}">{{$dadosUf->name}}</option>
+															@empty
+																<option value="">Nenhuma UF encontrada.</option>
+															@endforelse
+															</select>
+														</div>
+													</div>
+													<div class="col-lg-4">
+														<div class="form-group">
+					    									<label>Cidade:</label>
+															<select id="comboCidades" class="form-control">
+																<option value="">Selecione uma UF.</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-lg-3">
+														<div class="form-group">
+					    									<label>Formato:</label>
+															<select id="comboFormato" class="form-control">
+																<option value="">Selecione</option>
+																<option value="loja">Loja</option>
+																<option value="quiosque">Quiosque</option>
+																<option value="sala">Sala Comercial</option>
+																<option value="micro">Micro Fraqnuia</option>
+																<option value="movel">Móvel</option>
+															</select>
+														</div>
+													</div>
+													<div class="col-lg-1">
+														<div class="form-group">
+					    									<label>Meta:</label>
+															<input id="inputmeta" class="form-control" maxlength="2" required="">
+														</div>
+													</div>
+													<div class="col-lg-1">
+														<div class="form-group">
+					    									<label>&nbsp;</label>
+															<button id="btn-adicionar-cidade" type="button" class="btn btn-warning" title="Adicionar">
+																<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+															</button>
+														</div>
+													</div>
+												</div><!-- row 1 -->
+												<div class="row">
+													<table id="tbCidades" class="table table-condensed table-striped table-bordered">
+														<thead>
+															<tr>
+																<th class="text-center">Cidade/UF</th>
+																<th class="text-center">Formato</th>
+																<th class="text-center" style="width: 20%;">Meta (unidades)</th>
+																<th class="text-center" style="width: 5%;">Ação</th>
+															</tr>
+														</thead>
+														<tbody>
+															
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-info" data-dismiss="modal">
+													<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+													&nbsp;Salvar
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
 							{{Form::close()}}
 						</div>
-
+						<hr>
 						<!-- Table -->
 						<table class="table table-bordered table-hover table-condensed table-hovered table-striped">
 							<thead>
@@ -114,8 +167,6 @@
 									<td class="col-md-4"><strong>Título</strong></td>
 									<td class="col-md-2 text-center"><strong>Data Inicial</strong></td>
 									<td class="col-md-2 text-center"><strong>Data Final</strong></td>
-									<td class="col-md-1 text-center"><strong>Meta</strong></td>
-									<!--td class="col-md-3 text-center"><strong>{{Lang::get('textos.tit_acao')}}</strong></td-->
 								</tr>
 							</thead>
 							<tbody>
@@ -124,20 +175,6 @@
 										<td><p class="title-{{$expansionPlan->id}}">{{$expansionPlan->title}}</p></td>
 										<td class="text-center"><p class="startdate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->start_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->start_date)))}}</p></td>
 										<td class="text-center"><p class="enddate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->end_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->end_date)))}}</p></td>
-										<td class="text-center"><p class="goal-{{$expansionPlan->id}}">{{$expansionPlan->general_goal_units}}</p></td>
-										<!--td class="text-center">
-											<div class="btn-group" role="group" aria-label="...">
-												<a href="#" class="btn btn-warning btn-editar" pk="{{$expansionPlan->id}}" role="button" title="{{Lang::get('textos.tit_editar')}} {{ $expansionPlan->title }}">
-													<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-													&nbsp;&nbsp;{{Lang::get('textos.tit_editar')}}
-												</a>
-												<a href="#" class="btn btn-danger btn-apagar" pk="{{$expansionPlan->id}}" role="button" title="{{Lang::get('textos.tit_apagar')}} {{ $expansionPlan->title }}">
-													<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-													&nbsp;&nbsp;{{Lang::get('textos.tit_apagar')}}
-													</a>
-												</a>
-											</div>
-										</td-->
 							    	</tr>
 								@empty
 								<tr>
@@ -153,9 +190,6 @@
 		</div> <!-- CONTEUDO -->
 	</div><!-- affix-row [pre menu]-->
 
-	{{--FORMULÁRIO DE REMOÇÃO--}}
-	{{Form::open(array('url' => 'expansionplan/delete', 'id' => 'remove-form', 'method' => 'post', 'role'=>'form'))}}
-		<input id="pkdelplan" type="hidden" name="id" value="">
-	{{Form::close()}}
+	<input type="hidden" id="defaultRoute" value="{{URL::to('ajax/listCitiesByStateId')}}">
 
 @endsection
