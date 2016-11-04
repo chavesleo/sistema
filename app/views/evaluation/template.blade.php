@@ -68,7 +68,7 @@
 											<td><p>{{$evaluation->description}}</p></td>
 											<td class="text-center">
 												<div class="btn-group" role="group">
-													<a href="edit/{{$evaluation->id}}" class="btn btn-warning" role="button" title="{{Lang::get('textos.tit_editar')}} {{ $evaluation->title }}">
+													<a href="questionadd/{{$evaluation->id}}" class="btn btn-warning" role="button" title="{{Lang::get('textos.tit_editar')}} {{ $evaluation->title }}">
 														<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 														&nbsp;&nbsp;{{Lang::get('textos.tit_editar')}}
 													</a>

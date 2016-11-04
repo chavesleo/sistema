@@ -2,6 +2,18 @@
 
 class EvaluationController extends BaseController {
 
+	private $arrayEnumTipo = array(	'a' => 'Texto Curto', 
+									'b' => 'Texto Longo',
+									'c' => 'Seleção Única',
+									'd' => 'Seleção Múltipla',
+									'e' => 'Telefone',
+									'f' => 'Data',
+									'g' => 'CPF',
+									'h' => 'CNPJ');
+
+	private $arrayEnumObrig = array('n' => 'Não', 
+									's' => 'Sim');
+
 	function listar(){
 		$menuAtivo = 2;
 		$cssPagina = '';
@@ -70,6 +82,8 @@ class EvaluationController extends BaseController {
 		$cssPagina = '';
 		$jsPagina = '';
 		$tituloPagina = 'Formulários';
+		$arrayEnumTipo = $this->arrayEnumTipo;
+		$arrayEnumObrig = $this->arrayEnumObrig;
 		$evaluation = Evaluation::find($idEvaluation);
 		$questions = Question::where('company_id', Auth::user()->company_id)
 								->with('options')
@@ -77,7 +91,7 @@ class EvaluationController extends BaseController {
 
 		//echo "<pre>";print_r($questions);exit;
 
-		return View::make('evaluation.questionadd', compact('menuAtivo','questions', 'evaluation', 'cssPagina', 'jsPagina','tituloPagina'));
+		return View::make('evaluation.questionadd', compact('arrayEnumTipo', 'arrayEnumObrig','menuAtivo','questions', 'evaluation', 'cssPagina', 'jsPagina','tituloPagina'));
 	}
 
 }

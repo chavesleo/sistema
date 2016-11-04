@@ -26,7 +26,7 @@ $app = new Illuminate\Foundation\Application;
 
 $env = $app->detectEnvironment(array(
 
-	'local' => array('leo-linux'),
+	'local' => array('leo-linux','CSTI-484749'),
 
 ));
 
