@@ -16,4 +16,8 @@ class Question extends Eloquent {
         return $this->hasMany('Option');
     }
 
+    public function QuestionEvaluations() {
+        return $this->hasMany('QuestionEvaluation');
+    }
+
 }

@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `sistema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sistema`;
 -- MySQL dump 10.13  Distrib 5.5.52, for debian-linux-gnu (x86_64)
 --
--- Host: 127.0.0.1    Database: sistema
+-- Host: localhost    Database: sistema
 -- ------------------------------------------------------
 -- Server version	5.5.52-0+deb8u1
 
@@ -446,17 +446,20 @@ DROP TABLE IF EXISTS `question_evaluation`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question_evaluation` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `question_id` int(11) NOT NULL,
   `evaluation_id` int(11) NOT NULL,
   `order` int(11) NOT NULL,
   `rating` decimal(10,2) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_question_evaluation_1_idx` (`question_id`),
   KEY `fk_question_evaluation_2_idx` (`evaluation_id`),
   CONSTRAINT `fk_question_evaluation_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_question_evaluation_2` FOREIGN KEY (`evaluation_id`) REFERENCES `evaluation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -465,6 +468,7 @@ CREATE TABLE `question_evaluation` (
 
 LOCK TABLES `question_evaluation` WRITE;
 /*!40000 ALTER TABLE `question_evaluation` DISABLE KEYS */;
+INSERT INTO `question_evaluation` VALUES (1,1,4,1,15.00,'2016-11-07 18:27:46','2016-11-07 18:27:46',NULL),(2,1,4,2,15.00,'2016-11-07 18:28:16','2016-11-07 18:28:16',NULL),(3,1,4,3,15.00,'2016-11-07 18:29:58','2016-11-07 18:29:58',NULL),(4,9,4,4,1.00,'2016-11-07 18:30:17','2016-11-07 18:30:17',NULL),(5,4,4,5,5.00,'2016-11-07 19:18:36','2016-11-07 19:18:36',NULL);
 /*!40000 ALTER TABLE `question_evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -548,7 +552,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-09-09 18:22:56',NULL,'wSwU6DuezgtAEMFl44qLPnwAoE8bdP3fCQsyB5QnRGoUzBvaB3D6LsQtoaJZ'),(2,2,'Usuario 2','$2y$10$NMZo.KN0CZXG3SnB9ROEgee0u/GBfcdotZEpV2/gh4/vGYTdjPJUC','email@email.com2','2016-09-01 13:02:22','2016-11-03 21:13:13',NULL,'9gPSfBoxweNeoBe83oKal9RZccRx5D8CdeSzxj8rtidVny8guMxYk84YLAaz'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb'),(5,5,'Usuario','$2y$10$jLb2DhiXv0Hk8IbyU776G.8iOL48JVVhQ/OS2GjhOkavykwsd6MIC','teste@teste.teste','2016-09-09 18:38:07','2016-09-09 18:38:07',NULL,NULL),(6,6,'Teste','$2y$10$V48ZkKa5Ie2hlkPMZ8YcP.Rdax8F/3X6Y.LzjxujIqm1bdjvzj/f.','teste@teste.teste2','2016-09-09 18:41:16','2016-09-09 18:42:36',NULL,'0fy4Bpc0aFv9hIpSUkCRo8dEiWbPHVegQ2ZxBNpX6fuz8sbyWJgTsKGoE92j'),(7,7,'Usuario ABC','$2y$10$Vu.4R2fLF4J8du6R8bDEWOLimcM1GmmqiJqngZZDQ3EO8FC0WhD5S','teste@teste.teste23','2016-09-09 18:42:56','2016-09-09 18:43:07',NULL,'6sr40r5Kn0rkTQ1HDLpnLhBPR8LUuUiBoI7QI5uAchK2sUw91iePqdLcrO43');
+INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-11-04 10:57:37',NULL,'7QWflIvOucnkeHKyzc4FCAEjV75CImqSI1LD1s6rPXGZu1IM5Q6zxFLne2gS'),(2,2,'Usuario 2','$2y$10$NMZo.KN0CZXG3SnB9ROEgee0u/GBfcdotZEpV2/gh4/vGYTdjPJUC','email@email.com2','2016-09-01 13:02:22','2016-11-03 21:13:13',NULL,'9gPSfBoxweNeoBe83oKal9RZccRx5D8CdeSzxj8rtidVny8guMxYk84YLAaz'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb'),(5,5,'Usuario','$2y$10$jLb2DhiXv0Hk8IbyU776G.8iOL48JVVhQ/OS2GjhOkavykwsd6MIC','teste@teste.teste','2016-09-09 18:38:07','2016-09-09 18:38:07',NULL,NULL),(6,6,'Teste','$2y$10$V48ZkKa5Ie2hlkPMZ8YcP.Rdax8F/3X6Y.LzjxujIqm1bdjvzj/f.','teste@teste.teste2','2016-09-09 18:41:16','2016-09-09 18:42:36',NULL,'0fy4Bpc0aFv9hIpSUkCRo8dEiWbPHVegQ2ZxBNpX6fuz8sbyWJgTsKGoE92j'),(7,7,'Usuario ABC','$2y$10$Vu.4R2fLF4J8du6R8bDEWOLimcM1GmmqiJqngZZDQ3EO8FC0WhD5S','teste@teste.teste23','2016-09-09 18:42:56','2016-09-09 18:43:07',NULL,'6sr40r5Kn0rkTQ1HDLpnLhBPR8LUuUiBoI7QI5uAchK2sUw91iePqdLcrO43');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -561,4 +565,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-04  0:42:40
+-- Dump completed on 2016-11-07 17:22:59

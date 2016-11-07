@@ -63,20 +63,20 @@
 								</tr>
 							</thead>
 							<tbody>
-								@forelse($questions as $question)
+								@forelse($insertedQuestions as $questionEvaluation)
 							    	<tr>
-							    		<td class="text-center" ><p>{{$question->id}}</p></td>
-										<td><p>{{$question->text}}</p></td>
-										<td><p>{{$arrayEnumTipo[$question->type]}}</p></td>
-										<td class="text-center"><p>{{$arrayEnumObrig[$question->mandatory]}}</p></td>
+							    		<td class="text-center" ><p>{{$questionEvaluation->order}}</p></td>
+										<td><p>{{$questionEvaluation->question->text}}</p></td>
+										<td><p>{{$arrayEnumTipo[$questionEvaluation->question->type]}}</p></td>
+										<td class="text-center"><p>{{$arrayEnumObrig[$questionEvaluation->question->mandatory]}}</p></td>
 										<td>
-											@forelse($question->options as $option)
+											@forelse($questionEvaluation->question->options as $option)
 										    	{{$option->text}}<br/>
 											@empty
 												---
 											@endforelse
 										</td>
-										<td class="text-center" ><p>Peso</p></td>
+										<td class="text-center" ><p>{{$questionEvaluation->rating}}</p></td>
 										<td>
 											<button type="button" class="btn btn-danger pull-right action-usr" pk="1" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalNewEva">
 												<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
@@ -85,7 +85,7 @@
 							    	</tr>
 								@empty
 								<tr>
-									<td colspan="5">Nenhuma pergunta vinculada.</td>
+									<td colspan="7">Nenhuma pergunta vinculada.</td>
 								</tr>
 								@endforelse
 							</tbody>
@@ -109,6 +109,7 @@
 							<thead>
 								<tr>
 									<th>Texto</th>
+									<th class="text-center" style="width: 9%;">Peso</th>
 									<th class="text-center" style="width: 17%;">Tipo</th>
 									<th class="text-center" style="width: 8%;">Obrig.</th>
 									<th class="text-center" style="width: 20%;">Opções</th>
@@ -119,6 +120,7 @@
 								@forelse($questions as $question)
 							    	<tr>
 										<td><p>{{$question->text}}</p></td>
+										<td><div class="form-group"><input type="text" class="form-control input-sm text-center rating-input" maxlength="5" id="rating-{{$question->id}}"></div> </td>
 										<td><p>{{$arrayEnumTipo[$question->type]}}</p></td>
 										<td class="text-center"><p>{{$arrayEnumObrig[$question->mandatory]}}</p></td>
 										<td>
@@ -129,7 +131,7 @@
 											@endforelse
 										</td>
 										<td>
-											<button type="button" class="btn btn-warning pull-right action-usr" pk="1" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalNewEva">
+											<button type="button" class="btn btn-warning pull-right btnaddquestion" pk="{{$question->id}}" title="{{Lang::get('textos.tit_adicionar')}}">
 												<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 											</button>
 										</td>
@@ -146,5 +148,11 @@
 			</div>
 		</div>
 	</div>
+
+	{{--FORMULÁRIO DE INSERÇÃO--}}
+	{{Form::open(array('url' => 'evaluation/questionadd/4', 'id' => 'addqform', 'method' => 'post', 'role'=>'form'))}}
+		<input id="pkquestion" type="hidden" name="id" value="">
+		<input id="rating" type="hidden" name="rating" value="">
+	{{Form::close()}}
 
 @endsection

@@ -8,4 +8,8 @@ class Evaluation extends Eloquent {
         return $this->belongsTo('Company');
     }
 
+    public function QuestionEvaluations() {
+        return $this->hasMany('QuestionEvaluation');
+    }
+
 }

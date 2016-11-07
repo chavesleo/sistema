@@ -80,7 +80,7 @@ class EvaluationController extends BaseController {
 	function questionadd($idEvaluation){
 		$menuAtivo = 2;
 		$cssPagina = '';
-		$jsPagina = '';
+		$jsPagina = 'js/evaluation/list.js';
 		$tituloPagina = 'Formulários';
 		$arrayEnumTipo = $this->arrayEnumTipo;
 		$arrayEnumObrig = $this->arrayEnumObrig;
@@ -89,9 +89,37 @@ class EvaluationController extends BaseController {
 								->with('options')
 								->get();
 
-		//echo "<pre>";print_r($questions);exit;
+		$insertedQuestions = QuestionEvaluation::where('evaluation_id', $idEvaluation)
+												->with('question.options')
+												->with('evaluation')
+												->get();
 
-		return View::make('evaluation.questionadd', compact('arrayEnumTipo', 'arrayEnumObrig','menuAtivo','questions', 'evaluation', 'cssPagina', 'jsPagina','tituloPagina'));
+		//echo "<pre>";print_r($insertedQuestions);exit;
+
+		return View::make('evaluation.questionadd', compact('insertedQuestions','arrayEnumTipo', 'arrayEnumObrig','menuAtivo','questions', 'evaluation', 'cssPagina', 'jsPagina','tituloPagina'));
+	}
+
+	function insertquestion($idEvaluation){
+
+		$dados = Input::all();
+
+		$nextOrder = QuestionEvaluation::where('evaluation_id', $idEvaluation)->get();
+
+		$questionEvaluation = new QuestionEvaluation;
+		$questionEvaluation->question_id = $dados['id'];
+		$questionEvaluation->evaluation_id = $idEvaluation;
+		$questionEvaluation->order = count($nextOrder) + 1;
+		$questionEvaluation->rating = $dados['rating'];
+
+		$questionEvaluation->save();
+
+		#retorna para listagem com mensagem
+		$mensagem['tipo'] = "success";
+		$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp;Pergunta adicionada com sucesso!';
+
+		Session::put('alert', $mensagem);
+		return Redirect::to('evaluation/questionadd/'.$idEvaluation);
+
 	}
 
 }

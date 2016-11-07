@@ -79,6 +79,9 @@ Route::group(array('prefix' => 'evaluation'), function(){
 	#Edição
 	Route::get('questionadd/{id}', 'EvaluationController@questionadd');
 
+	#Adição Perguntas
+	Route::post('questionadd/{id}', 'EvaluationController@insertquestion');
+
 	#Remoção
 	Route::post('delete', 'EvaluationController@delete');
 	Route::get('delete', function(){return Redirect::to('evaluation/list');});
