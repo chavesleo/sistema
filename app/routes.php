@@ -68,7 +68,7 @@ Route::group(array('prefix' => 'expansionplan', 'before' => 'auth'), function(){
 ######################
 # Evaluation
 ######################
-Route::group(array('prefix' => 'evaluation'), function(){
+Route::group(array('prefix' => 'evaluation', 'before' => 'auth'), function(){
 
 	#rota padrão envia para listagem
 	Route::get('/', function(){ return Redirect::to('evaluation/list'); });
@@ -94,7 +94,7 @@ Route::group(array('prefix' => 'evaluation'), function(){
 ######################
 # Question
 ######################
-Route::group(array('prefix' => 'question'), function(){
+Route::group(array('prefix' => 'question', 'before' => 'auth'), function(){
 
 	#rota padrão envia para listagem
 	Route::get('/', function(){ return Redirect::to('question/list'); });
@@ -105,6 +105,19 @@ Route::group(array('prefix' => 'question'), function(){
 	#Edição
 	Route::post('add', 'QuestionController@adicionar');
 	Route::get('add', function(){return Redirect::to('question/list');});
+
+});
+
+######################
+# PROCCESS / PREENCHIMENTO QUESTIONARIO
+######################
+Route::group(array('prefix' => 'proccess'), function(){
+
+	Route::get('invalid', function(){exit('Questionário não encontrado!');});
+	
+	Route::get('{token}', 'ProccessController@index');
+
+	Route::post('{token}', 'ProccessController@startproccess');
 
 });
 

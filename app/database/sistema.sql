@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `sistema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sistema`;
--- MySQL dump 10.13  Distrib 5.5.52, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.53, for debian-linux-gnu (x86_64)
 --
--- Host: 127.0.0.1    Database: sistema
+-- Host: localhost    Database: sistema
 -- ------------------------------------------------------
--- Server version	5.5.52-0+deb8u1
+-- Server version	5.5.53-0+deb8u1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -121,7 +121,7 @@ CREATE TABLE `company` (
   PRIMARY KEY (`id`),
   KEY `fk_segment_1_idx` (`segment_id`),
   CONSTRAINT `fk_segment_1` FOREIGN KEY (`segment_id`) REFERENCES `segment` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,6 +173,7 @@ CREATE TABLE `evaluation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
   `expansion_plan_id` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `title` varchar(45) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -182,9 +183,9 @@ CREATE TABLE `evaluation` (
   KEY `fk_company_id_idx` (`company_id`),
   KEY `fk_evaluation_1_idx` (`company_id`),
   KEY `fk_evaluation_2_idx` (`expansion_plan_id`),
-  CONSTRAINT `fk_evaluation_2` FOREIGN KEY (`expansion_plan_id`) REFERENCES `expansion_plan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_evaluation_1` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_evaluation_1` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_evaluation_2` FOREIGN KEY (`expansion_plan_id`) REFERENCES `expansion_plan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +194,7 @@ CREATE TABLE `evaluation` (
 
 LOCK TABLES `evaluation` WRITE;
 /*!40000 ALTER TABLE `evaluation` DISABLE KEYS */;
-INSERT INTO `evaluation` VALUES (7,1,10,'Formulário FRANQUIFEST 2016','Para novos interessados a partir da data do evento.','2016-11-07 23:12:58','2016-11-07 23:12:58',NULL),(8,1,10,'Teste','teste','2016-11-07 23:33:30','2016-11-07 23:33:30',NULL);
+INSERT INTO `evaluation` VALUES (6,1,10,'balblalba','blabla','blabla',NULL,NULL,NULL),(7,1,10,'$2y$10$p66AXAIHQ8E2YlFsUWA4tuEsl9ZPSDqieThARgIpS0.traRH0iBuq','Formulário FRANQUIFEST 2016','Para novos interessados a partir da data do evento.','2016-11-07 23:12:58','2016-11-07 23:12:58',NULL);
 /*!40000 ALTER TABLE `evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -544,7 +545,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `fk_company_id_idx` (`company_id`),
   CONSTRAINT `fk_company_id` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -553,7 +554,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-11-07 23:40:42',NULL,'lYuIltIgCNkYaRfPjySQdI6evz5KQZhpqXoiXoAR6oTI4cMe9D9EFH58MtUf'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb');
+INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-11-08 13:36:39',NULL,'7cfEqURGcWvfEGWrrqkB5NlcCZM08UnfZaf5nAqBSffF3qIhkHVMiRWa5UUl'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -566,4 +567,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-07 22:30:38
+-- Dump completed on 2016-11-08 17:51:58

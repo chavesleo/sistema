@@ -151,6 +151,7 @@ class EvaluationController extends BaseController {
 		$evaluationAdd = new Evaluation;
 		$evaluationAdd->company_id = Auth::user()->company_id;
 		$evaluationAdd->expansion_plan_id = $dados['expansion_plan_id'];
+		$evaluationAdd->token = Hash::make(Auth::user()->company_id.uniqid());
 		$evaluationAdd->title = $dados['title'];
 		$evaluationAdd->description = $dados['description'];
 		$evaluationAdd->save();
