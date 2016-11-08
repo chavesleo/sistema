@@ -63,7 +63,7 @@
 								</div>
 								<div class="col-lg-6">
 									<button class="btn btn-block btn-warning" type="button" data-toggle="modal" data-target="#modalCidadeInteresse">
-									  Cidades de Interesse <span class="badge badge-cidades-selecionadas">0</span>
+									  Cidades de Interesse Selecionadas <span class="badge badge-cidades-selecionadas">0</span>
 									</button>
 								</div>	
 								<div class="col-lg-6">
@@ -99,7 +99,7 @@
 														<div class="form-group">
 					    									<label>Cidade:</label>
 															<select id="comboCidades" class="form-control">
-																<option value="">Selecione uma UF.</option>
+																<option value="">Selecione uma UF</option>
 															</select>
 														</div>
 													</div>
@@ -111,7 +111,7 @@
 																<option value="loja">Loja</option>
 																<option value="quiosque">Quiosque</option>
 																<option value="sala">Sala Comercial</option>
-																<option value="micro">Micro Fraqnuia</option>
+																<option value="micro">Micro Franquia</option>
 																<option value="movel">Móvel</option>
 															</select>
 														</div>
@@ -164,7 +164,8 @@
 						<table class="table table-bordered table-hover table-condensed table-hovered table-striped">
 							<thead>
 								<tr>
-									<td class="col-md-4"><strong>Título</strong></td>
+									<td class="col-md-6"><strong>Título</strong></td>
+									<td class="col-md-2 text-center"><strong>Cidades de Interesse</strong></td>
 									<td class="col-md-2 text-center"><strong>Data Inicial</strong></td>
 									<td class="col-md-2 text-center"><strong>Data Final</strong></td>
 								</tr>
@@ -173,6 +174,7 @@
 								@forelse($expansionPlans as $expansionPlan)
 							    	<tr>
 										<td><p class="title-{{$expansionPlan->id}}">{{$expansionPlan->title}}</p></td>
+										<td class="text-center">{{count($expansionPlan->expansionPlanCities)}}</td>
 										<td class="text-center"><p class="startdate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->start_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->start_date)))}}</p></td>
 										<td class="text-center"><p class="enddate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->end_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->end_date)))}}</p></td>
 							    	</tr>

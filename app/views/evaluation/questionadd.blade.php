@@ -78,7 +78,7 @@
 										</td>
 										<td class="text-center" ><p>{{$questionEvaluation->rating}}</p></td>
 										<td>
-											<button type="button" class="btn btn-danger pull-right action-usr" pk="1" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalNewEva">
+											<button type="button" class="btn btn-sm btn-danger pull-right action-usr" pk="1" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalNewEva">
 												<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 											</button>
 										</td>
@@ -131,7 +131,7 @@
 											@endforelse
 										</td>
 										<td>
-											<button type="button" class="btn btn-warning pull-right btnaddquestion" pk="{{$question->id}}" title="{{Lang::get('textos.tit_adicionar')}}">
+											<button type="button" class="btn btn-sm btn-warning pull-right btnaddquestion" pk="{{$question->id}}" title="{{Lang::get('textos.tit_adicionar')}}">
 												<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 											</button>
 										</td>
@@ -150,7 +150,7 @@
 	</div>
 
 	{{--FORMULÁRIO DE INSERÇÃO--}}
-	{{Form::open(array('url' => 'evaluation/questionadd/4', 'id' => 'addqform', 'method' => 'post', 'role'=>'form'))}}
+	{{Form::open(array('url' => URL::current(), 'id' => 'addqform', 'method' => 'post', 'role'=>'form'))}}
 		<input id="pkquestion" type="hidden" name="id" value="">
 		<input id="rating" type="hidden" name="rating" value="">
 	{{Form::close()}}

@@ -1,11 +1,11 @@
 <?php
 
 /*
-* 1 - Cadastro de Empresas - OK
-* 2 - Cadastro de Usuários - OK
-* 3 - Cadastro de Formulários
-* 4 - Cadastro de Perguntas - OK
-* 5 - Cadastro de Plano de Expansão - OK
+* 1 - Cadastro de Empresas - 			OK
+* 2 - Cadastro de Usuários - 			OK
+* 3 - Cadastro de Formulários - 		OK
+* 4 - Cadastro de Perguntas - 			OK
+* 5 - Cadastro de Plano de Expansão - 	OK
 * 6 - Relatórios
 * 7 - Responder Fomulários
 * 8 - Web Services Exportar
@@ -76,6 +76,9 @@ Route::group(array('prefix' => 'evaluation'), function(){
 	#listagem
 	Route::get('list', 'EvaluationController@listar');
 
+	#Criação
+	Route::post('add', 'EvaluationController@cadastrar');
+
 	#Edição
 	Route::get('questionadd/{id}', 'EvaluationController@questionadd');
 
@@ -131,3 +134,19 @@ Route::get('logout', function(){
 	Auth::logout();
 	return Redirect::to('login');
 });
+
+
+/* PERFUMARIA
+* 1 - Exibir cidades com hover na lista dos planos de expansão
+* 2 - Validar campos cidade de interesse
+
+
+
+
+
+QUESTIONS TIPO: CEP
+	  			CIDADE DE INTERESSE
+			  	NUMERAL
+			  	FAIXA DE NUMERO
+			  	EMAIL
+*/

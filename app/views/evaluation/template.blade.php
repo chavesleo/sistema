@@ -57,7 +57,7 @@
 										<td class="col-md-1 text-center"><strong>{{Lang::get('textos.tit_cod')}}</strong></td>
 										<td class="col-md-4"><strong>{{Lang::get('textos.tit_nome')}}</strong></td>
 										<td class="col-md-4"><strong>Descrição</strong></td>
-										<td class="col-md-3 text-center"><strong>{{Lang::get('textos.tit_acao')}}</strong></td>
+										<td class="col-md-2 text-center"><strong>{{Lang::get('textos.tit_acao')}}</strong></td>
 									</tr>
 								</thead>
 								<tbody>
@@ -68,11 +68,11 @@
 											<td><p>{{$evaluation->description}}</p></td>
 											<td class="text-center">
 												<div class="btn-group" role="group">
-													<a href="questionadd/{{$evaluation->id}}" class="btn btn-warning" role="button" title="{{Lang::get('textos.tit_editar')}} {{ $evaluation->title }}">
+													<a href="questionadd/{{$evaluation->id}}" class="btn btn-sm btn-warning" role="button" title="{{Lang::get('textos.tit_editar')}} {{ $evaluation->title }}">
 														<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 														&nbsp;&nbsp;{{Lang::get('textos.tit_editar')}}
 													</a>
-													<a href="#" class="btn btn-danger btn-apagar" pk="{{$evaluation->id}}" role="button" title="{{Lang::get('textos.tit_apagar')}} {{ $evaluation->title }}">
+													<a href="#" class="btn btn-sm btn-danger btn-apagar" pk="{{$evaluation->id}}" role="button" title="{{Lang::get('textos.tit_apagar')}} {{ $evaluation->title }}">
 														<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 														&nbsp;&nbsp;{{Lang::get('textos.tit_apagar')}}
 														</a>
@@ -110,6 +110,17 @@
 						<div class="form-group">
 							<label class="control-label">Descrição:</label>
 							<input type="text" name="description" class="form-control" maxlength="250">
+						</div>
+						<div class="form-group">
+							<label class="control-label">Plano de expansão:</label>
+							<select name="expansion_plan_id" class="form-control">
+								<option value="">Selecione</option>
+							@forelse($expansionPlans as $expansionPlan)
+						    	<option value="{{$expansionPlan->id}}">{{$expansionPlan->title}}</option>
+							@empty
+								<option value="">É preciso cadastrar um plano de expansão!</option>
+							@endforelse
+							</select>
 						</div>
 					{{Form::close()}}
 				</div>

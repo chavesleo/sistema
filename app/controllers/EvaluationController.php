@@ -19,10 +19,10 @@ class EvaluationController extends BaseController {
 		$cssPagina = '';
 		$jsPagina = 'js/evaluation/list.js';
 		$tituloPagina = 'Formulários';
-
 		$evaluations = Company::find(Auth::user()->company_id)->evaluations;
+		$expansionPlans = ExpansionPlan::where('company_id', Auth::user()->company_id)->get();
 
-		return View::make('evaluation.template', compact('menuAtivo','evaluations', 'cssPagina', 'jsPagina','tituloPagina'));
+		return View::make('evaluation.template', compact('expansionPlans','menuAtivo','evaluations', 'cssPagina', 'jsPagina','tituloPagina'));
 	}
 
 	function delete(){
@@ -85,16 +85,29 @@ class EvaluationController extends BaseController {
 		$arrayEnumTipo = $this->arrayEnumTipo;
 		$arrayEnumObrig = $this->arrayEnumObrig;
 		$evaluation = Evaluation::find($idEvaluation);
-		$questions = Question::where('company_id', Auth::user()->company_id)
-								->with('options')
-								->get();
-
 		$insertedQuestions = QuestionEvaluation::where('evaluation_id', $idEvaluation)
 												->with('question.options')
 												->with('evaluation')
 												->get();
 
-		//echo "<pre>";print_r($insertedQuestions);exit;
+		$questions = Question::where('company_id', Auth::user()->company_id)
+								->with('options')
+								->get();
+
+		#retira da lista de adição as questões que já foram adicionadas
+		if ($questions) {
+			foreach ($questions as $ordem =>$questao) {
+				if ($insertedQuestions) {
+					foreach ($insertedQuestions as $questaoInserida) {
+						if ($questaoInserida->question_id == $questao->id) {
+							unset($questions[$ordem]);
+						}
+					}
+				}
+			}
+		}
+
+		//echo "<pre>";print_r($questions);exit;
 
 		return View::make('evaluation.questionadd', compact('insertedQuestions','arrayEnumTipo', 'arrayEnumObrig','menuAtivo','questions', 'evaluation', 'cssPagina', 'jsPagina','tituloPagina'));
 	}
@@ -119,6 +132,32 @@ class EvaluationController extends BaseController {
 
 		Session::put('alert', $mensagem);
 		return Redirect::to('evaluation/questionadd/'.$idEvaluation);
+
+	}
+
+	function cadastrar(){
+
+	    $rules = array( 'title' => 'required',
+	    				'expansion_plan_id' => 'required');
+
+	    $validator = Validator::make(Input::all(), $rules);
+
+		if ($validator->fails()) {
+			return Redirect::to('evaluation/list')->withErrors($validator);
+		}
+
+		$dados = Input::all();
+
+		$evaluationAdd = new Evaluation;
+		$evaluationAdd->company_id = Auth::user()->company_id;
+		$evaluationAdd->expansion_plan_id = $dados['expansion_plan_id'];
+		$evaluationAdd->title = $dados['title'];
+		$evaluationAdd->description = $dados['description'];
+		$evaluationAdd->save();
+
+		//echo "<pre>";print_r($dados);exit;
+
+		return Redirect::to('evaluation/questionadd/'.$evaluationAdd->id);
 
 	}
 

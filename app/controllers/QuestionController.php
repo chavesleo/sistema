@@ -50,7 +50,7 @@ class QuestionController extends BaseController {
 			if ($this->insertQuestion($dados)) {
 				#retorna para listagem com mensagem
 				$mensagem['tipo'] = "success";
-				$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp;Pergunta: '."$question->text foi cadastrada!";
+				$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp;Pergunta cadastrada!';
 
 				Session::put('alert', $mensagem);
 				return Redirect::to('question/list');

@@ -8,10 +8,11 @@ class ExpansionPlanController extends BaseController {
 		$jsPagina = 'js/expansionplan/list.js';
 		$tituloPagina = 'Planos de Expansão';
 		$listaUf = State::orderBy('name')->get();
+		$expansionPlans = ExpansionPlan::where('company_id', Auth::user()->company_id)
+										->with('expansionPlanCities')
+										->get();
 
-		//echo "<pre>";print_r($listaUf);exit;
-
-		$expansionPlans = Company::find(Auth::user()->company_id)->expansionPlans;
+		//echo "<pre>";print_r($expansionPlans);exit;
 
 		return View::make('expansionplan.template', compact('expansionPlans','menuAtivo', 'cssPagina', 'jsPagina', 'tituloPagina', 'listaUf'));
 	}

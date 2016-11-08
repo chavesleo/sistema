@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `sistema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sistema`;
 -- MySQL dump 10.13  Distrib 5.5.52, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: sistema
+-- Host: 127.0.0.1    Database: sistema
 -- ------------------------------------------------------
 -- Server version	5.5.52-0+deb8u1
 
@@ -26,11 +26,9 @@ DROP TABLE IF EXISTS `candidate`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `candidate` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
   `fullname` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `passcode` varchar(255) NOT NULL,
-  `active` enum('s','n') NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -132,7 +130,7 @@ CREATE TABLE `company` (
 
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` VALUES (1,1,'Empresa','$2y$10$AcqDGfI4sko7XOrZbD2hj.mdlg.hJvXpF2MHGjMnmUWvFaTVIFVdS','','s','2016-08-31 14:04:59','2016-08-31 14:04:59',NULL),(2,1,'Empresa 2','$2y$10$kXElCly3tP8zYU5LbkyINuQF4.q8oK.3THB0J9/pYjOkDg8nHVxTS','','s','2016-09-01 13:02:22','2016-09-01 13:02:22',NULL),(3,2,'Empresa','$2y$10$259HqKq.DOsVJhBXVYG7JurY8CsKPOk.LJMSSBkWTtoTbyZxJGcLG','','s','2016-09-09 18:37:38','2016-09-09 18:37:38',NULL),(4,2,'Empresa','$2y$10$Drk7z9kfpFhWJRB15psJueCloVzSHOE4mVVXOS1.LHIu21W85nN9G','','s','2016-09-09 18:37:54','2016-09-09 18:37:54',NULL),(5,2,'Empresa','$2y$10$AhrfeNwNd/cGWqOa4O82U.6BwnK.eAucP/J4TbloLvlaYE9rUjUI2','','s','2016-09-09 18:38:07','2016-09-09 18:38:07',NULL),(6,11,'Teste Completo','$2y$10$gbRmA4Kqnk.EKrZeSIWJMOafeCvgYBxpcWVxv8ve89qX0ZxTaG9jG','','s','2016-09-09 18:41:16','2016-09-09 18:41:16',NULL),(7,1,'Mais um teste','$2y$10$iEDOcUsWObLJIC8NghoIP.9zU3YN5kUwXxP6F63aoybPx/USBXB6a','','s','2016-09-09 18:42:55','2016-09-09 18:42:55',NULL);
+INSERT INTO `company` VALUES (1,1,'Empresa','$2y$10$AcqDGfI4sko7XOrZbD2hj.mdlg.hJvXpF2MHGjMnmUWvFaTVIFVdS','','s','2016-08-31 14:04:59','2016-08-31 14:04:59',NULL);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -174,6 +172,7 @@ DROP TABLE IF EXISTS `evaluation`;
 CREATE TABLE `evaluation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `company_id` int(11) NOT NULL,
+  `expansion_plan_id` int(11) NOT NULL,
   `title` varchar(45) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
@@ -182,8 +181,10 @@ CREATE TABLE `evaluation` (
   PRIMARY KEY (`id`),
   KEY `fk_company_id_idx` (`company_id`),
   KEY `fk_evaluation_1_idx` (`company_id`),
+  KEY `fk_evaluation_2_idx` (`expansion_plan_id`),
+  CONSTRAINT `fk_evaluation_2` FOREIGN KEY (`expansion_plan_id`) REFERENCES `expansion_plan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_evaluation_1` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +193,7 @@ CREATE TABLE `evaluation` (
 
 LOCK TABLES `evaluation` WRITE;
 /*!40000 ALTER TABLE `evaluation` DISABLE KEYS */;
-INSERT INTO `evaluation` VALUES (4,1,'Seleção 2016/1','Formulário destinados a interessados do evento de Março','2016-11-04 02:28:40','2016-11-04 02:28:40',NULL);
+INSERT INTO `evaluation` VALUES (7,1,10,'Formulário FRANQUIFEST 2016','Para novos interessados a partir da data do evento.','2016-11-07 23:12:58','2016-11-07 23:12:58',NULL),(8,1,10,'Teste','teste','2016-11-07 23:33:30','2016-11-07 23:33:30',NULL);
 /*!40000 ALTER TABLE `evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -215,7 +216,7 @@ CREATE TABLE `expansion_plan` (
   PRIMARY KEY (`id`,`company_id`),
   KEY `fk_expansion_plan_1_idx` (`company_id`),
   CONSTRAINT `fk_expansion_plan_1` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,7 +225,7 @@ CREATE TABLE `expansion_plan` (
 
 LOCK TABLES `expansion_plan` WRITE;
 /*!40000 ALTER TABLE `expansion_plan` DISABLE KEYS */;
-INSERT INTO `expansion_plan` VALUES (9,1,'teste','2015-01-01','2016-01-01','2016-11-04 01:32:22','2016-11-04 01:32:22',NULL);
+INSERT INTO `expansion_plan` VALUES (10,1,'Expansão 2016','2016-01-01','2016-12-31','2016-11-07 21:57:16','2016-11-07 21:57:16',NULL);
 /*!40000 ALTER TABLE `expansion_plan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +250,7 @@ CREATE TABLE `expansion_plan_city` (
   KEY `fk_expansion_plan_city_2_idx` (`expansion_plan_id`),
   CONSTRAINT `fk_expansion_plan_city_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_expansion_plan_city_2` FOREIGN KEY (`expansion_plan_id`) REFERENCES `expansion_plan` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +259,7 @@ CREATE TABLE `expansion_plan_city` (
 
 LOCK TABLES `expansion_plan_city` WRITE;
 /*!40000 ALTER TABLE `expansion_plan_city` DISABLE KEYS */;
-INSERT INTO `expansion_plan_city` VALUES (1,46,9,'loja',22,'2016-11-04 01:32:22','2016-11-04 01:32:22',NULL),(2,349,9,'sala',5,'2016-11-04 01:32:22','2016-11-04 01:32:22',NULL),(3,283,9,'movel',1,'2016-11-04 01:32:22','2016-11-04 01:32:22',NULL);
+INSERT INTO `expansion_plan_city` VALUES (4,142,10,'loja',2,'2016-11-07 21:57:16','2016-11-07 21:57:16',NULL),(5,142,10,'micro',2,'2016-11-07 21:57:16','2016-11-07 21:57:16',NULL),(6,6,10,'loja',1,'2016-11-07 21:57:16','2016-11-07 21:57:16',NULL),(7,58,10,'movel',1,'2016-11-07 21:57:16','2016-11-07 21:57:16',NULL),(8,2,10,'loja',2,'2016-11-07 21:57:17','2016-11-07 21:57:17',NULL),(9,5050,10,'quiosque',3,'2016-11-07 21:57:17','2016-11-07 21:57:17',NULL),(10,5060,10,'loja',1,'2016-11-07 21:57:17','2016-11-07 21:57:17',NULL);
 /*!40000 ALTER TABLE `expansion_plan_city` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +305,7 @@ CREATE TABLE `option` (
   PRIMARY KEY (`id`),
   KEY `fk_option_1_idx` (`question_id`),
   CONSTRAINT `fk_option_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -313,7 +314,7 @@ CREATE TABLE `option` (
 
 LOCK TABLES `option` WRITE;
 /*!40000 ALTER TABLE `option` DISABLE KEYS */;
-INSERT INTO `option` VALUES (9,9,'Opção 1',0.4,1,'2016-09-09 13:22:46','2016-09-09 13:22:46',NULL),(10,9,'Opção 2',0.9,2,'2016-09-09 13:22:46','2016-09-09 13:22:46',NULL);
+INSERT INTO `option` VALUES (11,16,'SOLTEIRO',0.5,1,'2016-11-07 22:12:04','2016-11-07 22:12:04',NULL),(12,16,'CASADO',1.0,2,'2016-11-07 22:12:04','2016-11-07 22:12:04',NULL),(13,16,'DIVORCIADO',0.2,3,'2016-11-07 22:12:04','2016-11-07 22:12:04',NULL),(14,16,'VIUVO',0.5,4,'2016-11-07 22:12:04','2016-11-07 22:12:04',NULL),(15,21,'ENSINO MEDIO',1.0,1,'2016-11-07 22:15:35','2016-11-07 22:15:35',NULL),(16,21,'ENSINO SUPERIOR INCOMPLETO',1.5,2,'2016-11-07 22:15:35','2016-11-07 22:15:35',NULL),(17,21,'ENSINO SUPERIOR COMPLETO',3.0,3,'2016-11-07 22:15:35','2016-11-07 22:15:35',NULL),(18,21,'PÓS GRADUAÇÃO / MESTRADO / DOUTORADO',5.0,4,'2016-11-07 22:15:35','2016-11-07 22:15:35',NULL),(19,23,'AUTONOMO',0.5,1,'2016-11-07 22:17:02','2016-11-07 22:17:02',NULL),(20,23,'DESEMPREGADO',0.0,2,'2016-11-07 22:17:02','2016-11-07 22:17:02',NULL),(21,23,'EMPRESÁRIO',1.5,3,'2016-11-07 22:17:02','2016-11-07 22:17:02',NULL),(22,23,'FUNCIONARIO PUBLICO',0.5,4,'2016-11-07 22:17:02','2016-11-07 22:17:02',NULL),(23,23,'OUTROS',0.5,5,'2016-11-07 22:17:02','2016-11-07 22:17:02',NULL);
 /*!40000 ALTER TABLE `option` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -425,7 +426,7 @@ CREATE TABLE `question` (
   PRIMARY KEY (`id`),
   KEY `fk_rj45_idx` (`company_id`),
   CONSTRAINT `fk_rj45` FOREIGN KEY (`company_id`) REFERENCES `company` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -434,7 +435,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (1,1,'Data de Nascimento','f','n','2016-09-08 23:20:02','2016-09-08 23:20:02',NULL),(2,1,'Nome Completo','a','s','2016-09-08 23:20:02','2016-09-08 23:20:02',NULL),(3,1,'CPF','g','n','2016-09-08 23:20:40','2016-09-08 23:20:40',NULL),(4,1,'O que levou você a escolher nossa franquia?','a','s','2016-09-08 23:21:09','2016-09-08 23:21:09',NULL),(9,1,'Pergunta com Opções','c','s','2016-09-09 13:22:46','2016-09-09 13:22:46',NULL);
+INSERT INTO `question` VALUES (10,1,'HÁ QUANTO TEMPO RESIDE NA CIDADE QUE PRETENDE ABRIR UMA FRANQUIA?','a','s','2016-11-07 22:07:07','2016-11-07 22:07:07',NULL),(12,1,'NOME','a','s','2016-11-07 22:10:35','2016-11-07 22:10:35',NULL),(13,1,'Data de Nascimento','f','s','2016-11-07 22:10:44','2016-11-07 22:10:44',NULL),(14,1,'CPF','g','s','2016-11-07 22:10:53','2016-11-07 22:10:53',NULL),(15,1,'RG','a','s','2016-11-07 22:11:11','2016-11-07 22:11:11',NULL),(16,1,'ESTADO CIVIL','c','s','2016-11-07 22:12:04','2016-11-07 22:12:04',NULL),(17,1,'NÚMERO DE FILHOS','a','n','2016-11-07 22:12:30','2016-11-07 22:12:30',NULL),(18,1,'CEP','a','s','2016-11-07 22:13:28','2016-11-07 22:13:28',NULL),(19,1,'EMAIL','a','s','2016-11-07 22:13:50','2016-11-07 22:13:50',NULL),(20,1,'ENDEREÇO COMPLETO','a','s','2016-11-07 22:14:06','2016-11-07 22:14:06',NULL),(21,1,'FORMAÇÃO','c','s','2016-11-07 22:15:35','2016-11-07 22:15:35',NULL),(22,1,'Curso','a','s','2016-11-07 22:15:47','2016-11-07 22:15:47',NULL),(23,1,'OCUPAÇÃO ATUAL','c','s','2016-11-07 22:17:02','2016-11-07 22:17:02',NULL),(24,1,'OUTROS? ESPECIFIQUE','a','s','2016-11-07 22:17:27','2016-11-07 22:17:27',NULL),(25,1,'COMO CONHECEU ESTA FRANQUIA?','b','s','2016-11-07 22:17:45','2016-11-07 22:17:45',NULL),(26,1,'OBSERVAÇÕES GERAIS','b','n','2016-11-07 22:17:59','2016-11-07 22:17:59',NULL);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -459,7 +460,7 @@ CREATE TABLE `question_evaluation` (
   KEY `fk_question_evaluation_2_idx` (`evaluation_id`),
   CONSTRAINT `fk_question_evaluation_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_question_evaluation_2` FOREIGN KEY (`evaluation_id`) REFERENCES `evaluation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -468,7 +469,7 @@ CREATE TABLE `question_evaluation` (
 
 LOCK TABLES `question_evaluation` WRITE;
 /*!40000 ALTER TABLE `question_evaluation` DISABLE KEYS */;
-INSERT INTO `question_evaluation` VALUES (1,1,4,1,15.00,'2016-11-07 18:27:46','2016-11-07 18:27:46',NULL),(2,1,4,2,15.00,'2016-11-07 18:28:16','2016-11-07 18:28:16',NULL),(3,1,4,3,15.00,'2016-11-07 18:29:58','2016-11-07 18:29:58',NULL),(4,9,4,4,1.00,'2016-11-07 18:30:17','2016-11-07 18:30:17',NULL),(5,4,4,5,5.00,'2016-11-07 19:18:36','2016-11-07 19:18:36',NULL);
+INSERT INTO `question_evaluation` VALUES (9,12,7,1,0.00,'2016-11-07 23:23:01','2016-11-07 23:23:01',NULL),(10,13,7,2,0.00,'2016-11-07 23:23:21','2016-11-07 23:23:21',NULL),(11,14,7,3,0.00,'2016-11-07 23:23:27','2016-11-07 23:23:27',NULL),(12,15,7,4,0.00,'2016-11-07 23:23:29','2016-11-07 23:23:29',NULL),(13,10,7,5,5.00,'2016-11-07 23:23:41','2016-11-07 23:23:41',NULL),(14,16,7,6,0.00,'2016-11-07 23:24:02','2016-11-07 23:24:02',NULL),(15,21,7,7,0.00,'2016-11-07 23:24:19','2016-11-07 23:24:19',NULL),(16,23,7,8,0.00,'2016-11-07 23:24:23','2016-11-07 23:24:23',NULL),(17,24,7,9,0.00,'2016-11-07 23:24:32','2016-11-07 23:24:32',NULL),(18,25,7,10,0.00,'2016-11-07 23:24:36','2016-11-07 23:24:36',NULL),(19,26,7,11,0.00,'2016-11-07 23:24:39','2016-11-07 23:24:39',NULL);
 /*!40000 ALTER TABLE `question_evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -552,7 +553,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-11-04 10:57:37',NULL,'7QWflIvOucnkeHKyzc4FCAEjV75CImqSI1LD1s6rPXGZu1IM5Q6zxFLne2gS'),(2,2,'Usuario 2','$2y$10$NMZo.KN0CZXG3SnB9ROEgee0u/GBfcdotZEpV2/gh4/vGYTdjPJUC','email@email.com2','2016-09-01 13:02:22','2016-11-03 21:13:13',NULL,'9gPSfBoxweNeoBe83oKal9RZccRx5D8CdeSzxj8rtidVny8guMxYk84YLAaz'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb'),(5,5,'Usuario','$2y$10$jLb2DhiXv0Hk8IbyU776G.8iOL48JVVhQ/OS2GjhOkavykwsd6MIC','teste@teste.teste','2016-09-09 18:38:07','2016-09-09 18:38:07',NULL,NULL),(6,6,'Teste','$2y$10$V48ZkKa5Ie2hlkPMZ8YcP.Rdax8F/3X6Y.LzjxujIqm1bdjvzj/f.','teste@teste.teste2','2016-09-09 18:41:16','2016-09-09 18:42:36',NULL,'0fy4Bpc0aFv9hIpSUkCRo8dEiWbPHVegQ2ZxBNpX6fuz8sbyWJgTsKGoE92j'),(7,7,'Usuario ABC','$2y$10$Vu.4R2fLF4J8du6R8bDEWOLimcM1GmmqiJqngZZDQ3EO8FC0WhD5S','teste@teste.teste23','2016-09-09 18:42:56','2016-09-09 18:43:07',NULL,'6sr40r5Kn0rkTQ1HDLpnLhBPR8LUuUiBoI7QI5uAchK2sUw91iePqdLcrO43');
+INSERT INTO `user` VALUES (1,1,'Usuário Um','$2y$10$Qov9031Z/T.bPcNqJ6/8cuepbEzROc.y/qJZCEOyed9qNqNM1B74y','email@email.com','2016-08-31 14:04:59','2016-11-07 23:40:42',NULL,'lYuIltIgCNkYaRfPjySQdI6evz5KQZhpqXoiXoAR6oTI4cMe9D9EFH58MtUf'),(3,1,'Usuário Dois','$2y$10$ulFzM7x5HB0Q2TfomwFMOOuN9hbCmlbdpMNPNWoytq2b6j63soJ2e','email@email2.com',NULL,'2016-09-09 14:18:56',NULL,NULL),(4,1,'Usuário Três','$2y$10$S.IfiYojVkiW6ah7xH8IBuYBac.q352Jvozd0jI593vw6vXH2cQE6','m@s.n','2016-09-04 01:22:37','2016-09-09 14:19:05',NULL,'hn41OO1q3UHOMTqz75rRTbWwUWwoOzEW5uVVmFW82O5LTzCglGLMPuHB6leb');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -565,4 +566,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-07 17:22:59
+-- Dump completed on 2016-11-07 22:30:38
