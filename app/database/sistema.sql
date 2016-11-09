@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `sistema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sistema`;
--- MySQL dump 10.13  Distrib 5.5.53, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.52, for debian-linux-gnu (x86_64)
 --
--- Host: localhost    Database: sistema
+-- Host: 127.0.0.1    Database: sistema
 -- ------------------------------------------------------
--- Server version	5.5.53-0+deb8u1
+-- Server version	5.5.52-0+deb8u1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -29,8 +29,11 @@ CREATE TABLE `candidate` (
   `fullname` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
   `passcode` varchar(255) NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -345,35 +348,37 @@ LOCK TABLES `password_reminders` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `process`
+-- Table structure for table `proccess`
 --
 
-DROP TABLE IF EXISTS `process`;
+DROP TABLE IF EXISTS `proccess`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `process` (
+CREATE TABLE `proccess` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `candidate_id` int(11) NOT NULL,
   `evaluation_id` int(11) NOT NULL,
   `progress` decimal(10,2) NOT NULL,
   `status` char(1) NOT NULL COMMENT 'i = iniciado,\ne = em andamento,\nf = finalizado,\na = aprovado,\nr = reprovado.',
-  `minimum_note` decimal(10,2) NOT NULL,
   `final_note` decimal(10,2) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_process_1_idx` (`candidate_id`),
   KEY `fk_process_2_idx` (`evaluation_id`),
   CONSTRAINT `fk_process_1` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_2` FOREIGN KEY (`evaluation_id`) REFERENCES `evaluation` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `process`
+-- Dumping data for table `proccess`
 --
 
-LOCK TABLES `process` WRITE;
-/*!40000 ALTER TABLE `process` DISABLE KEYS */;
-/*!40000 ALTER TABLE `process` ENABLE KEYS */;
+LOCK TABLES `proccess` WRITE;
+/*!40000 ALTER TABLE `proccess` DISABLE KEYS */;
+/*!40000 ALTER TABLE `proccess` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -393,7 +398,7 @@ CREATE TABLE `process_answer` (
   KEY `fk_process_answer_2_idx` (`question_id`),
   KEY `fk_process_answer_3_idx` (`option_id`),
   KEY `fk_process_answer_1_idx` (`process_id`),
-  CONSTRAINT `fk_process_answer_1` FOREIGN KEY (`process_id`) REFERENCES `process` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_process_answer_1` FOREIGN KEY (`process_id`) REFERENCES `proccess` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_answer_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_answer_3` FOREIGN KEY (`option_id`) REFERENCES `option` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -567,4 +572,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-08 17:51:58
+-- Dump completed on 2016-11-08 22:20:41

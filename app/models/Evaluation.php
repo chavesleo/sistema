@@ -12,4 +12,8 @@ class Evaluation extends Eloquent {
         return $this->hasMany('QuestionEvaluation');
     }
 
+    public function cancidates() {
+        return $this->hasMany('Candidate');
+    }
+
 }
