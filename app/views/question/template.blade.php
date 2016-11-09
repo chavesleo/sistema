@@ -76,10 +76,14 @@
 														<option value="b">Texto Longo</option>
 														<option value="c">Seleção Única</option>
 														<option value="d">Seleção Múltipla</option>
-														<option value="e">Telefone (99) 99999-9999</option>
+														<option value="e">Somente Números</option>
 														<option value="f">Data (11/11/1111)</option>
 														<option value="g">CPF (999.999.999-99)</option>
 														<option value="h">CNPJ (99.999.999/0001-99)</option>
+														<option value="i">CEP (99.999-999)</option>
+														<option value="j">Telefone (99) 99999-9999</option>
+														<option value="k">E-mail (email&Ocirc;email.com)</option>
+														<option value="l">Cidade de Interesse</option>
 													</select>
 												</div>
 											</div>

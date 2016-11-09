@@ -114,6 +114,9 @@ Route::group(array('prefix' => 'question', 'before' => 'auth'), function(){
 Route::group(array('prefix' => 'proccess'), function(){
 
 	Route::get('invalid', function(){exit('Questionário não encontrado!');});
+
+	#Adição Perguntas
+	Route::post('finish', 'ProccessController@finish');
 	
 	Route::get('{token}', 'ProccessController@index');
 
@@ -132,7 +135,11 @@ Route::group(array('prefix' => 'empresa'), function(){
 # AJAX
 ######################
 Route::group(array('prefix' => 'ajax'), function(){
+
 	Route::get('listCitiesByStateId/{stateId}', 'CityController@ajaxListByStateId');
+
+	Route::post('svquestion', 'ProccessController@ajaxSaveQuestion');
+
 });
 
 #################
@@ -152,14 +159,12 @@ Route::get('logout', function(){
 /* PERFUMARIA
 * 1 - Exibir cidades com hover na lista dos planos de expansão
 * 2 - Validar campos cidade de interesse
+* 3 - Exibir O LINK no questionário
+* 4 - Exibir percentual respondido
+* 5 - Exportar ao concluir
+* 6 - Avisar que foi salvo
 
 
 
-
-
-QUESTIONS TIPO: CEP
-	  			CIDADE DE INTERESSE
-			  	NUMERAL
-			  	FAIXA DE NUMERO
-			  	EMAIL
+QUESTIONS TIPO: FAIXA DE NUMERO
 */

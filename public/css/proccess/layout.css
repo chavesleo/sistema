@@ -1,0 +1,27 @@
+body{
+	background-color: #EEE;
+	font: bold 14px sans-serif;
+}
+form{
+	background-color: #FFF;
+	border-radius: 4px;
+	padding-bottom: 1px;
+}
+
+.form-top-title-row{
+	margin: 0 auto 40px;
+}
+
+.form-top-title{
+	box-sizing: border-box;
+	color: #4C565E;
+	font-size: 24px;
+	padding: 12px 0 12px 0;
+	margin: 0 auto 40px;
+	border-bottom: 2px solid #6CAEE0;
+}
+
+.ordenation{
+	color: #6caee0;
+	font-size: 16px;
+}
