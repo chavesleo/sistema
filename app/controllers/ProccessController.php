@@ -27,22 +27,36 @@ class ProccessController extends BaseController {
 		#verifica se sessao já não foi iniciada para este relatorio e redireciona
 		if (Session::has('proccess_init') && in_array($token, Session::get('proccess_init.tk_proccess'))) {
 
-			$arrayRespostas = array();
-			foreach ($evaluation->QuestionEvaluations as $questoes) {
+			$arrayPercentCount = array('total' => count($evaluation->QuestionEvaluations), 'answered' => 0);
+			$listaUf = State::orderBy('name')->get();
+			
+			foreach ($evaluation->QuestionEvaluations as $ddQuestao) {
+
 				$resposta = ProccessAnswer::where('proccess_id', '=', Session::get('proccess_init.proccess_id'))
-											->where('question_id', '=', $questoes->id)
+											->where('question_id', '=', $ddQuestao->question->id)
 											->first();
 				if ($resposta) {
-					$arrayRespostas[$questoes->id] = array('text' => $resposta->text, 'option_id' => $resposta->option_id);
+					$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 'option_id' => $resposta->option_id);
+					$arrayPercentCount['answered']++;
 				}else{
-					$arrayRespostas[$questoes->id] = array('text' => NULL, 'option_id' => NULL);
+					$arrayRespostas[$ddQuestao->question->id] = array('text' => NULL, 'option_id' => NULL);
 				}
 			}
-			
-				echo "<pre>";print_r($arrayRespostas);exit;
-			
+
+			#calculo do percentual
+			$arrayPercentCount['percent'] = round((($arrayPercentCount['answered'] * 100) / $arrayPercentCount['total']), 1);
+			$arrayPercentCount['percent_formated'] = number_format($arrayPercentCount['percent'], 1, ',', '');
+	
+			#salva o percentual na tabela		
+			$newProccess = Proccess::where('id', Session::get('proccess_init.proccess_id'))
+									->first();
+			$newProccess->progress = $arrayPercentCount['percent'];
+			$newProccess->save();
+
+			//echo "<pre>";print_r($arrayPercentCount);echo "</pre>";exit;
+
 			//listar perguntas já respondidas
-			return View::make('evaluation.proccess', compact('arrayRespostas','jsPagina','cssPagina','evaluation'));
+			return View::make('evaluation.proccess', compact('listaUf','arrayPercentCount','arrayRespostas','jsPagina','cssPagina','evaluation'));
 		}
 
 		return View::make('login.proccessinit', compact('evaluation'));
@@ -70,14 +84,24 @@ class ProccessController extends BaseController {
 			$candidate->save();
 		}
 
+		//resgata o processo iniciado, senaõ cria um novo
+		$newProccess = Proccess::where('candidate_id', $candidate->id)
+								->where('evaluation_id',$evaluation->id)
+								->first();
+
+		//echo "<pre>";print_r($newProccess);exit;
+
 		//cria um registro na proccess, com id do candidato e da avaliação, zera o progresso e a nota final
-		$newProccess = new Proccess;
-		$newProccess->candidate_id = $candidate->id;
-		$newProccess->evaluation_id = $evaluation->id;
-		$newProccess->progress = 0;
-		$newProccess->status = 'i';
-		$newProccess->final_note = 0;
-		$newProccess->save();
+		if (!$newProccess) {
+			$newProccess = new Proccess;
+			$newProccess->candidate_id = $candidate->id;
+			$newProccess->evaluation_id = $evaluation->id;
+			$newProccess->progress = 0;
+			$newProccess->status = 'i';
+			$newProccess->final_note = 0;
+			$newProccess->save();
+		}
+
 
 		//cria a sessão para este usuario e esta avaliação
 		Session::put(
@@ -93,7 +117,7 @@ class ProccessController extends BaseController {
 
 	public function finish(){
 		$dados = Input::all();
-		echo "<pre>";print_r($dados);exit;		
+		echo "<pre>";print_r($dados);exit;
 	}
 
 	public function ajaxSaveQuestion(){

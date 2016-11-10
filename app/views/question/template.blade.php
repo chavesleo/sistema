@@ -22,32 +22,32 @@
 								</div>
 							</div>
 						</div>
-						<div class="table-responsive">
-							<table id="user-list" class="table table-bordered table-hover table-condensed table-hovered table-striped">
-								<thead>
-									<tr>
-										<td class="col-md-1 text-center"><strong>{{Lang::get('textos.tit_cod')}}</strong></td>
-										<td class="col-md-7"><strong>Texto</strong></td>
-										<td class="col-md-3"><strong>Tipo</strong></td>
-										<td class="col-md-1 text-center"><strong><small>Obrig.</small></strong></td>
-									</tr>
-								</thead>
-								<tbody>
-									@forelse($questions as $question)
-								    	<tr>
-											<td class="text-center"><p>{{$question->id}}</p></td>
-											<td><p>{{$question->text}}</p></td>
-											<td><p>{{$arrayEnumTipo[$question->type]}}</p></td>
-											<td class="text-center"><p>{{$arrayEnumObrig[$question->mandatory]}}</p></td>
-								    	</tr>
-									@empty
-									<tr>
-										<td colspan="5">Nenhuma pergunta cadastrada.</td>
-									</tr>
-									@endforelse
-								</tbody>
-							</table>
-						</div><!-- table-responsive -->
+						
+						<table class="table table-condensed table-hovered">
+							<thead>
+								<tr>
+									<td class="col-md-1 text-center"><strong>{{Lang::get('textos.tit_cod')}}</strong></td>
+									<td class="col-md-7"><strong>Texto</strong></td>
+									<td class="col-md-3"><strong>Tipo</strong></td>
+									<td class="col-md-1 text-center"><strong><small>Obrig.</small></strong></td>
+								</tr>
+							</thead>
+							<tbody>
+								@forelse($questions as $question)
+							    	<tr>
+										<td class="text-center"><p>{{$question->id}}</p></td>
+										<td><p>{{$question->text}}</p></td>
+										<td><p>{{$arrayEnumTipo[$question->type]}}</p></td>
+										<td class="text-center"><p>{{$arrayEnumObrig[$question->mandatory]}}</p></td>
+							    	</tr>
+								@empty
+								<tr>
+									<td colspan="5">Nenhuma pergunta cadastrada.</td>
+								</tr>
+								@endforelse
+							</tbody>
+						</table>
+						
 					</div><!-- panel -->
 
 					<div class="modal fade" id="modalAdicionarPergunta" tabindex="-1" role="dialog" aria-labelledby="modalAdicionarPergunta">
@@ -61,12 +61,6 @@
 									{{Form::open(array('url' => 'question/add', 'id' => 'question-add-form', 'method' => 'post', 'role'=>'form', 'autocomplete' => 'off'))}}
 										
 										<div class="row">
-											<div class="col-lg-4">
-												<div class="form-group">
-													<label class="control-label">Texto:</label>
-													<input type="text" name="text" class="form-control input-sm" required="">
-												</div>
-											</div>
 											<div class="col-lg-5">
 												<div class="form-group">
 													<label class="control-label">Tipo:</label>
@@ -82,15 +76,21 @@
 														<option value="h">CNPJ (99.999.999/0001-99)</option>
 														<option value="i">CEP (99.999-999)</option>
 														<option value="j">Telefone (99) 99999-9999</option>
-														<option value="k">E-mail (email&Ocirc;email.com)</option>
+														<option value="k">E-mail (email@dominio.com)</option>
 														<option value="l">Cidade de Interesse</option>
 													</select>
+												</div>
+											</div>
+											<div class="col-lg-4">
+												<div class="form-group">
+													<label class="control-label">Texto:</label>
+													<input id="input-text" type="text" name="text" class="form-control input-sm" required="">
 												</div>
 											</div>
 											<div class="col-lg-3">
 												<div class="form-group">
 													<label class="control-label">Obrigatório:</label>
-													<select name="mandatory" class="form-control input-sm" required="">
+													<select id="select-obrig" name="mandatory" class="form-control input-sm" required="">
 														<option value="">Selecione</option>
 														<option value="s">Sim</option>
 														<option value="n">Não</option>

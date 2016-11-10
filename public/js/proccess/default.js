@@ -25,22 +25,39 @@ $(function() {
 		if (resp.trim() != '') {
 			var jqxhr = $.post( url, { "_token": tk, "proccess_id": pkpro, "question_id": pkque, "text": resp }, function($retorno) {
 				//insere o loading
-				console.log("success");
-				console.log($retorno);
+				$('.confirm-'+pkque).fadeIn('slow');
+				$('.error-'+pkque).hide();
 			})
 			.done(function() {
-				console.log("done");
+				//console.log("done");
 			})
 			.fail(function() {
-				console.log("error");
+				$('.confirm-'+pkque).hide();
+				$('.error-'+pkque).fadeIn('slow');
 			})
 			.always(function() {
-				console.log("always");
-				//remove o loading
+				$('.confirm-'+pkque).delay(1000).fadeOut('slow');
 			});
 		}
 		
 	});
 
+	$('#comboUf').on('change', function(){
+		
+		var idUf = $(this).val();
+		var url = $('#ajaxurl').val();
+
+		if (idUf != '') {
+			$.get(url + 'ajax/listCitiesByStateId/' + idUf, function(data, status){
+		        if (status == 'success') {
+		       	 	$('#comboCidades').html(data);
+		        }else{
+		        	$('#comboCidades').html('<option value="">Erro ao carregar</option>');
+		        }
+		    });
+		}else{
+			$('#comboCidades').html('<option value="">Selecione uma UF</option>');
+		}
+	});
 
 });

@@ -38,11 +38,19 @@
 
 					<div class="panel-heading">
 						<div class="row">
-							<div class="col-md-10">
+							<div class="col-md-12">
 								<h4>{{$evaluation->title}} <small>{{$evaluation->description}}</small></h4>
 							</div>
+							<div class="col-md-10">
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;Link</div>
+										<input type="text" readonly="" class="form-control" id="exampleInputAmount" value="{{URL::to('proccess/')}}/{{$evaluation->token}}">
+									</div>
+								</div>
+							</div>
 							<div class="col-md-2">
-								<button type="button" class="btn btn-primary pull-right" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalPerguntas">
+								<button type="button" class="btn btn-block btn-primary pull-right" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalPerguntas">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 									&nbsp;&nbsp;Pergunta
 								</button>
@@ -120,7 +128,11 @@
 								@forelse($questions as $question)
 							    	<tr>
 										<td><p>{{$question->text}}</p></td>
-										<td><div class="form-group"><input type="text" class="form-control input-sm text-center rating-input" maxlength="5" id="rating-{{$question->id}}"></div> </td>
+										<td>
+											<div class="form-group">
+												<input type="text" @if($question->type == 'c' || $question->type == 'd' || $question->type == 'l') disabled @endif class="form-control input-sm text-center rating-input" maxlength="5" id="rating-{{$question->id}}">
+											</div>
+										</td>
 										<td><p>{{$arrayEnumTipo[$question->type]}}</p></td>
 										<td class="text-center"><p>{{$arrayEnumObrig[$question->mandatory]}}</p></td>
 										<td>

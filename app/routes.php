@@ -1,17 +1,5 @@
 <?php
 
-/*
-* 1 - Cadastro de Empresas - 			OK
-* 2 - Cadastro de Usuários - 			OK
-* 3 - Cadastro de Formulários - 		OK
-* 4 - Cadastro de Perguntas - 			OK
-* 5 - Cadastro de Plano de Expansão - 	OK
-* 6 - Relatórios
-* 7 - Responder Fomulários
-* 8 - Web Services Exportar
-* 9 - Análisar Candidatos / Sugerir
-*/
-
 ######################
 # MAIN PAGE
 ######################
@@ -158,13 +146,20 @@ Route::get('logout', function(){
 
 /* PERFUMARIA
 * 1 - Exibir cidades com hover na lista dos planos de expansão
-* 2 - Validar campos cidade de interesse
-* 3 - Exibir O LINK no questionário
-* 4 - Exibir percentual respondido
+* 4 - AJAX Exibir percentual respondido e Salvar na tabela a porcentagem
 * 5 - Exportar ao concluir
-* 6 - Avisar que foi salvo
-
-
 
 QUESTIONS TIPO: FAIXA DE NUMERO
+*/
+
+/*
+* 1 - Cadastro de Empresas - 			OK
+* 2 - Cadastro de Usuários - 			OK
+* 3 - Cadastro de Formulários - 		OK
+* 4 - Cadastro de Perguntas - 			OK
+* 5 - Cadastro de Plano de Expansão - 	OK
+* 6 - Relatórios
+* 7 - Responder Formulários 			OK
+* 8 - Web Services Exportar
+* 9 - Análisar Candidatos / Sugerir
 */

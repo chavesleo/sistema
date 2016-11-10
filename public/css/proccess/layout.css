@@ -1,11 +1,17 @@
 body{
 	background-color: #EEE;
-	font: bold 14px sans-serif;
+    font: bold 14px sans-serif;
+    background: url(http://i.imgur.com/GHr12sH.jpg) no-repeat center center fixed;
+    background-size: 100% 100%;
 }
-form{
-	background-color: #FFF;
-	border-radius: 4px;
-	padding-bottom: 1px;
+form {
+    border-radius: 4px;
+    padding-bottom: 1px;
+    background-color: rgba(255,255,255, 0.7);
+}
+
+input, select, textarea{
+    font-weight: normal;
 }
 
 .form-top-title-row{
@@ -14,14 +20,42 @@ form{
 
 .form-top-title{
 	box-sizing: border-box;
-	color: #4C565E;
+	color: #333;
 	font-size: 24px;
 	padding: 12px 0 12px 0;
 	margin: 0 auto 40px;
 	border-bottom: 2px solid #6CAEE0;
 }
-
+.form-top-title > small{
+	color: #555;
+}
 .ordenation{
 	color: #6caee0;
 	font-size: 16px;
+}
+.progress{
+    height: 34px;
+    margin-bottom: 20px;
+    background-color: #DDD;
+    border-radius: 4px;
+}
+
+.progress > div > p{
+	line-height: 35px;
+}
+
+.dropdown-menu{
+	width: 100%;
+}
+.dropdown-menu > li > a{
+	text-align: center;
+}
+    
+.ajax-icon{
+	font-size: 16px;
+}
+
+.ajax-icon{
+	font-size: 16px;
+	display: none;
 }

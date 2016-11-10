@@ -6,10 +6,14 @@ class QuestionController extends BaseController {
 									'b' => 'Texto Longo',
 									'c' => 'Seleção Única',
 									'd' => 'Seleção Múltipla',
-									'e' => 'Telefone',
-									'f' => 'Data',
-									'g' => 'CPF',
-									'h' => 'CNPJ');
+									'e' => 'Somente Números',
+									'f' => 'Data (11/11/1111)',
+									'g' => 'CPF (999.999.999-99)',
+									'h' => 'CNPJ (99.999.999/0001-99)',
+									'i' => 'CEP (99.999-999)',
+									'j' => 'Telefone (99) 99999-9999',
+									'k' => 'E-mail (email@dominio.com)',
+									'l' => 'Cidade de Interesse');
 
 	private $arrayEnumObrig = array('n' => 'Não', 
 									's' => 'Sim');
@@ -29,8 +33,6 @@ class QuestionController extends BaseController {
 	}
 
 	function adicionar(){
-
-		$data = Input::all();
 
 	    $rules = array( 'text' => 'required',
 				        'type' => 'required',
