@@ -130,6 +130,15 @@ Route::group(array('prefix' => 'ajax'), function(){
 
 });
 
+######################
+# Relatórios
+######################
+Route::group(array('prefix' => 'report', 'before' => 'auth'), function(){
+
+	Route::get('/', 'ReportController@index');
+
+});
+
 #################
 # Login e Logout
 #################

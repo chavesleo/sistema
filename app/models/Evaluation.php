@@ -16,4 +16,8 @@ class Evaluation extends Eloquent {
         return $this->hasMany('Candidate');
     }
 
+    public function proccesses() {
+        return $this->hasMany('Proccess');
+    }
+
 }

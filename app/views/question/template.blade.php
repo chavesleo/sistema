@@ -11,7 +11,7 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-md-10">
-									<h4>Perguntas</h4>
+									<h4>Banco de Perguntas</h4>
 								</div>
 								<div class="col-md-2">
 									<button type="button" class="btn btn-primary pull-right action-usr" pk="1" title="{{Lang::get('textos.tit_adicionar')}}" data-toggle="modal" data-target="#modalAdicionarPergunta">
@@ -76,8 +76,9 @@
 														<option value="j">Telefone (99) 99999-9999</option>
 														<option value="k">E-mail (email@dominio.com)</option>
 														<option value="l">Cidade de Interesse</option>
+														<option value="o">Cidade de Residência</option>
 														<option value="m">Valor Monetário (R$)</option>
-														<option value="n">Investimento</option>
+														<option value="n">Investimento Inicial (R$)</option>
 													</select>
 												</div>
 											</div>

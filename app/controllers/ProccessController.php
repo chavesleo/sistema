@@ -36,10 +36,22 @@ class ProccessController extends BaseController {
 											->where('question_id', '=', $ddQuestao->question->id)
 											->first();
 				if ($resposta) {
-					$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 'option_id' => $resposta->option_id);
+
+					#resposta do tipo cidade
+					if ($ddQuestao->question->type == 'l') {
+						$selectedCity = City::where('id', $resposta->text)->first();
+						$comboCitiesOfUf = City::where('state_id', $selectedCity->state_id)->get();
+						//echo "<pre>";print_r($citiesOfUf);exit;
+						$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 
+																		  'option_id' => $resposta->option_id, 
+																		  'selected_state' => $selectedCity->state_id,
+																		  'comboCityOfState' => $comboCitiesOfUf);
+					}else{
+						$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 'option_id' => $resposta->option_id);
+					}
 					$arrayPercentCount['answered']++;
 				}else{
-					$arrayRespostas[$ddQuestao->question->id] = array('text' => NULL, 'option_id' => NULL);
+					$arrayRespostas[$ddQuestao->question->id] = array('text' => NULL, 'option_id' => NULL, 'comboCityOfState' => array());
 				}
 			}
 
@@ -51,9 +63,10 @@ class ProccessController extends BaseController {
 			$newProccess = Proccess::where('id', Session::get('proccess_init.proccess_id'))
 									->first();
 			$newProccess->progress = $arrayPercentCount['percent'];
+			if ($arrayPercentCount['percent'] == 100) {
+				$newProccess->status='f';
+			}
 			$newProccess->save();
-
-			//echo "<pre>";print_r($arrayPercentCount);echo "</pre>";exit;
 
 			//listar perguntas já respondidas
 			return View::make('evaluation.proccess', compact('listaUf','arrayPercentCount','arrayRespostas','jsPagina','cssPagina','evaluation'));

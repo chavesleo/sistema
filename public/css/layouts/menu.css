@@ -120,3 +120,6 @@ i.fa{
 .table tbody>tr>td>p{
   margin: 0 !important;
 }
+.panel-default > .panel-heading, .modal-header {
+    background-color: #E7E7E7 !important;
+}

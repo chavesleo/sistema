@@ -102,7 +102,7 @@
 										<select id="comboUf" required="" class="form-control">
 											<option value="">Selecione</option>
 											@forelse($listaUf as $uf)
-												<option value="{{$uf->id}}">{{$uf->name}}</option>
+												<option value="{{$uf->id}}" @if( isset($arrayRespostas[$questionEvaluation->question->id]['selected_state']) && $uf->id == $arrayRespostas[$questionEvaluation->question->id]['selected_state']) selected @endif>{{$uf->name}}</option>
 											@empty
 												<option value="">Erro ao carregar UF.</option>
 											@endforelse
@@ -113,7 +113,13 @@
 									<div class="form-group has-warning">
 										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - Cidade de Interesse: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label></label>
 										<select id="comboCidades" required="" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save">
-											<option value="">Selecione uma UF</option>
+
+											@forelse($arrayRespostas[$questionEvaluation->question->id]['comboCityOfState'] as $cityOfState)
+												<option value="{{$cityOfState->id}}" @if( $cityOfState->id == $arrayRespostas[$questionEvaluation->question->id]['text']) selected @endif>{{$cityOfState->name}}</option>
+											@empty
+												<option value="">Selecione uma UF</option>
+											@endforelse
+
 										</select>
 									</div>
 								</div>
@@ -130,9 +136,9 @@
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;CSV</a></li>
+									<li><a href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;CSV</a></li>
 									<li class="divider"></li>
-									<li><a href="#"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;JSON</a></li>
+									<li><a href="#"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;PDF</a></li>
 								</ul>
 							</div>
 						</div>

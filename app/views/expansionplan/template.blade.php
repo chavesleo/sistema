@@ -103,7 +103,7 @@
 															</select>
 														</div>
 													</div>
-													<div class="col-lg-4">
+													<div class="col-lg-3">
 														<div class="form-group">
 					    									<label>Formato:</label>
 															<select id="comboFormato" class="form-control">
@@ -127,7 +127,7 @@
 													</div>
 													<div class="col-lg-3">
 														<div class="form-group">
-					    									<label>Investimento:</label>
+					    									<label>Investimento <small>( Unitário )</small>:</label>
 															<div class="input-group">
 																<div class="input-group-addon">R$</div>
 																<input id="inputinvest" type="text" class="form-control text-right">
@@ -135,7 +135,7 @@
 															</div>
 														</div>
 													</div>
-													<div class="col-lg-2">
+													<div class="col-lg-2 col-lg-offset-1">
 														<button id="btn-adicionar-cidade" style="margin-top: 24px; margin-bottom: 10px; " type="button" class="btn btn-block btn-warning" title="Adicionar">
 															<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 															&nbsp;&nbsp;Adicionar

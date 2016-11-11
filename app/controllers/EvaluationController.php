@@ -15,7 +15,8 @@ class EvaluationController extends BaseController {
 									'k' => 'E-mail (email@dominio.com)',
 									'l' => 'Cidade de Interesse',
 									'm' => 'Monetário',
-									'n' => 'Investimento');
+									'n' => 'Investimento',
+									'o' => 'Cidade de Residência');
 
 	private $arrayEnumObrig = array('n' => 'Não', 
 									's' => 'Sim');
