@@ -32,16 +32,21 @@ $(function() {
 		if(tipoOpcao == 'c' || tipoOpcao == 'd'){
 			$('#quadro-opcoes').show();
 			$('#btn-salvar-pergunta').removeClass('liberado');
+
 		}else if(tipoOpcao == 'l'){
 			$('#input-text').attr('readonly','readonly').val('Cidade de Interesse');
+			$('#select-obrig').attr('readonly','readonly').val('s');
+			
+		}else if(tipoOpcao == 'n'){
+			$('#input-text').attr('readonly','readonly').val('Investimento para Abertura');
 			$('#select-obrig').attr('readonly','readonly').val('s');
 			
 		}else{
 			$('#quadro-opcoes').hide();
 			$('.row-opcao').remove();
 			$('#btn-salvar-pergunta').addClass('liberado');
-			$('#input-text').removeAttr('disabled');
-			$('#select-obrig').removeAttr('disabled').val('');
+			$('#input-text').removeAttr('readonly').val('');
+			$('#select-obrig').removeAttr('readonly').val('');
 		}
 
 	});

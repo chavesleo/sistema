@@ -69,14 +69,11 @@
 											<td class="text-center">
 												<div class="btn-group" role="group">
 													<a href="questionadd/{{$evaluation->id}}" class="btn btn-sm btn-warning" role="button" title="{{Lang::get('textos.tit_editar')}} {{ $evaluation->title }}">
-														<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-														&nbsp;&nbsp;{{Lang::get('textos.tit_editar')}}
+														<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>&nbsp;&nbsp;{{Lang::get('textos.tit_editar')}}
 													</a>
-													<a href="#" class="btn btn-sm btn-danger btn-apagar" pk="{{$evaluation->id}}" role="button" title="{{Lang::get('textos.tit_apagar')}} {{ $evaluation->title }}">
-														<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-														&nbsp;&nbsp;{{Lang::get('textos.tit_apagar')}}
-														</a>
-													</a>
+													<button type="button" class="btn btn-sm btn-info" data-container="body" data-toggle="popover" data-placement="left" data-content="{{URL::to('proccess/')}}/{{$evaluation->token}}">
+												  		<span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;Link
+													</button>
 												</div>
 											</td>
 								    	</tr>
@@ -142,5 +139,11 @@
 	{{Form::open(array('url' => 'evaluation/delete', 'id' => 'remove-form', 'method' => 'post', 'role'=>'form'))}}
 		<input id="pkdelevaluation" type="hidden" name="id" value="">
 	{{Form::close()}}
+
+	<style>
+		.popover{
+			max-width: none !important;
+		}
+	</style>
 
 @endsection

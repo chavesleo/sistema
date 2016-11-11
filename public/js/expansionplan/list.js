@@ -32,16 +32,23 @@ $(function() {
 			$('#comboCidades').parent('div').removeClass('has-warning');
 			$('#comboFormato').parent('div').removeClass('has-warning');
 			$('#inputmeta').parent('div').addClass('has-warning');
+		}else if($('#inputinvest').val() == ''){
+			$('#comboUf').parent('div').removeClass('has-warning');
+			$('#comboCidades').parent('div').removeClass('has-warning');
+			$('#comboFormato').parent('div').removeClass('has-warning');
+			$('#inputmeta').parent('div').removeClass('has-warning');
+			$('#inputinvest').parent('div').addClass('has-warning');
 		}else{
 			var formatoId = $('#comboFormato').val();
 			var cidadeId = $('#comboCidades').val();
 			var meta = $('#inputmeta').val();
+			var investimento = $('#inputinvest').val();
 			var formatoText = $('#comboFormato option:selected').text();
 			var cidadeText = $('#comboCidades option:selected').text();
-			var ufText = $('#comboUf option:selected').text();
+			var ufSigla = $('#comboUf option:selected').attr('sigla');
 			var contador = $('.cidade-adicionada').length + 1;
 
-			$('#tbCidades').children('tbody').append('<tr class="cidade-adicionada linha-'+contador+'"> <input type="hidden" name="cidade['+contador+'][formato]" value="'+formatoId+'"> <input type="hidden" name="cidade['+contador+'][id]" value="'+cidadeId+'"> <input type="hidden" name="cidade['+contador+'][meta]" value="'+meta+'"> <td>'+cidadeText+ '/'+ ufText+'</td> <td>'+formatoText+'</td> <td>'+meta+'</td> <td> <button type="button" class="btn btn-danger apagarlinha" linha="'+contador+'" title="Apagar"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> </td> </tr>');
+			$('#tbCidades').children('tbody').append('<tr class="cidade-adicionada linha-'+contador+'"> <input type="hidden" name="cidade['+contador+'][formato]" value="'+formatoId+'"> <input type="hidden" name="cidade['+contador+'][id]" value="'+cidadeId+'"> <input type="hidden" name="cidade['+contador+'][meta]" value="'+meta+'"> <input type="hidden" name="cidade['+contador+'][investment]" value="'+investimento+'"> <td>'+cidadeText+ ' / '+ ufSigla+'</td> <td class="text-center">'+formatoText+'</td> <td class="text-center">'+meta+'</td> <td class="text-center"> R$ '+investimento+',00</td> <td> <button type="button" class="btn btn-danger apagarlinha" linha="'+contador+'" title="Apagar"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> </td> </tr>');
 
 			$('.badge-cidades-selecionadas').text(contador);
 
@@ -49,6 +56,7 @@ $(function() {
 			$('#comboCidades').val('');
 			$('#comboFormato').val('');
 			$('#inputmeta').val('');
+			$('#inputinvest').val('');
 		}
 	});
 
@@ -61,4 +69,12 @@ $(function() {
 
 	});
 
+	$('#inputinvest').mask('0.000.000', {reverse: true});
+
+});
+
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip({
+    container : 'body'
+  });
 });

@@ -82,20 +82,20 @@
 											</div>
 											<div class="modal-body">
 												<div class="row">
-													<div class="col-lg-3">
+													<div class="col-lg-6">
 														<div class="form-group">
 					    									<label>UF:</label>
 															<select id="comboUf" class="form-control">
 																<option value="">Selecione</option>
 															@forelse($listaUf as $dadosUf)
-														    	<option value="{{$dadosUf->id}}">{{$dadosUf->name}}</option>
+														    	<option value="{{$dadosUf->id}}" sigla="{{$dadosUf->short_name}}">{{$dadosUf->name}}</option>
 															@empty
 																<option value="">Nenhuma UF encontrada.</option>
 															@endforelse
 															</select>
 														</div>
 													</div>
-													<div class="col-lg-4">
+													<div class="col-lg-6">
 														<div class="form-group">
 					    									<label>Cidade:</label>
 															<select id="comboCidades" class="form-control">
@@ -103,7 +103,7 @@
 															</select>
 														</div>
 													</div>
-													<div class="col-lg-3">
+													<div class="col-lg-4">
 														<div class="form-group">
 					    									<label>Formato:</label>
 															<select id="comboFormato" class="form-control">
@@ -116,36 +116,48 @@
 															</select>
 														</div>
 													</div>
-													<div class="col-lg-1">
+													<div class="col-lg-3">
+				    									<label>Meta:</label>
 														<div class="form-group">
-					    									<label>Meta:</label>
-															<input id="inputmeta" class="form-control" maxlength="2" required="">
+															<div class="input-group">
+																<input id="inputmeta" type="number" maxlength="3" class="text-center form-control"  min="1" max="100">
+																<div class="input-group-addon"><small>Unidades</small></div>
+															</div>
 														</div>
 													</div>
-													<div class="col-lg-1">
+													<div class="col-lg-3">
 														<div class="form-group">
-					    									<label>&nbsp;</label>
-															<button id="btn-adicionar-cidade" type="button" class="btn btn-warning" title="Adicionar">
-																<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-															</button>
+					    									<label>Investimento:</label>
+															<div class="input-group">
+																<div class="input-group-addon">R$</div>
+																<input id="inputinvest" type="text" class="form-control text-right">
+																<div class="input-group-addon">,00</div>
+															</div>
 														</div>
+													</div>
+													<div class="col-lg-2">
+														<button id="btn-adicionar-cidade" style="margin-top: 24px; margin-bottom: 10px; " type="button" class="btn btn-block btn-warning" title="Adicionar">
+															<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+															&nbsp;&nbsp;Adicionar
+														</button>
 													</div>
 												</div><!-- row 1 -->
-												<div class="row">
-													<table id="tbCidades" class="table table-condensed table-striped table-bordered">
-														<thead>
-															<tr>
-																<th class="text-center">Cidade/UF</th>
-																<th class="text-center">Formato</th>
-																<th class="text-center" style="width: 20%;">Meta (unidades)</th>
-																<th class="text-center" style="width: 5%;">Ação</th>
-															</tr>
-														</thead>
-														<tbody>
-															
-														</tbody>
-													</table>
-												</div>
+
+												<table id="tbCidades" class="table table-condensed table-striped table-bordered">
+													<thead>
+														<tr>
+															<th class="text-center">Cidade / UF</th>
+															<th class="text-center">Formato</th>
+															<th class="text-center" style="width: 20%;">Meta (unidades)</th>
+															<th class="text-center" style="width: 20%;">Investimento</th>
+															<th class="text-center" style="width: 5%;">Ação</th>
+														</tr>
+													</thead>
+													<tbody>
+														
+													</tbody>
+												</table>
+
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-info" data-dismiss="modal">
@@ -174,7 +186,7 @@
 								@forelse($expansionPlans as $expansionPlan)
 							    	<tr>
 										<td><p class="title-{{$expansionPlan->id}}">{{$expansionPlan->title}}</p></td>
-										<td class="text-center">{{count($expansionPlan->expansionPlanCities)}}</td>
+										<td class="text-center" data-toggle="tooltip" title="@foreach($expansionPlan->expansionPlanCities as $citiedata) {{$arrCities[$citiedata['city_id']]->name}} - @endforeach">{{count($expansionPlan->expansionPlanCities)}}</td>
 										<td class="text-center"><p class="startdate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->start_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->start_date)))}}</p></td>
 										<td class="text-center"><p class="enddate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->end_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->end_date)))}}</p></td>
 							    	</tr>
@@ -193,5 +205,4 @@
 	</div><!-- affix-row [pre menu]-->
 
 	<input type="hidden" id="defaultRoute" value="{{URL::to('ajax/listCitiesByStateId')}}">
-
 @endsection

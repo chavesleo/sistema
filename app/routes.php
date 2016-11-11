@@ -145,14 +145,13 @@ Route::get('logout', function(){
 
 
 /* PERFUMARIA
-* 1 - Exibir cidades com hover na lista dos planos de expansão
 * 4 - AJAX Exibir percentual respondido e Salvar na tabela a porcentagem
 * 5 - Exportar ao concluir
+* 8 - Criação de pergunta Intervalo de números com opção e peso
 
-QUESTIONS TIPO: FAIXA DE NUMERO
-*/
+QUESTIONS TIPO: 
+- FAIXA DE NUMERO
 
-/*
 * 1 - Cadastro de Empresas - 			OK
 * 2 - Cadastro de Usuários - 			OK
 * 3 - Cadastro de Formulários - 		OK

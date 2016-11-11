@@ -61,3 +61,16 @@ $(function() {
 	});
 
 });
+
+$(document).ready(function(){ 
+	$('.inputVerify').each(function(){
+		if ($(this).val() != '') {
+			$(this).parent('div').removeClass('has-warning');
+		}
+	});
+	$('.textareaVerify').each(function(){
+		if ($(this).val() != '') {
+			$(this).parent('div').removeClass('has-warning');
+		}
+	});
+});

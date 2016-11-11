@@ -23,10 +23,9 @@
 							</div>
 						</div>
 						
-						<table class="table table-condensed table-hovered">
+						<table class="table table-condensed table-bordered table-hover table-striped">
 							<thead>
 								<tr>
-									<td class="col-md-1 text-center"><strong>{{Lang::get('textos.tit_cod')}}</strong></td>
 									<td class="col-md-7"><strong>Texto</strong></td>
 									<td class="col-md-3"><strong>Tipo</strong></td>
 									<td class="col-md-1 text-center"><strong><small>Obrig.</small></strong></td>
@@ -35,7 +34,6 @@
 							<tbody>
 								@forelse($questions as $question)
 							    	<tr>
-										<td class="text-center"><p>{{$question->id}}</p></td>
 										<td><p>{{$question->text}}</p></td>
 										<td><p>{{$arrayEnumTipo[$question->type]}}</p></td>
 										<td class="text-center"><p>{{$arrayEnumObrig[$question->mandatory]}}</p></td>
@@ -78,6 +76,8 @@
 														<option value="j">Telefone (99) 99999-9999</option>
 														<option value="k">E-mail (email@dominio.com)</option>
 														<option value="l">Cidade de Interesse</option>
+														<option value="m">Valor Monetário (R$)</option>
+														<option value="n">Investimento</option>
 													</select>
 												</div>
 											</div>

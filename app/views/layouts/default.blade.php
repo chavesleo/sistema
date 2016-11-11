@@ -123,6 +123,7 @@
 		
 	<script src="{{Config::get('define.urlPadrao')}}packages/jquery-1.11.3/jquery-1.11.3.min.js"></script>
 	<script src="{{Config::get('define.urlPadrao')}}packages/jquery-1.11.3/jquery.maskMoney.min.js"></script>
+	<script src="{{Config::get('define.urlPadrao')}}packages/jquery-1.11.3/jquery.mask.min.js"></script>
 	<script src="{{Config::get('define.urlPadrao')}}packages/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="{{Config::get('define.urlPadrao')}}packages/sweetalert2/sweetalert2.min.js"></script>
 	<script src="{{Config::get('define.urlPadrao')}}js/layout/default.js"></script>

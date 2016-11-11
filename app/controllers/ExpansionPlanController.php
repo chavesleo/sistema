@@ -11,10 +11,10 @@ class ExpansionPlanController extends BaseController {
 		$expansionPlans = ExpansionPlan::where('company_id', Auth::user()->company_id)
 										->with('expansionPlanCities')
 										->get();
-
+		$arrCities = City::all();
 		//echo "<pre>";print_r($expansionPlans);exit;
 
-		return View::make('expansionplan.template', compact('expansionPlans','menuAtivo', 'cssPagina', 'jsPagina', 'tituloPagina', 'listaUf'));
+		return View::make('expansionplan.template', compact('arrCities','expansionPlans','menuAtivo', 'cssPagina', 'jsPagina', 'tituloPagina', 'listaUf'));
 	}
 
 	function action(){
@@ -54,6 +54,7 @@ class ExpansionPlanController extends BaseController {
 			$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp;Plano de Expansão <strong>criado</strong> com sucesso!';
 		}
 
+
 		$expansionPlan->title = $data['title'];
 		$expansionPlan->start_date = $data['start_date'];
 		$expansionPlan->end_date = $data['end_date'];
@@ -63,11 +64,15 @@ class ExpansionPlanController extends BaseController {
 
 		if (is_array($data['cidade']) && count($data['cidade'] > 0)) {
 			foreach ($data['cidade'] as $ordem => $dadosCidade) {
+				
+				$investimento = $dadosCidade['investment'];
+
 				$expansionPlanCity = new ExpansionPlanCity;
 				$expansionPlanCity->city_id = $dadosCidade['id'];
 				$expansionPlanCity->expansion_plan_id = $expansionPlan->id;
 				$expansionPlanCity->format = $dadosCidade['formato'];
 				$expansionPlanCity->goal = $dadosCidade['meta'];
+				$expansionPlanCity->investment = str_replace('.','', $dadosCidade['investment']).'.00';
 				$expansionPlanCity->save();
 			}
 		}

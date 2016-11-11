@@ -13,7 +13,9 @@ class EvaluationController extends BaseController {
 									'i' => 'CEP (99.999-999)',
 									'j' => 'Telefone (99) 99999-9999',
 									'k' => 'E-mail (email@dominio.com)',
-									'l' => 'Cidade de Interesse');
+									'l' => 'Cidade de Interesse',
+									'm' => 'Monetário',
+									'n' => 'Investimento');
 
 	private $arrayEnumObrig = array('n' => 'Não', 
 									's' => 'Sim');
