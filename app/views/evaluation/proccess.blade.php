@@ -60,12 +60,23 @@
 					    			</div>
 					    		</div>
 					    	@elseif($questionEvaluation->question->type == 'd')
-					    		D
+								<div class="col-sm-6 col-xs-12">
+									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
+										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}} <small>Use CTRL para múltiplos</small>: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
+										<select multiple name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') required="" @endif pkque="{{$questionEvaluation->question->id}}" value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" class="form-control ajax-save inputVerify">
+											@forelse($questionEvaluation->question->options as $options)
+												<option value="{{$options->id}}" @if(in_array($options->id, $arrayRespostas[$questionEvaluation->question->id]['arrayMultiplasMarcadas']) ) selected @endif >{{$options->text}}</option>
+											@empty
+												<option value="">Não há opção</option>
+											@endforelse
+										</select>
+									</div>
+								</div>
 					    	@elseif($questionEvaluation->question->type == 'e')
 								<div class="col-sm-6 col-xs-12">
 									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
 										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}}: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
-										<input name="resposta[{{$questionEvaluation->question->id}}]" value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" type="text" @if($questionEvaluation->question->mandatory == 's') required="" @endif pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save mask-phone inputVerify">
+										<input name="resposta[{{$questionEvaluation->question->id}}]" value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" type="number" @if($questionEvaluation->question->mandatory == 's') required="" @endif pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save inputVerify">
 									</div>
 								</div>
 					    	@elseif($questionEvaluation->question->type == 'f')
@@ -79,15 +90,30 @@
 								<div class="col-sm-6 col-xs-12">
 									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
 										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}}: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
-										<input name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" required="" @endif type="text" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save mask-cpf inputVerify">
+										<input name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') @endif  value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" required="" type="text" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save mask-cpf inputVerify">
 									</div>
 								</div>
 					    	@elseif($questionEvaluation->question->type == 'h')
-					    		H
+								<div class="col-sm-6 col-xs-12">
+									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
+										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}}: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
+										<input name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') required="" @endif value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" type="text" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save mask-cnpj inputVerify">
+									</div>
+								</div>
 					    	@elseif($questionEvaluation->question->type == 'i')
-					    		I
+								<div class="col-sm-6 col-xs-12">
+									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
+										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}}: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
+										<input name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') required="" @endif value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" type="text" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save mask-cep inputVerify">
+									</div>
+								</div>
 					    	@elseif($questionEvaluation->question->type == 'j')
-					    		J
+								<div class="col-sm-6 col-xs-12">
+									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
+										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}}: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
+										<input name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') required="" @endif value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" type="text" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save mask-phone inputVerify">
+									</div>
+								</div>
 					    	@elseif($questionEvaluation->question->type == 'k')
 								<div class="col-sm-6 col-xs-12">
 									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
@@ -99,7 +125,7 @@
 								<div class="col-sm-6 col-xs-12">
 									<div class="form-group has-warning">
 										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - UF de Interesse:</label>
-										<select id="comboUf" required="" class="form-control">
+										<select required="" class="form-control comboUf" destinoid="{{$questionEvaluation->question->id}}">
 											<option value="">Selecione</option>
 											@forelse($listaUf as $uf)
 												<option value="{{$uf->id}}" @if( isset($arrayRespostas[$questionEvaluation->question->id]['selected_state']) && $uf->id == $arrayRespostas[$questionEvaluation->question->id]['selected_state']) selected @endif>{{$uf->name}}</option>
@@ -112,7 +138,7 @@
 								<div class="col-sm-6 col-xs-12">
 									<div class="form-group has-warning">
 										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - Cidade de Interesse: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label></label>
-										<select id="comboCidades" required="" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save">
+										<select id="comboCidade-{{$questionEvaluation->question->id}}" required="" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save comboCidades">
 
 											@forelse($arrayRespostas[$questionEvaluation->question->id]['comboCityOfState'] as $cityOfState)
 												<option value="{{$cityOfState->id}}" @if( $cityOfState->id == $arrayRespostas[$questionEvaluation->question->id]['text']) selected @endif>{{$cityOfState->name}}</option>
@@ -123,11 +149,50 @@
 										</select>
 									</div>
 								</div>
+					    	@elseif($questionEvaluation->question->type == 'm')
+								<div class="col-sm-6 col-xs-12">
+									<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}}: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
+									<div class="input-group">
+										<div class="input-group-addon">R$</div>
+										<input name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') required="" @endif value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" type="text" pkque="{{$questionEvaluation->question->id}}" class="form-control text-right ajax-save mask-money inputVerify">
+										<div class="input-group-addon">,00</div>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+					    	@elseif($questionEvaluation->question->type == 'n')
+					    		N
+					    	@elseif($questionEvaluation->question->type == 'o')
+								<div class="col-sm-6 col-xs-12">
+									<div class="form-group has-warning">
+										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}} Selecione uma UF:</label>
+										<select required="" class="form-control comboUf" destinoid="{{$questionEvaluation->question->id}}">
+											<option value="">Selecione</option>
+											@forelse($listaUf as $uf)
+												<option value="{{$uf->id}}" @if( isset($arrayRespostas[$questionEvaluation->question->id]['selected_state']) && $uf->id == $arrayRespostas[$questionEvaluation->question->id]['selected_state']) selected @endif>{{$uf->name}}</option>
+											@empty
+												<option value="">Erro ao carregar UF.</option>
+											@endforelse
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6 col-xs-12">
+									<div class="form-group has-warning">
+										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}} Selecione uma Cidade: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label></label>
+										<select id="comboCidade-{{$questionEvaluation->question->id}}" required="" pkque="{{$questionEvaluation->question->id}}" class="form-control ajax-save comboCidades">
+											@forelse($arrayRespostas[$questionEvaluation->question->id]['comboCityOfState'] as $cityOfState)
+												<option value="{{$cityOfState->id}}" @if( $cityOfState->id == $arrayRespostas[$questionEvaluation->question->id]['text']) selected @endif>{{$cityOfState->name}}</option>
+											@empty
+												<option value="">Selecione uma UF</option>
+											@endforelse
+										</select>
+									</div>
+								</div>
 					    	@endif
 						@empty
 							<p>Nenhuma questão adicionada.</p>
 						@endforelse
 
+						<div class="clearfix"></div>
 						<div class="col-xs-12 col-sm-3">
 							<div class="dropup">
 								<button class="btn btn-block btn-warning dropdown-toggle" type="button" data-toggle="dropdown">

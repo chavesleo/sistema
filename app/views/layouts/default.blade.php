@@ -127,8 +127,13 @@
 	<script src="{{Config::get('define.urlPadrao')}}packages/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
 	<script src="{{Config::get('define.urlPadrao')}}packages/sweetalert2/sweetalert2.min.js"></script>
 	<script src="{{Config::get('define.urlPadrao')}}js/layout/default.js"></script>
+	
 	@if($jsPagina)
 		<script src="{{Config::get('define.urlPadrao')}}{{$jsPagina}}"></script>
+	@endif
+
+	@if($menuAtivo == 6)
+		<script src="{{Config::get('define.urlPadrao')}}js/report/report.js"></script>
 	@endif
 
 </body>

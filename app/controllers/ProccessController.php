@@ -38,20 +38,24 @@ class ProccessController extends BaseController {
 				if ($resposta) {
 
 					#resposta do tipo cidade
-					if ($ddQuestao->question->type == 'l') {
+					if ($ddQuestao->question->type == 'l' || $ddQuestao->question->type == 'o') {
 						$selectedCity = City::where('id', $resposta->text)->first();
 						$comboCitiesOfUf = City::where('state_id', $selectedCity->state_id)->get();
-						//echo "<pre>";print_r($citiesOfUf);exit;
 						$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 
 																		  'option_id' => $resposta->option_id, 
 																		  'selected_state' => $selectedCity->state_id,
 																		  'comboCityOfState' => $comboCitiesOfUf);
+					}else if($ddQuestao->question->type == 'd'){
+						$arrayMultiplasMarcadas = explode(",",$resposta->text);
+						//echo "<pre>";print_r($arrayMultiplasMarcadas);exit;
+
+						$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 'option_id' => $resposta->option_id, 'arrayMultiplasMarcadas' => $arrayMultiplasMarcadas);
 					}else{
 						$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 'option_id' => $resposta->option_id);
 					}
 					$arrayPercentCount['answered']++;
 				}else{
-					$arrayRespostas[$ddQuestao->question->id] = array('text' => NULL, 'option_id' => NULL, 'comboCityOfState' => array());
+					$arrayRespostas[$ddQuestao->question->id] = array('text' => NULL, 'option_id' => NULL, 'comboCityOfState' => array(), 'arrayMultiplasMarcadas' => array());
 				}
 			}
 
@@ -115,7 +119,6 @@ class ProccessController extends BaseController {
 			$newProccess->save();
 		}
 
-
 		//cria a sessão para este usuario e esta avaliação
 		Session::put(
 					array('proccess_init' => array(
@@ -136,6 +139,8 @@ class ProccessController extends BaseController {
 	public function ajaxSaveQuestion(){
 		$dados = Input::all();
 
+		//echo "<pre>";print_r($dados);exit;
+
 		#verifica o tipo de pergunta
 		$question = Question::where('id',$dados['question_id'])->first();
 
@@ -152,8 +157,15 @@ class ProccessController extends BaseController {
 			$resposta->question_id = $dados['question_id'];
 			$resposta->text = $dados['text'];
 		}
-		if ($question->type == 'c' || $question->type == 'd') {
+		if ($question->type == 'c') {
 			$resposta->option_id = $dados['text'];
+		}else if($question->type == 'd' && is_array($dados['text'])){
+			$lista = $separador = '';
+			foreach ($dados['text'] as $idResposta) {
+				$lista .= $separador.$idResposta;
+				$separador = ',';
+			}
+			$resposta->text = $lista;
 		}
 
 		$resposta->save();

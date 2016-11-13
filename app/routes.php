@@ -154,9 +154,12 @@ Route::get('logout', function(){
 
 
 /* PERFUMARIA
-* 4 - AJAX Exibir percentual respondido e Salvar na tabela a porcentagem
-* 5 - Exportar ao concluir
-* 8 - Criação de pergunta Intervalo de números com opção e peso
+
+- AJAX Exibir percentual respondido e Salvar na tabela a porcentagem
+- Exportar ao concluir
+- Criação de pergunta Intervalo de números com opção e peso
+- Quando for Combo de investimento com investimento do plano de expansão
+
 
 QUESTIONS TIPO: 
 - FAIXA DE NUMERO
@@ -167,7 +170,25 @@ QUESTIONS TIPO:
 * 4 - Cadastro de Perguntas - 			OK
 * 5 - Cadastro de Plano de Expansão - 	OK
 * 6 - Relatórios
-* 7 - Responder Formulários 			OK
-* 8 - Web Services Exportar
-* 9 - Análisar Candidatos / Sugerir
+* 7 - Responder Formulários 			
+* 8 - Exportar
+	8.1 - Candidato
+		8.1.1 - CSV
+		8.1.2 - PDF
+		8.1.3 - JSON
+	8.2 - Formulários
+		8.2.3 - Formulários com respostas de todos os candidatos em CSV ou JSON
+
+* 9 - Analisar processos e sugerir:
+	- Perfil do Candidato
+	- Cidades dentro do Raio
+	- Tipos de Franquias de Valor mais Acessível
+	- Novos Processos com base em respostas de processos antigos
+
+*/
+
+/*
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE `nome_da_tabela`; 
+SET FOREIGN_KEY_CHECKS = 1;
 */

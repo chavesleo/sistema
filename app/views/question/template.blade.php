@@ -78,7 +78,6 @@
 														<option value="l">Cidade de Interesse</option>
 														<option value="o">Cidade de Residência</option>
 														<option value="m">Valor Monetário (R$)</option>
-														<option value="n">Investimento Inicial (R$)</option>
 													</select>
 												</div>
 											</div>

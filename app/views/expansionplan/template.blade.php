@@ -82,7 +82,7 @@
 											</div>
 											<div class="modal-body">
 												<div class="row">
-													<div class="col-lg-6">
+													<div class="col-lg-4">
 														<div class="form-group">
 					    									<label>UF:</label>
 															<select id="comboUf" class="form-control">
@@ -95,12 +95,23 @@
 															</select>
 														</div>
 													</div>
-													<div class="col-lg-6">
+													<div class="col-lg-5">
 														<div class="form-group">
 					    									<label>Cidade:</label>
 															<select id="comboCidades" class="form-control">
 																<option value="">Selecione uma UF</option>
 															</select>
+														</div>
+													</div>
+													<div class="col-lg-3">
+														<div class="form-group">
+					    									<label>Distância Aceitável</label>
+														<div class="form-group">
+															<div class="input-group">
+																<input id="inputraio" type="number" maxlength="3" class="text-center form-control"  min="1" max="100">
+																<div class="input-group-addon"><small>Km (Raio)</small></div>
+															</div>
+														</div>
 														</div>
 													</div>
 													<div class="col-lg-3">

@@ -12,8 +12,4 @@ class Proccess extends Eloquent {
 		return $this->belongsTo('Evaluation');
 	}
 
-	public function scopeIniciados($query) {
-		return $query->where('status', 'like', 'i');
-	}
-
 }

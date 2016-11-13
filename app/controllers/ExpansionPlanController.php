@@ -72,6 +72,7 @@ class ExpansionPlanController extends BaseController {
 				$expansionPlanCity->expansion_plan_id = $expansionPlan->id;
 				$expansionPlanCity->format = $dadosCidade['formato'];
 				$expansionPlanCity->goal = $dadosCidade['meta'];
+				$expansionPlanCity->distance = $dadosCidade['raio'];
 				$expansionPlanCity->investment = str_replace('.','', $dadosCidade['investment']).'.00';
 				$expansionPlanCity->save();
 			}

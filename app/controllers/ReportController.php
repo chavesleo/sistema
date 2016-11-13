@@ -8,14 +8,56 @@ class ReportController extends BaseController {
 		$cssPagina = 'css/report/default.css';
 		$jsPagina = 'js/report/default.js';
 		$tituloPagina = 'Relatórios';
+		
+		$totalProcessosIniciados = 0;
+		$totalProcessosAguardando = 0;
+		$totalProcessosFinalizados = 0;
 
-		$processosIniciados = Evaluation::where('company_id', Auth::user()->company_id)
-										->with('proccesses.iniciados')
+		$Questionarios = Evaluation::where('company_id', Auth::user()->company_id)
+										->with('proccesses')
 										->get();
+		/*
+		$Questionarios = Evaluation::where('company_id', Auth::user()->company_id)
+										->with(array('proccesses' => function($query)
+										{
+    										$query->where('status', 'like', 'i');
+    										$query->orWhere('status', 'like', 'c');
 
-		echo "<pre>";print_r($processosIniciados);exit;
+										}))
+										->get();
+					echo "<pre>";print_r($processo);echo "</pre>";exit;
+		*/
 
-		return View::make('report.template', compact('menuAtivo','cssPagina','jsPagina','tituloPagina'));
+		#CONTAGEM DOS PROCESSOS INICIADOS
+		if ($Questionarios) {
+			foreach ($Questionarios as $Questionario) {
+				foreach ($Questionario->proccesses as $processo) {
+					switch ($processo->status) {
+						case 'c':
+							$totalProcessosAguardando++;
+							break;
+						case 'f':
+							$totalProcessosFinalizados++;
+							break;
+						case 'i':
+							$totalProcessosIniciados++;
+							break;
+						default:
+							exit('erro, processo sem status');
+							break;
+					}
+				}
+			}
+
+		}
+
+		return View::make('report.template', compact('totalProcessosIniciados',
+													'totalProcessosAguardando',
+													'totalProcessosFinalizados',
+													'menuAtivo',
+													'cssPagina',
+													'jsPagina',
+													'tituloPagina'));
 	}
 
 }

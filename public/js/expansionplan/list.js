@@ -23,6 +23,10 @@ $(function() {
 		}else if($('#comboCidades').val() == ''){
 			$('#comboUf').parent('div').removeClass('has-warning');
 			$('#comboCidades').parent('div').addClass('has-warning');
+		}else if($('#inputraio').val() == ''){
+			$('#comboUf').parent('div').removeClass('has-warning');
+			$('#comboCidades').parent('div').removeClass('has-warning');
+			$('#inputraio').parent('div').addClass('has-warning');
 		}else if($('#comboFormato').val() == ''){
 			$('#comboUf').parent('div').removeClass('has-warning');
 			$('#comboCidades').parent('div').removeClass('has-warning');
@@ -47,8 +51,9 @@ $(function() {
 			var cidadeText = $('#comboCidades option:selected').text();
 			var ufSigla = $('#comboUf option:selected').attr('sigla');
 			var contador = $('.cidade-adicionada').length + 1;
+			var raio = $('#inputraio').val();
 
-			$('#tbCidades').children('tbody').append('<tr class="cidade-adicionada linha-'+contador+'"> <input type="hidden" name="cidade['+contador+'][formato]" value="'+formatoId+'"> <input type="hidden" name="cidade['+contador+'][id]" value="'+cidadeId+'"> <input type="hidden" name="cidade['+contador+'][meta]" value="'+meta+'"> <input type="hidden" name="cidade['+contador+'][investment]" value="'+investimento+'"> <td>'+cidadeText+ ' / '+ ufSigla+'</td> <td class="text-center">'+formatoText+'</td> <td class="text-center">'+meta+'</td> <td class="text-center"> R$ '+investimento+',00</td> <td> <button type="button" class="btn btn-danger apagarlinha" linha="'+contador+'" title="Apagar"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> </td> </tr>');
+			$('#tbCidades').children('tbody').append('<tr class="cidade-adicionada linha-'+contador+'"> <input type="hidden" name="cidade['+contador+'][formato]" value="'+formatoId+'"> <input type="hidden" name="cidade['+contador+'][id]" value="'+cidadeId+'"> <input type="hidden" name="cidade['+contador+'][raio]" value="'+raio+'"> <input type="hidden" name="cidade['+contador+'][meta]" value="'+meta+'"> <input type="hidden" name="cidade['+contador+'][investment]" value="'+investimento+'"> <td>'+cidadeText+ ' / '+ ufSigla+'</td> <td class="text-center">'+formatoText+'</td> <td class="text-center">'+meta+'</td> <td class="text-center"> R$ '+investimento+',00</td> <td> <button type="button" class="btn btn-danger apagarlinha" linha="'+contador+'" title="Apagar"> <span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button> </td> </tr>');
 
 			$('.badge-cidades-selecionadas').text(contador);
 
