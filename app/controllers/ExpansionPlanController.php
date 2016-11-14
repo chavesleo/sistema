@@ -11,10 +11,24 @@ class ExpansionPlanController extends BaseController {
 		$expansionPlans = ExpansionPlan::where('company_id', Auth::user()->company_id)
 										->with('expansionPlanCities')
 										->get();
-		$arrCities = City::all();
-		//echo "<pre>";print_r($expansionPlans);exit;
 
-		return View::make('expansionplan.template', compact('arrCities','expansionPlans','menuAtivo', 'cssPagina', 'jsPagina', 'tituloPagina', 'listaUf'));
+		$arrExpansionPlanCities = array();
+		foreach ($expansionPlans as $expansionPlan) {
+			$arrayLista = false;
+
+			foreach ($expansionPlan->expansionPlanCities as $expansionPlanCity) {
+				$arrayLista[$expansionPlanCity->city_id] = $expansionPlanCity->city_id;
+			}
+
+			if($arrayLista){
+				$arrExpansionPlanCities[$expansionPlan->id] = City::whereIn('id', $arrayLista)->get();
+			}else{
+				$arrExpansionPlanCities[$expansionPlan->id] = array();
+			}
+		}
+
+		//echo "<pre>";print_r($expansionPlans);exit;
+		return View::make('expansionplan.template', compact('arrExpansionPlanCities','expansionPlans','menuAtivo', 'cssPagina', 'jsPagina', 'tituloPagina', 'listaUf'));
 	}
 
 	function action(){

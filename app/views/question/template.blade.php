@@ -76,7 +76,7 @@
 														<option value="j">Telefone (99) 99999-9999</option>
 														<option value="k">E-mail (email@dominio.com)</option>
 														<option value="l">Cidade de Interesse</option>
-														<option value="o">Cidade de Residência</option>
+														<option value="o">Escolha de Cidade</option>
 														<option value="m">Valor Monetário (R$)</option>
 													</select>
 												</div>

@@ -166,19 +166,19 @@ QUESTIONS TIPO:
 
 * 1 - Cadastro de Empresas - 			OK
 * 2 - Cadastro de Usuários - 			OK
-* 3 - Cadastro de Formulários - 		OK
-* 4 - Cadastro de Perguntas - 			OK
-* 5 - Cadastro de Plano de Expansão - 	OK
-* 6 - Relatórios
-* 7 - Responder Formulários 			
-* 8 - Exportar
-	8.1 - Candidato
-		8.1.1 - CSV
-		8.1.2 - PDF
-		8.1.3 - JSON
-	8.2 - Formulários
-		8.2.3 - Formulários com respostas de todos os candidatos em CSV ou JSON
+* 3 - Cadastro de Perguntas - 			OK
+* 4 - Cadastro de Plano de Expansão - 	OK
+* 5 - Cadastro de Formulários - 		OK
+* 6 - Responder Formulários 			OK
+* 7 - Exportar
+	7.1 - Candidato
+		7.1.1 - CSV
+		7.1.2 - PDF
+		7.1.3 - JSON
+	7.2 - Formulários
+		7.2.3 - Formulários com respostas de todos os candidatos em CSV ou JSON
 
+* 8 - Relatórios
 * 9 - Analisar processos e sugerir:
 	- Perfil do Candidato
 	- Cidades dentro do Raio

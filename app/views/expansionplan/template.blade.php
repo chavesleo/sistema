@@ -197,7 +197,7 @@
 								@forelse($expansionPlans as $expansionPlan)
 							    	<tr>
 										<td><p class="title-{{$expansionPlan->id}}">{{$expansionPlan->title}}</p></td>
-										<td class="text-center" data-toggle="tooltip" title="@foreach($expansionPlan->expansionPlanCities as $citiedata) {{$arrCities[$citiedata['city_id']]->name}} - @endforeach">{{count($expansionPlan->expansionPlanCities)}}</td>
+										<td class="text-center" data-toggle="tooltip" title="@foreach($arrExpansionPlanCities[$expansionPlan->id] as $citiedata) {{$citiedata->name}} - @endforeach">{{count($expansionPlan->expansionPlanCities)}}</td>
 										<td class="text-center"><p class="startdate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->start_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->start_date)))}}</p></td>
 										<td class="text-center"><p class="enddate-{{$expansionPlan->id}}" originalval="{{$expansionPlan->end_date}}">{{implode('/', array_reverse(explode('-', $expansionPlan->end_date)))}}</p></td>
 							    	</tr>

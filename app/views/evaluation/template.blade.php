@@ -100,25 +100,40 @@
 				</div>
 				<div class="modal-body">
 					{{Form::open(array('url' => 'evaluation/add', 'id' => 'new-evaluation-form', 'method' => 'post', 'role'=>'form', 'autocomplete' => 'off'))}}
-						<div class="form-group">
-							<label class="control-label">Nome:</label>
-							<input type="text" name="title" class="form-control" required="" maxlength="45">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label class="control-label">Nome:</label>
+									<input type="text" name="title" class="form-control" required="" maxlength="45">
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="form-group">
+									<label class="control-label">Descrição:</label>
+									<input type="text" name="description" class="form-control" maxlength="250">
+								</div>
+							</div>
+							<div class="col-lg-7">
+								<div class="form-group">
+									<label class="control-label">Plano de expansão:</label>
+									<select name="expansion_plan_id" class="form-control">
+										<option value="">Selecione</option>
+									@forelse($expansionPlans as $expansionPlan)
+								    	<option value="{{$expansionPlan->id}}">{{$expansionPlan->title}}</option>
+									@empty
+										<option value="">É preciso cadastrar um plano de expansão!</option>
+									@endforelse
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-5">
+								<div class="form-group">
+									<label class="control-label">Pontuação Necessária:</label>
+									<input type="number" name="ranking" class="form-control text-center" required="" maxlength="3" min="0" max="100" step="0.01">
+								</div>
+							</div>
 						</div>
-						<div class="form-group">
-							<label class="control-label">Descrição:</label>
-							<input type="text" name="description" class="form-control" maxlength="250">
-						</div>
-						<div class="form-group">
-							<label class="control-label">Plano de expansão:</label>
-							<select name="expansion_plan_id" class="form-control">
-								<option value="">Selecione</option>
-							@forelse($expansionPlans as $expansionPlan)
-						    	<option value="{{$expansionPlan->id}}">{{$expansionPlan->title}}</option>
-							@empty
-								<option value="">É preciso cadastrar um plano de expansão!</option>
-							@endforelse
-							</select>
-						</div>
+							
 					{{Form::close()}}
 				</div>
 				<div class="modal-footer">

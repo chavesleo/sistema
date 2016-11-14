@@ -16,17 +16,7 @@ class ReportController extends BaseController {
 		$Questionarios = Evaluation::where('company_id', Auth::user()->company_id)
 										->with('proccesses')
 										->get();
-		/*
-		$Questionarios = Evaluation::where('company_id', Auth::user()->company_id)
-										->with(array('proccesses' => function($query)
-										{
-    										$query->where('status', 'like', 'i');
-    										$query->orWhere('status', 'like', 'c');
 
-										}))
-										->get();
-					echo "<pre>";print_r($processo);echo "</pre>";exit;
-		*/
 
 		#CONTAGEM DOS PROCESSOS INICIADOS
 		if ($Questionarios) {
@@ -61,3 +51,15 @@ class ReportController extends BaseController {
 	}
 
 }
+
+/*
+$Questionarios = Evaluation::where('company_id', Auth::user()->company_id)
+								->with(array('proccesses' => function($query)
+								{
+									$query->where('status', 'like', 'i');
+									$query->orWhere('status', 'like', 'c');
+
+								}))
+								->get();
+			echo "<pre>";print_r($processo);echo "</pre>";exit;
+*/
