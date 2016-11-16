@@ -32,161 +32,119 @@
 					@endforeach
 				@endif
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-			<div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-green">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-user-plus fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">{{$totalProcessosFinalizados}}</div>
-                                </div>
-                                <div class="col-xs-12 text-right">
-                                    <div style="font-size: 16px;">Candidatos Cadastrados</div>
+    			<div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-user-plus fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">{{$totalCandidatosCadastrados}}</div>
+                                    </div>
+                                    <div class="col-xs-12 text-right">
+                                        <div style="font-size: 16px;">Candidatos Cadastrados</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">Ver Detalhes</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-blue">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-file-text-o fa-5x"></i>
+                            <a href="{{URL::to('report/candidate/list')}}">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Ver Detalhes</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
                                 </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">{{$totalProcessosIniciados}}</div>
-                                </div>
-                                <div class="col-xs-12 text-right">
-                                    <div style="font-size: 16px;">Processos em Andamento</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">Ver Detalhes</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="panel panel-yellow">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-xs-3">
-                                    <i class="fa fa-refresh fa-5x"></i>
-                                </div>
-                                <div class="col-xs-9 text-right">
-                                    <div class="huge">{{$totalProcessosAguardando}}</div>
-                                </div>
-                                <div class="col-xs-12 text-right">
-                                    <div style="font-size: 16px;">Aguardando Análise</div>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#">
-                            <div class="panel-footer">
-                                <span class="pull-left">Ver Detalhes</span>
-                                <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                <div class="clearfix"></div>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-sm-6 hide">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Bar Chart</h3>
-                        </div>
-
-                        <div class="panel-body">
-                            <canvas id="cbar" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
+                            </a>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Candidatos por Situação</h3>
-                        </div>
-
-                        <div class="panel-body">
-                            <div style="max-width:400px; margin:0 auto;">
-                                <canvas class="round" id="cpie" width="400" height="320" style="width: 400px; height: 320px;"></canvas>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="panel panel-blue">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-file-text-o fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">{{$totalProcessosIniciados}}</div>
+                                    </div>
+                                    <div class="col-xs-12 text-right">
+                                        <div style="font-size: 16px;">Processos em Andamento</div>
+                                    </div>
+                                </div>
                             </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Ver Detalhes</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Novos Candidatos por Mês</h3>
-                        </div>
-
-                        <div class="panel-body">
-                            <canvas id="cline" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="panel panel-yellow">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-refresh fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">{{$totalProcessosFinalizados}}</div>
+                                    </div>
+                                    <div class="col-xs-12 text-right">
+                                        <div style="font-size: 16px;">Processos Finalizados</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Ver Detalhes</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </div>
 
-            </div>
+                <div class="row">
+                    <div class="col-sm-6 hide">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Bar Chart</h3>
+                            </div>
 
+                            <div class="panel-body">
+                                <canvas id="cbar" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Candidatos por Situação</h3>
+                            </div>
 
+                            <div class="panel-body">
+                                <div style="max-width:400px; margin:0 auto;">
+                                    <canvas class="round" id="cpie" width="400" height="320" style="width: 400px; height: 320px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Novos Candidatos por Mês</h3>
+                            </div>
 
+                            <div class="panel-body">
+                                <canvas id="cline" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                </div>
 				
 			</div> <!-- END CONTAINER -->
 		</div> <!-- CONTEUDO -->

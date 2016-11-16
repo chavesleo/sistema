@@ -221,7 +221,7 @@
       <ul class="nav navbar-nav">
         <li>
 			<div class="dropup">
-				<button class="btn btn-block navbar-btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown">
+				<button class="btn btn-block navbar-btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
 					<span class="glyphicon glyphicon-export" aria-hidden="true"></span>
 					&nbsp;&nbsp;Exportar
 					<span class="caret"></span>
@@ -235,14 +235,14 @@
         </li>
         <li>
 			<div id="progress-mid" class="progress" title="Progresso">
-		  		<div class="barra-progresso progress-bar active progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{$arrayPercentCount['percent']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$arrayPercentCount['percent']}}%">
+		  		<div class="barra-progresso progress-bar active progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{$arrayPercentCount['percent']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$arrayPercentCount['percent']}}%">
 					<p class="text-center">{{$arrayPercentCount['percent_formated']}}%</p>
 	    			<span class="sr-only">{{$arrayPercentCount['percent_formated']}}% Completo</span>
 			  	</div>
 			</div>
         </li>
         <li>
-			<button class="btn btn-info navbar-btn btn-block pull-right" type="submit" form="formulario">
+			<button class="btn btn-success navbar-btn btn-block pull-right" type="submit" form="formulario">
 				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;<span class="">Finalizar</span>
 			</button>
         </li>

@@ -16,4 +16,16 @@ class Proccess extends Eloquent {
         return $this->hasMany('ProccessAnswer');
     }
 
+    public function listAllProccessByCompanyId(){
+
+		$processos = DB::table('proccess')
+				        ->join('candidate', 'candidate.id', '=', 'proccess.candidate_id')
+				        ->select('candidate.*', 'proccess.*')
+				        ->where('company_id', Auth::user()->company_id)
+				        ->get();
+
+		return $processos;
+
+    }
+
 }

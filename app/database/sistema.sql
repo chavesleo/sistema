@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `sistema` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `sistema`;
--- MySQL dump 10.13  Distrib 5.5.52, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.5.53, for debian-linux-gnu (x86_64)
 --
--- Host: 127.0.0.1    Database: sistema
+-- Host: localhost    Database: sistema
 -- ------------------------------------------------------
--- Server version	5.5.52-0+deb8u1
+-- Server version	5.5.53-0+deb8u1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -42,7 +42,7 @@ CREATE TABLE `candidate` (
 
 LOCK TABLES `candidate` WRITE;
 /*!40000 ALTER TABLE `candidate` DISABLE KEYS */;
-INSERT INTO `candidate` VALUES (1,'','usuario@um.com','','2016-11-12 23:26:24','2016-11-12 23:26:24',NULL),(2,'','segundo@usuario.com','','2016-11-12 23:49:01','2016-11-12 23:49:01',NULL);
+INSERT INTO `candidate` VALUES (1,'','primeiro@usuario.com','','2016-11-12 23:26:24','2016-11-12 23:26:24',NULL),(2,'','segundo@usuario.com','','2016-11-12 23:49:01','2016-11-12 23:49:01',NULL);
 /*!40000 ALTER TABLE `candidate` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -152,6 +152,7 @@ CREATE TABLE `evaluation` (
   `token` varchar(255) NOT NULL,
   `title` varchar(45) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
+  `ranking` decimal(10,2) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
@@ -170,7 +171,7 @@ CREATE TABLE `evaluation` (
 
 LOCK TABLES `evaluation` WRITE;
 /*!40000 ALTER TABLE `evaluation` DISABLE KEYS */;
-INSERT INTO `evaluation` VALUES (1,1,2,'c1a8c0eaaefdd6add6fbda8673fc9562','Questionário Sul 2016','Para Interessados durante o ano de 2016 da região Sul do Brasil','2016-11-12 22:59:51','2016-11-12 22:59:51',NULL);
+INSERT INTO `evaluation` VALUES (1,1,2,'c1a8c0eaaefdd6add6fbda8673fc9562','Questionário Sul 2016','Para Interessados durante o ano de 2016 da região Sul do Brasil',5.50,'2016-11-12 22:59:51','2016-11-12 22:59:51',NULL);
 /*!40000 ALTER TABLE `evaluation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -352,7 +353,7 @@ CREATE TABLE `proccess` (
 
 LOCK TABLES `proccess` WRITE;
 /*!40000 ALTER TABLE `proccess` DISABLE KEYS */;
-INSERT INTO `proccess` VALUES (1,1,1,9.3,NULL,'i',0.00,'2016-11-12 23:26:24','2016-11-13 00:22:20',NULL),(2,2,1,0.0,NULL,'i',0.00,'2016-11-12 23:49:01','2016-11-12 23:49:29',NULL);
+INSERT INTO `proccess` VALUES (1,1,1,46.3,NULL,'i',38.50,'2016-11-12 23:26:24','2016-11-16 10:59:28',NULL),(2,2,1,0.0,NULL,'i',0.00,'2016-11-12 23:49:01','2016-11-12 23:49:29',NULL);
 /*!40000 ALTER TABLE `proccess` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -377,7 +378,7 @@ CREATE TABLE `proccess_answer` (
   KEY `fk_process_answer_1_idx` (`proccess_id`),
   CONSTRAINT `fk_process_answer_1` FOREIGN KEY (`proccess_id`) REFERENCES `proccess` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_process_answer_2` FOREIGN KEY (`question_id`) REFERENCES `question` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -386,7 +387,7 @@ CREATE TABLE `proccess_answer` (
 
 LOCK TABLES `proccess_answer` WRITE;
 /*!40000 ALTER TABLE `proccess_answer` DISABLE KEYS */;
-INSERT INTO `proccess_answer` VALUES (1,1,42,0,'28,30,32','2016-11-12 23:34:59','2016-11-12 23:43:01',NULL),(2,1,49,NULL,'16.165.165/1651-65','2016-11-12 23:54:26','2016-11-12 23:54:26',NULL),(3,1,21,NULL,'250.366.555','2016-11-13 00:02:44','2016-11-13 00:04:22',NULL),(4,1,36,NULL,'690','2016-11-13 00:09:21','2016-11-13 00:09:21',NULL),(5,1,37,NULL,'1201','2016-11-13 00:22:18','2016-11-13 00:22:18',NULL);
+INSERT INTO `proccess_answer` VALUES (1,1,42,0,'28,30,32','2016-11-12 23:34:59','2016-11-12 23:43:01',NULL),(2,1,49,NULL,'16.165.165/1651-65','2016-11-12 23:54:26','2016-11-12 23:54:26',NULL),(3,1,21,NULL,'10.500','2016-11-13 00:02:44','2016-11-14 11:02:03',NULL),(4,1,36,NULL,'83','2016-11-13 00:09:21','2016-11-14 12:10:46',NULL),(5,1,37,NULL,'1201','2016-11-13 00:22:18','2016-11-13 00:22:18',NULL),(6,1,44,37,'37','2016-11-14 11:03:59','2016-11-14 11:03:59',NULL),(7,1,43,34,'34','2016-11-14 11:04:01','2016-11-14 11:04:01',NULL),(8,1,45,43,'43','2016-11-14 11:04:07','2016-11-14 11:04:07',NULL),(9,1,46,49,'49','2016-11-14 11:04:10','2016-11-14 11:04:10',NULL),(10,1,47,53,'53','2016-11-14 11:04:11','2016-11-14 11:04:11',NULL),(11,1,48,55,'55','2016-11-14 11:04:16','2016-11-14 11:04:16',NULL),(12,1,50,57,'57','2016-11-14 11:04:21','2016-11-14 11:04:21',NULL),(13,1,51,61,'61','2016-11-14 11:04:23','2016-11-14 11:04:23',NULL),(14,1,52,64,'64','2016-11-14 11:04:26','2016-11-14 11:04:26',NULL),(15,1,53,66,'66','2016-11-14 11:04:30','2016-11-14 11:04:30',NULL),(16,1,22,NULL,'15/05/2005','2016-11-14 11:17:25','2016-11-14 11:17:25',NULL),(17,1,15,5,'5','2016-11-14 11:17:30','2016-11-14 11:17:30',NULL),(18,1,16,12,'12','2016-11-14 11:17:35','2016-11-14 11:17:35',NULL),(19,1,8,NULL,'142','2016-11-14 11:17:56','2016-11-14 11:17:59',NULL),(20,1,6,2,'2','2016-11-14 11:18:08','2016-11-14 11:18:08',NULL),(21,1,5,NULL,'205.656.988-44','2016-11-14 11:18:14','2016-11-14 11:18:14',NULL),(22,1,2,NULL,'15/01/1965','2016-11-14 11:18:21','2016-11-14 11:18:21',NULL),(23,1,39,NULL,'Sim','2016-11-14 11:18:43','2016-11-14 11:18:43',NULL),(24,1,40,26,'26','2016-11-14 11:18:49','2016-11-14 11:18:49',NULL),(25,1,1,NULL,'Candidato Um','2016-11-14 11:43:14','2016-11-14 11:43:14',NULL);
 /*!40000 ALTER TABLE `proccess_answer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -549,4 +550,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-12 22:32:43
+-- Dump completed on 2016-11-16  9:07:31

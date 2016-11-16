@@ -101,6 +101,7 @@ class ProccessController extends BaseController {
 			$newProccess = new Proccess;
 			$newProccess->candidate_id = $candidate->id;
 			$newProccess->evaluation_id = $evaluation->id;
+			$newProccess->company_id = $evaluation->company_id;
 			$newProccess->progress = 0;
 			$newProccess->status = 'i';
 			$newProccess->final_note = 0;
@@ -147,6 +148,7 @@ class ProccessController extends BaseController {
 		}
 		if ($question->type == 'c') {
 			$resposta->option_id = $dados['text'];
+
 		}else if($question->type == 'd' && is_array($dados['text'])){
 			$lista = $separador = '';
 			foreach ($dados['text'] as $idResposta) {
@@ -154,6 +156,16 @@ class ProccessController extends BaseController {
 				$separador = ',';
 			}
 			$resposta->text = $lista;
+		}
+
+		#salva o nome do candidato
+		$processo = Proccess::where('id', $dados['proccess_id'])->first();
+
+		if (trim(strtolower($question->text)) == 'nome' || 
+			trim(strtolower($question->text)) == 'nome completo') {
+			$candidato = Candidate::where('id', $processo->candidate_id)->first();
+			$candidato->fullname = $dados['text'];
+			$candidato->save();
 		}
 
 		$resposta->save();

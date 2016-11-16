@@ -12,16 +12,19 @@ class ReportController extends BaseController {
 		$totalProcessosIniciados = 0;
 		$totalProcessosAguardando = 0;
 		$totalProcessosFinalizados = 0;
+		$totalCandidatosCadastrados = 0;
 
-		$Questionarios = Evaluation::where('company_id', Auth::user()->company_id)
-										->with('proccesses')
+		$questionarios = Evaluation::where('company_id', Auth::user()->company_id)
+										->with('proccesses.candidate')
 										->get();
+	
 
+		//echo "<pre>";print_r($questionarios);echo "</pre>";exit;
 
 		#CONTAGEM DOS PROCESSOS INICIADOS
-		if ($Questionarios) {
-			foreach ($Questionarios as $Questionario) {
-				foreach ($Questionario->proccesses as $processo) {
+		if ($questionarios) {
+			foreach ($questionarios as $questionario) {
+				foreach ($questionario->proccesses as $processo) {
 					switch ($processo->status) {
 						case 'c':
 							$totalProcessosAguardando++;
@@ -36,21 +39,44 @@ class ReportController extends BaseController {
 							exit('erro, processo sem status');
 							break;
 					}
+
+					$totalCandidatosCadastrados += count($processo->candidate);
 				}
 			}
 
 		}
 
+/*
 		$teste = new ProccessController;
 		$teste->calculateNoteById(1);
-
+*/
 		return View::make('report.template', compact('totalProcessosIniciados',
 													'totalProcessosAguardando',
 													'totalProcessosFinalizados',
+													'totalCandidatosCadastrados',
 													'menuAtivo',
 													'cssPagina',
 													'jsPagina',
 													'tituloPagina'));
+	}
+
+	public function candidatesList(){
+
+		$menuAtivo = 6;
+		$cssPagina = '';
+		$jsPagina = '';
+		$tituloPagina = 'Relatórios - Candidatos';
+
+		$processos = new Proccess;
+		$listaProcesso = $processos->listAllProccessByCompanyId();
+
+		echo "<pre>";print_r($listaProcesso);echo "</pre>";exit;
+		
+		return View::make('report.candidatelist', compact('menuAtivo',
+														'listaProcesso',
+														'cssPagina',
+														'jsPagina',
+														'tituloPagina'));
 	}
 
 }

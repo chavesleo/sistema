@@ -84,7 +84,7 @@ function atualizaProgresso(pkpro){
 
 	$.getJSON( url+'/atualizaprogresso/'+pkpro+'/true')
 	.success(function(retorno) {
-		console.log(retorno);
+		//console.log(retorno);
 		$('.barra-progresso').css( "width", retorno.percent+"%" );
 		$('.barra-progresso').children('p').text(retorno.percent_formated+"%");
 		$('.barra-progresso').children('span').text(retorno.percent_formated+"% Completo");
