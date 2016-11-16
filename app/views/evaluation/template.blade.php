@@ -113,7 +113,7 @@
 									<input type="text" name="description" class="form-control" maxlength="250">
 								</div>
 							</div>
-							<div class="col-lg-7">
+							<div class="col-lg-8">
 								<div class="form-group">
 									<label class="control-label">Plano de expansão:</label>
 									<select name="expansion_plan_id" class="form-control">
@@ -126,9 +126,9 @@
 									</select>
 								</div>
 							</div>
-							<div class="col-lg-5">
+							<div class="col-lg-4">
 								<div class="form-group">
-									<label class="control-label">Pontuação Necessária:</label>
+									<label class="control-label">Nota Mínima:</label>
 									<input type="number" name="ranking" class="form-control text-center" required="" maxlength="3" min="0" max="100" step="0.01">
 								</div>
 							</div>

@@ -124,31 +124,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Line Chart</h3>
-                        </div>
-
-                        <div class="panel-body">
-                            <canvas id="cline" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Donut Chart</h3>
-                        </div>
-
-                        <div class="panel-body">
-                            <div style="max-width:400px; margin:0 auto;">
-                                <canvas class="round" id="cdonut" width="400" height="312" style="width: 400px; height: 312px;"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6 hide">
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="panel-title">Bar Chart</h3>
@@ -158,11 +134,11 @@
                             <canvas id="cbar" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
                         </div>
                     </div>
-                </div> 
-                <div class="col-sm-4">
+                </div>
+                <div class="col-sm-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Pie Chart</h3>
+                            <h3 class="panel-title">Candidatos por Situação</h3>
                         </div>
 
                         <div class="panel-body">
@@ -172,6 +148,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-sm-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Novos Candidatos por Mês</h3>
+                        </div>
+
+                        <div class="panel-body">
+                            <canvas id="cline" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 
