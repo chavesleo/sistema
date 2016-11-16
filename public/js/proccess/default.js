@@ -25,14 +25,12 @@ $(function() {
 		var url = $('#defaultRoute').val();
 
 		if ($.trim(resp) != '') {
-			var jqxhr = $.post( url, { "_token": tk, "proccess_id": pkpro, "question_id": pkque, "text": resp }, function(retorno) {
-				console.log(retorno);
-				//insere o loading
+			$.post( url+'/svquestion', { "_token": tk, "proccess_id": pkpro, "question_id": pkque, "text": resp })
+			.success(function(retorno) {
+				//console.log(retorno);
 				$('.confirm-'+pkque).fadeIn('slow');
 				$('.error-'+pkque).hide();
-			})
-			.done(function() {
-				//console.log(retorno);
+				atualizaProgresso(pkpro);
 			})
 			.fail(function() {
 				$('.confirm-'+pkque).hide();
@@ -78,3 +76,20 @@ $(document).ready(function(){
 		}
 	});
 });
+
+function atualizaProgresso(pkpro){
+
+	var url = $('#defaultRoute').val();
+	var tk = $("[name='_token']").val();
+
+	$.getJSON( url+'/atualizaprogresso/'+pkpro+'/true')
+	.success(function(retorno) {
+		console.log(retorno);
+		$('.barra-progresso').css( "width", retorno.percent+"%" );
+		$('.barra-progresso').children('p').text(retorno.percent_formated+"%");
+		$('.barra-progresso').children('span').text(retorno.percent_formated+"% Completo");
+	})
+	.fail(function() {
+		console.log('erro');
+	})
+}

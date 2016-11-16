@@ -12,4 +12,8 @@ class Proccess extends Eloquent {
 		return $this->belongsTo('Evaluation');
 	}
 
+    public function answers() {
+        return $this->hasMany('ProccessAnswer');
+    }
+
 }

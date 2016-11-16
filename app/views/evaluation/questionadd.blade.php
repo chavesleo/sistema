@@ -130,7 +130,7 @@
 										<td><p>{{$question->text}}</p></td>
 										<td>
 											<div class="form-group">
-												<input type="text" @if( in_array($question->type, array('a','b','c','d','l','f','g','h','i','j','k','m'))) disabled @endif class="form-control input-sm text-center rating-input" maxlength="5" id="rating-{{$question->id}}">
+												<input type="text" @if( in_array($question->type, array('a','b','c','d','f','g','h','i','j','k','m','o'))) disabled @endif @if( in_array($question->type, array('c','d'))) title="Os pesos já foram definidos nas opções" @endif class="form-control input-sm text-center rating-input" maxlength="5" id="rating-{{$question->id}}">
 											</div>
 										</td>
 										<td><p>{{$arrayEnumTipo[$question->type]}}</p></td>

@@ -60,30 +60,6 @@ class EvaluationController extends BaseController {
 
 	}
 
-	function adicionar(){
-
-		//echo "<pre>";print_r($data);exit;
-
-	    $rules = array( 'title' => 'required');
-
-	    $validator = Validator::make(Input::all(), $rules);
-
-		if ($validator->fails()) {
-			return Redirect::to('evaluation/list')->withErrors($validator);
-		}
-
-		$dados = Input::all();
-
-		$evaluation = new Evaluation;
-		$evaluation->title = $dados['title'];
-		$evaluation->company_id = Auth::user()->company_id;
-		$evaluation->description = $dados['description'];
-		$evaluation->save();
-
-		return Redirect::to('evaluation/questionadd/'.$evaluation->id);
-
-	}
-
 	function questionadd($idEvaluation){
 		$menuAtivo = 2;
 		$cssPagina = '';
@@ -154,6 +130,7 @@ class EvaluationController extends BaseController {
 		}
 
 		$dados = Input::all();
+		//echo "<pre>";print_r($dados);exit;
 
 		$evaluationAdd = new Evaluation;
 		$evaluationAdd->company_id = Auth::user()->company_id;
@@ -161,9 +138,8 @@ class EvaluationController extends BaseController {
 		$evaluationAdd->token = md5(uniqid().Auth::user()->company_id.uniqid(rand(), true));
 		$evaluationAdd->title = $dados['title'];
 		$evaluationAdd->description = $dados['description'];
+		$evaluationAdd->min_note = $dados['ranking'];
 		$evaluationAdd->save();
-
-		//echo "<pre>";print_r($dados);exit;
 
 		return Redirect::to('evaluation/questionadd/'.$evaluationAdd->id);
 

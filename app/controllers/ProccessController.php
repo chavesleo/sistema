@@ -24,10 +24,13 @@ class ProccessController extends BaseController {
 			return Response::view('errors.missing', array(), 404);
 		}
 
+
 		#verifica se sessao já não foi iniciada para este relatorio e redireciona
 		if (Session::has('proccess_init') && in_array($token, Session::get('proccess_init.tk_proccess'))) {
 
-			$arrayPercentCount = array('total' => count($evaluation->QuestionEvaluations), 'answered' => 0);
+			#calcula o percentual preenchido
+			$arrayPercentCount = $this->calculateProgressById(Session::get('proccess_init.proccess_id'));
+			
 			$listaUf = State::orderBy('name')->get();
 			
 			foreach ($evaluation->QuestionEvaluations as $ddQuestao) {
@@ -40,7 +43,7 @@ class ProccessController extends BaseController {
 					#resposta do tipo cidade
 					if ($ddQuestao->question->type == 'l' || $ddQuestao->question->type == 'o') {
 						$selectedCity = City::where('id', $resposta->text)->first();
-						$comboCitiesOfUf = City::where('state_id', $selectedCity->state_id)->get();
+						$comboCitiesOfUf = City::where('state_id', $selectedCity->state_id)->orderBy('name', 'asc')->get();
 						$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 
 																		  'option_id' => $resposta->option_id, 
 																		  'selected_state' => $selectedCity->state_id,
@@ -53,26 +56,11 @@ class ProccessController extends BaseController {
 					}else{
 						$arrayRespostas[$ddQuestao->question->id] = array('text' => $resposta->text, 'option_id' => $resposta->option_id);
 					}
-					$arrayPercentCount['answered']++;
 				}else{
 					$arrayRespostas[$ddQuestao->question->id] = array('text' => NULL, 'option_id' => NULL, 'comboCityOfState' => array(), 'arrayMultiplasMarcadas' => array());
 				}
 			}
 
-			#calculo do percentual
-			$arrayPercentCount['percent'] = round((($arrayPercentCount['answered'] * 100) / $arrayPercentCount['total']), 1);
-			$arrayPercentCount['percent_formated'] = number_format($arrayPercentCount['percent'], 1, ',', '');
-	
-			#salva o percentual na tabela		
-			$newProccess = Proccess::where('id', Session::get('proccess_init.proccess_id'))
-									->first();
-			$newProccess->progress = $arrayPercentCount['percent'];
-			if ($arrayPercentCount['percent'] == 100) {
-				$newProccess->status='f';
-			}
-			$newProccess->save();
-
-			//listar perguntas já respondidas
 			return View::make('evaluation.proccess', compact('listaUf','arrayPercentCount','arrayRespostas','jsPagina','cssPagina','evaluation'));
 		}
 
@@ -175,6 +163,156 @@ class ProccessController extends BaseController {
 
 		//erro
 		//return Response::make('', 500);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public function calculateNoteById($proccessId){
+
+		$nota = 0;
+
+		$processo = Proccess::find($proccessId)->with('answers')->first();
+		$formulario = Evaluation::find($processo->evaluation_id)->first();
+
+		if ($processo) {
+			foreach ($processo->answers as $resposta) {
+
+				$perguntaDestaResposta = Question::where('id',$resposta->question_id)->first();
+
+				#Opção Única
+				if ($perguntaDestaResposta->type == 'c') {
+					$opcao = Option::where('id', $resposta->option_id)->first();
+					$nota += $opcao->rating;
+				}
+
+				#Multi Opção soma notas
+				if($perguntaDestaResposta->type == 'd'){
+					$arrayOptionSelected = explode(',', $resposta->text);
+					foreach ($arrayOptionSelected as $option_id_selected) {
+						$opcao = Option::where('id', $option_id_selected)->first();
+						$nota += $opcao->rating;
+					}
+				}
+
+				#Cidade de Interesse
+				if($perguntaDestaResposta->type == 'l'){
+					
+					$pesoDaPergunta = QuestionEvaluation::where('question_id', $perguntaDestaResposta->id)
+														->where('evaluation_id', $processo->evaluation_id)
+														->first();
+
+					$planoExpansao = ExpansionPlan::where('id', $formulario->expansion_plan_id)
+													->with('expansionPlanCities')
+													->first();
+
+					foreach($planoExpansao->expansionPlanCities as $cidadesDoPlano){
+						if ($cidadesDoPlano->city_id == $resposta->text) {
+							$nota += $pesoDaPergunta->rating;
+						}
+					}
+					
+				}
+			}
+		}
+
+		//echo "<pre>";print_r($processo->answers);exit;
+
+		$processo->final_note = $nota;
+		$processo->save();
+
+		return $nota;
+
+	}
+
+	public function calculateProgressById($proccessId, $ajax = false){
+
+		$processo = Proccess::where('id', $proccessId)->first();
+		$evaluation = Evaluation::where('id', $processo->evaluation_id)
+								->with('QuestionEvaluations.question')
+								->first();
+
+		$arrayPercentCount = array('total' => count($evaluation->QuestionEvaluations), 
+									'answered' => 0,
+									'percent_formated' => 0,
+									'percent' => 0);
+
+		foreach ($evaluation->QuestionEvaluations as $ddQuestao) {
+
+			$resposta = ProccessAnswer::where('proccess_id', '=', Session::get('proccess_init.proccess_id'))
+										->where('question_id', '=', $ddQuestao->question->id)
+										->first();
+			if ($resposta) {
+				$arrayPercentCount['answered']++;
+			}
+		}
+
+		#calculo do percentual
+		$arrayPercentCount['percent'] = round((($arrayPercentCount['answered'] * 100) / $arrayPercentCount['total']), 1);
+		$arrayPercentCount['percent_formated'] = number_format($arrayPercentCount['percent'], 1, ',', '');
+
+		#salva o percentual na tabela		
+		$processo->progress = $arrayPercentCount['percent'];
+		if ($arrayPercentCount['percent'] == 100) {
+			$processo->status='f';
+		}
+
+		$processo->save();
+
+		//echo "<pre>";print_r($arrayPercentCount);exit;
+
+		if($ajax){
+			echo json_encode($arrayPercentCount);
+			return Response::make('', 201);
+		}
+
+		return $arrayPercentCount;
+
+	}
+
+	public function verifyActionPlanConditionsById(){
+
 	}
 
 }
