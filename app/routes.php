@@ -124,9 +124,14 @@ Route::group(array('prefix' => 'empresa'), function(){
 ######################
 Route::group(array('prefix' => 'ajax'), function(){
 
+	#lista as cidades para o combo
 	Route::get('listCitiesByStateId/{stateId}', 'CityController@ajaxListByStateId');
 
+	#salva resposta
 	Route::post('svquestion', 'ProccessController@ajaxSaveQuestion');
+
+	#atualiza a barra de prograsso
+	Route::get('atualizaprogresso/{proccessId}/{ajax}', 'ProccessController@calculateProgressById');
 
 });
 
@@ -155,8 +160,7 @@ Route::get('logout', function(){
 
 /* PERFUMARIA
 
-- AJAX Exibir percentual respondido e Salvar na tabela a porcentagem
-- Exportar ao concluir
+- por botoes e percentual no menu ao responder questionario
 - Criação de pergunta Intervalo de números com opção e peso
 - Quando for Combo de investimento com investimento do plano de expansão
 
@@ -166,19 +170,19 @@ QUESTIONS TIPO:
 
 * 1 - Cadastro de Empresas - 			OK
 * 2 - Cadastro de Usuários - 			OK
-* 3 - Cadastro de Perguntas - 			OK
-* 4 - Cadastro de Plano de Expansão - 	OK
-* 5 - Cadastro de Formulários - 		OK
-* 6 - Responder Formulários 			OK
-* 7 - Exportar
-	7.1 - Candidato
-		7.1.1 - CSV
-		7.1.2 - PDF
-		7.1.3 - JSON
-	7.2 - Formulários
-		7.2.3 - Formulários com respostas de todos os candidatos em CSV ou JSON
+* 3 - Cadastro de Formulários - 		OK
+* 4 - Cadastro de Perguntas - 			OK
+* 5 - Cadastro de Plano de Expansão - 	OK
+* 6 - Relatórios
+* 7 - Responder Formulários 			OK
+* 8 - Exportar
+	8.1 - Candidato
+		8.1.1 - CSV
+		8.1.2 - PDF
+		8.1.3 - JSON
+	8.2 - Formulários
+		8.2.3 - Formulários com respostas de todos os candidatos em CSV ou JSON
 
-* 8 - Relatórios
 * 9 - Analisar processos e sugerir:
 	- Perfil do Candidato
 	- Cidades dentro do Raio
@@ -187,8 +191,15 @@ QUESTIONS TIPO:
 
 */
 
-/*
+/* ZERAR TABELAS
 SET FOREIGN_KEY_CHECKS = 0; 
 TRUNCATE `nome_da_tabela`; 
 SET FOREIGN_KEY_CHECKS = 1;
+
+
+- Novos Candidatos por Mês
+- Resultados de Processos por status
+- Quantidade de Formulários Respondidos
+- Metas Plano de Expansão x Atingidas
+
 */

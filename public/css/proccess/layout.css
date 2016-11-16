@@ -1,17 +1,19 @@
 body{
-	background-color: #EEE;
+	background-color: #555;
     font: bold 14px sans-serif;
-    background: url(http://i.imgur.com/GHr12sH.jpg) no-repeat center center fixed;
+    -background: url(http://i.imgur.com/GHr12sH.jpg) no-repeat center center fixed;
     background-size: 100% 100%;
 }
-form {
+#formulario {
     border-radius: 4px;
-    padding-bottom: 1px;
+    margin-bottom: 91px;
     background-color: rgba(255,255,255, 0.7);
 }
 
 input, select, textarea{
     font-weight: normal;
+    outline: none;
+    resize: none;
 }
 
 .form-top-title-row{
@@ -35,9 +37,10 @@ input, select, textarea{
 }
 .progress{
     height: 34px;
-    margin-bottom: 20px;
     background-color: #DDD;
     border-radius: 4px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .progress > div > p{
@@ -58,4 +61,35 @@ input, select, textarea{
 .ajax-icon{
 	font-size: 16px;
 	display: none;
+}
+.navbar-default{
+    background-color: #555;
+    border-color: #888;
+}
+
+@media (max-width: 768px) {
+	#formulario {
+		margin-bottom: 70px;
+	}
+	#progress-mid{
+		display: none;
+	}
+	#progress-top{
+	    margin-left: 1%;
+	    margin-right: 68px;
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+}
+@media (min-width: 768px) {
+	.navbar-nav {
+		width: 100%;
+	}
+	.navbar-nav > li {
+		width: 32%;
+		margin-left: 1%;
+	}
+	#progress-top{
+		display: none;
+	}
 }

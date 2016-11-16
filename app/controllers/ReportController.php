@@ -41,6 +41,9 @@ class ReportController extends BaseController {
 
 		}
 
+		$teste = new ProccessController;
+		$teste->calculateNoteById(1);
+
 		return View::make('report.template', compact('totalProcessosIniciados',
 													'totalProcessosAguardando',
 													'totalProcessosFinalizados',
