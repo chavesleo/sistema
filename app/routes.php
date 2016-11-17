@@ -192,8 +192,8 @@ QUESTIONS TIPO:
 * 9 - Analisar processos e sugerir:
 	- Perfil do Candidato
 	- Cidades dentro do Raio
-	- Tipos de Franquias de Valor mais Acessível
-	- Novos Processos com base em respostas de processos antigos
+	- Formato de franquia em cidade do Raio com investimento <=
+	- Análise de respostas de processos com perguntas em comum
 
 */
 
@@ -207,5 +207,6 @@ SET FOREIGN_KEY_CHECKS = 1;
 - Resultados de Processos por status
 - Quantidade de Formulários Respondidos
 - Metas Plano de Expansão x Atingidas
+
 
 */
