@@ -4,23 +4,25 @@
 class ReportController extends BaseController {
 
 	public function index(){
-		$this->teste();
 
 		$menuAtivo = 6;
 		$cssPagina = 'css/report/default.css';
 		$jsPagina = 'js/report/default.js';
 		$tituloPagina = 'Relatórios';
 		
-		$totalProcessosIniciados = 0;
-		$totalProcessosAguardando = 0;
-		$totalProcessosFinalizados = 0;
+		$totalProcessosAprovados = 0;
+		$totalProcessosEmAnalise = 0;
+		$totalProcessosReprovados = 0;
 		$totalCandidatosCadastrados = 0;
 
 		$questionarios = Evaluation::where('company_id', Auth::user()->company_id)
 										->with('proccesses.candidate')
 										->get();
-	
 
+		$arrayProccessList = $this->getProccessList();
+
+		$arrayStatus = array('a' => 'Aprovado', 'e' => 'Em Análise', 'r' => 'Reprovado');
+	
 		//echo "<pre>";print_r($questionarios);echo "</pre>";exit;
 
 		#CONTAGEM DOS PROCESSOS INICIADOS
@@ -28,14 +30,14 @@ class ReportController extends BaseController {
 			foreach ($questionarios as $questionario) {
 				foreach ($questionario->proccesses as $processo) {
 					switch ($processo->status) {
-						case 'c':
-							$totalProcessosAguardando++;
+						case 'a':
+							$totalProcessosAprovados++;
 							break;
-						case 'f':
-							$totalProcessosFinalizados++;
+						case 'e':
+							$totalProcessosEmAnalise++;
 							break;
-						case 'i':
-							$totalProcessosIniciados++;
+						case 'r':
+							$totalProcessosReprovados++;
 							break;
 						default:
 							exit('erro, processo sem status');
@@ -52,9 +54,11 @@ class ReportController extends BaseController {
 		$teste = new ProccessController;
 		$teste->calculateNoteById(1);
 */
-		return View::make('report.template', compact('totalProcessosIniciados',
-													'totalProcessosAguardando',
-													'totalProcessosFinalizados',
+		return View::make('report.template', compact('arrayProccessList',
+													'arrayStatus',
+													'totalProcessosAprovados',
+													'totalProcessosEmAnalise',
+													'totalProcessosReprovados',
 													'totalCandidatosCadastrados',
 													'menuAtivo',
 													'cssPagina',
@@ -81,15 +85,17 @@ class ReportController extends BaseController {
 														'tituloPagina'));
 	}
 
-	public function teste(){
+	public function getProccessList(){
 
-		$processos = DB::table('proccess as p')
+		$queryResult = DB::table('proccess as p')
 				        ->join('candidate as c', 'c.id', '=', 'p.candidate_id')
 				        ->join('evaluation as e', 'e.id', '=', 'p.evaluation_id')
 				        ->select('c.id as candidate_id', 
+				        		'p.id as proccess_id',
+			        			'e.id as evaluation_id',
 				        		'c.fullname as candidate_name',
 				        		'c.created_at as candidate_date_reg',
-			        			'p.updated_at as proccess_final_date',
+				        		'p.created_at as proccess_init_date',
 			        			'p.progress as proccess_progress',
 			        			'p.final_note as proccess_note',
 			        			'p.status as proccess_status',
@@ -97,7 +103,32 @@ class ReportController extends BaseController {
 				        ->where('p.company_id', Auth::user()->company_id)
 				        ->get();
 
-		echo "<pre>";print_r($processos);echo "</pre>";exit;
+		if ($queryResult) {
+
+			foreach ($queryResult as $dadosProcesso) {
+
+					$calculaProcesso = new ProccessController;
+					$calculaProcesso->calculateProgressById($dadosProcesso->proccess_id);
+					
+					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_id'] = $dadosProcesso->candidate_id;
+					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_name'] = $dadosProcesso->candidate_name;
+					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_date_reg'] = $dadosProcesso->candidate_date_reg;
+					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_init_date'] = $dadosProcesso->proccess_init_date; 
+					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_progress'] = $dadosProcesso->proccess_progress; 
+					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['evaluation_title'] = $dadosProcesso->evaluation_title; 
+					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_status'] = $dadosProcesso->proccess_status; 
+					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_note'] = $dadosProcesso->proccess_note; 
+				
+			}
+
+			//echo "<pre>";print_r($arrayRetorno);echo "</pre>";exit;
+
+			return (isset($arrayRetorno)) ? $arrayRetorno : false;
+
+		}
+
+		return false;
+
 	}	
 
 }

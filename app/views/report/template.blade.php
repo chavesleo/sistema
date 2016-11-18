@@ -35,7 +35,7 @@
                 <dir class="row">
                     <table class="table table-condensed table-responsive">
                         <thead>
-                            <tr>
+                            <tr style="background-color: #9c9c9c; color: whitesmoke;">
                                 <th>Cód.</th>
                                 <th>Nome</th>
                                 <th>Data Cadastro</th>
@@ -43,82 +43,58 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Primeiro Candidato</td>
-                                <td>15/05/2015</td>
-                                <td>3</td>
+
+                        @forelse($arrayProccessList as $dadosProccessList)
+                            <tr  style="font-weight: bold; background-color: #B9B9B9; color: whitesmoke;">
+                                <td>{{$dadosProccessList['candidate_id']}}</td>
+                                <td>{{$dadosProccessList['candidate_name']}}</td>
+                                <td>{{$dadosProccessList['candidate_date_reg']}}</td>
+                                <td>{{count($dadosProccessList['proccesses'])}}</td>
                             </tr>
-                            <tr>
-                                <td colspan="4">    
-                                    <table class="table table-condensed table-striped table-responsive table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Formulário</th>
-                                                <th>Início</th>
-                                                <th>Fim</th>
-                                                <th>Progresso</th>
-                                                <th>Nota</th>
-                                                <th>Status</th>
-                                                <th>&nbsp;</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Formulário Eventos 2016</td>
-                                                <td>15/05/2016</td>
-                                                <td>17/05/2016</td>
-                                                <td>89,5%</td>
-                                                <td>68,5</td>
-                                                <td>Iniciado</td>
+
+                            
+                                <tr>
+                                    <td colspan="4" style="padding: 0;">
+                                        <table class="table table-condensed table-striped table-responsive table-hover" style="margin-bottom: 0px;">
+                                            <thead>
+                                                <tr style="background-color: #B9B9B9;">
+                                                    <th>Formulário</th>
+                                                    <th>Início</th>
+                                                    <th>Progresso</th>
+                                                    <th>Nota</th>
+                                                    <th>Status</th>
+                                                    <th>&nbsp;</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                            
+                                        @forelse($dadosProccessList['proccesses'] as $idProcesso => $dadosProcesso)
+                                            <tr @if($dadosProcesso['proccess_status'] == 'r') class="danger" @elseif($dadosProcesso['proccess_status'] == 'a') class="success" @elseif($dadosProcesso['proccess_status'] == 'e') class="warning" @endif>
+                                                <td>{{$dadosProcesso['evaluation_title']}}</td>
+                                                <td>{{$dadosProcesso['proccess_init_date']}}</td>
+                                                <td>{{number_format($dadosProcesso['proccess_progress'], 1, ',', '')}}%</td>
+                                                <td>{{number_format($dadosProcesso['proccess_note'], 2, ',', '')}}</td>
+                                                <td @if($dadosProcesso['proccess_status'] == 'r') class="text-red" @elseif($dadosProcesso['proccess_status'] == 'a') class="text-green" @elseif($dadosProcesso['proccess_status'] == 'e') class="text-yellow" @endif>{{$arrayStatus[$dadosProcesso['proccess_status']]}}</td>
                                                 <td>
-                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
-                                                        <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
+                                                    <a class="btn btn-info btn-xs" href="#" title="Ver Questionário" role="button">
+                                                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                                                     </a>
                                                 </td>
                                             </tr>
+                                        @empty
                                             <tr>
-                                                <td>Formulário Eventos 2016</td>
-                                                <td>15/05/2016</td>
-                                                <td>17/05/2016</td>
-                                                <td>89,5%</td>
-                                                <td>68,5</td>
-                                                <td>Aprovado</td>
-                                                <td>
-                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
-                                                        <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
-                                                    </a>
-                                                </td>
+                                                <td colspan="4">Nenhum Processo realizado</td>
                                             </tr>
-                                            <tr>
-                                                <td>Formulário Eventos 2016</td>
-                                                <td>15/05/2016</td>
-                                                <td>17/05/2016</td>
-                                                <td>89,5%</td>
-                                                <td>68,5</td>
-                                                <td>Em Análise</td>
-                                                <td>
-                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
-                                                        <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
+                                        @endforelse
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                        @empty
                             <tr>
-                                <td>2</td>
-                                <td>Segundo Candidato</td>
-                                <td>07/05/2016</td>
-                                <td>5</td>
+                                <td colspan="4">Nenhum Candidato encontrado.</td>
                             </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Terceiro Candidato</td>
-                                <td>11/06/2015</td>
-                                <td>2</td>
-                            </tr>
+                        @endforelse
                         </tbody>
                     </table>
                 </dir>  

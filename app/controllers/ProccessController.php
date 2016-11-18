@@ -103,7 +103,7 @@ class ProccessController extends BaseController {
 			$newProccess->evaluation_id = $evaluation->id;
 			$newProccess->company_id = $evaluation->company_id;
 			$newProccess->progress = 0;
-			$newProccess->status = 'i';
+			$newProccess->status = 'r';
 			$newProccess->final_note = 0;
 			$newProccess->save();
 		}
@@ -279,9 +279,6 @@ class ProccessController extends BaseController {
 
 	public function calculateProgressById($proccessId, $ajax = false){
 
-		#calcula a nota
-		$this->calculateNoteById($proccessId);
-
 		$processo = Proccess::where('id', $proccessId)->first();
 		$evaluation = Evaluation::where('id', $processo->evaluation_id)
 								->with('QuestionEvaluations.question')
@@ -294,7 +291,7 @@ class ProccessController extends BaseController {
 
 		foreach ($evaluation->QuestionEvaluations as $ddQuestao) {
 
-			$resposta = ProccessAnswer::where('proccess_id', '=', Session::get('proccess_init.proccess_id'))
+			$resposta = ProccessAnswer::where('proccess_id', '=', $proccessId)
 										->where('question_id', '=', $ddQuestao->question->id)
 										->first();
 			if ($resposta) {
@@ -308,13 +305,15 @@ class ProccessController extends BaseController {
 
 		#salva o percentual na tabela		
 		$processo->progress = $arrayPercentCount['percent'];
-		if ($arrayPercentCount['percent'] == 100) {
-			$processo->status='f';
-		}
-
 		$processo->save();
 
 		//echo "<pre>";print_r($arrayPercentCount);exit;
+
+		#calcula a nota
+		$this->calculateNoteById($proccessId);
+
+		#calcula status
+		$this->calculateStatus($proccessId);
 
 		if($ajax){
 			echo json_encode($arrayPercentCount);
@@ -325,7 +324,67 @@ class ProccessController extends BaseController {
 
 	}
 
-	public function verifyActionPlanConditionsById(){
+	public function calculateStatus($proccessId){
+
+		$proccess = Proccess::where('id', $proccessId)->first();
+		$evaluation = Evaluation::where('id', $proccess->evaluation_id)->first();
+		$questionCityInterest = Question::where('type','l')->first();
+		$questionEvaluation = QuestionEvaluation::where('id', $questionCityInterest->id)->first();
+		$questionAnswer = ProccessAnswer::where('question_id',$questionCityInterest->id)->where('proccess_id',$proccess->evaluation_id)->first();
+		$idCidadeInteresse = ($questionAnswer) ? $questionAnswer->text : false ;
+
+		if($proccess->final_note >= $evaluation->min_note){
+			$proccess->status = 'a';
+
+		}else{
+
+			#se ja foi criada resposta de cidade de interesse
+			if ($idCidadeInteresse) {
+
+				#lista cidades do plano de expansão
+				/*
+				$planoExpansao = ExpansionPlan::where('id', $formulario->expansion_plan_id)
+								->with('expansionPlanCities')
+								->first();
+
+				foreach($planoExpansao->expansionPlanCities as $cidadesDoPlano){
+					if ($cidadesDoPlano->city_id == $resposta->text) {
+						#calcula distancia, se ta no raio salva em array
+					}
+				}
+
+				se array !vazio pega o menor raio
+				//$proccess->status = 'a';
+				*/
+				
+
+
+			}
+
+
+			echo $idCidadeInteresse;
+			exit('a');
+			/*
+			#1 - Cidades Pŕoximas
+			#2 - Investimento Segmento
+
+			#cidade dentro do raio selecionado
+			/*
+			$listaCidadesPlanoAcao = 'a';
+			$cidadeInteresseRespondida = 'b';
+
+			if ($listaCidadesPlanoAcao == $cidadeInteresseRespondida) {
+				$proccess->status = 'a';
+			}
+
+
+*/
+
+
+			$proccess->status = 'r';
+		}
+
+		$proccess->save();
 
 	}
 

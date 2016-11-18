@@ -177,7 +177,7 @@ QUESTIONS TIPO:
 * 1 - Cadastro de Empresas - 			OK
 * 2 - Cadastro de Usuários - 			OK
 * 3 - Cadastro de Formulários - 		OK
-* 4 - Cadastro de Perguntas - 			OK
+* 4 - Cadastro de Perguntas - 			OK ---- faixa de investimento
 * 5 - Cadastro de Plano de Expansão - 	OK
 * 6 - Relatórios
 * 7 - Responder Formulários 			OK
@@ -208,5 +208,14 @@ SET FOREIGN_KEY_CHECKS = 1;
 - Quantidade de Formulários Respondidos
 - Metas Plano de Expansão x Atingidas
 
+==========================================
+
+- Não Concluídos (Inacabados)
+
+- Aprovados
+
+- Reprovados
+
+- Em Análise (características próximas)
 
 */

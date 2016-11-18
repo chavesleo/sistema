@@ -45,3 +45,13 @@
 .panel-red a {
     color: #d9534f;
 }
+
+.text-green{
+    color: #5cb85c !important;
+}
+.text-yellow{
+    color: #f0ad4e !important;
+}
+.text-red{
+    color: #d9534f !important;
+}
