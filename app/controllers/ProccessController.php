@@ -89,7 +89,7 @@ class ProccessController extends BaseController {
 			$candidate->save();
 		}
 
-		//resgata o processo iniciado, senaõ cria um novo
+		//resgata o processo iniciado, senão cria um novo
 		$newProccess = Proccess::where('candidate_id', $candidate->id)
 								->where('evaluation_id',$evaluation->id)
 								->first();
@@ -225,8 +225,8 @@ class ProccessController extends BaseController {
 
 		$nota = 0;
 
-		$processo = Proccess::find($proccessId)->with('answers')->first();
-		$formulario = Evaluation::find($processo->evaluation_id)->first();
+		$processo = Proccess::where('id',$proccessId)->with('answers')->first();
+		$formulario = Evaluation::where('id',$processo->evaluation_id)->first();
 
 		if ($processo) {
 			foreach ($processo->answers as $resposta) {
@@ -269,16 +269,18 @@ class ProccessController extends BaseController {
 			}
 		}
 
-		//echo "<pre>";print_r($processo->answers);exit;
-
 		$processo->final_note = $nota;
 		$processo->save();
 
+		//echo "<pre>";print_r($processo);exit;
 		return $nota;
 
 	}
 
 	public function calculateProgressById($proccessId, $ajax = false){
+
+		#calcula a nota
+		$this->calculateNoteById($proccessId);
 
 		$processo = Proccess::where('id', $proccessId)->first();
 		$evaluation = Evaluation::where('id', $processo->evaluation_id)
