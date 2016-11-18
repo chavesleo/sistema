@@ -4,6 +4,8 @@
 class ReportController extends BaseController {
 
 	public function index(){
+		$this->teste();
+
 		$menuAtivo = 6;
 		$cssPagina = 'css/report/default.css';
 		$jsPagina = 'js/report/default.js';
@@ -78,6 +80,25 @@ class ReportController extends BaseController {
 														'jsPagina',
 														'tituloPagina'));
 	}
+
+	public function teste(){
+
+		$processos = DB::table('proccess as p')
+				        ->join('candidate as c', 'c.id', '=', 'p.candidate_id')
+				        ->join('evaluation as e', 'e.id', '=', 'p.evaluation_id')
+				        ->select('c.id as candidate_id', 
+				        		'c.fullname as candidate_name',
+				        		'c.created_at as candidate_date_reg',
+			        			'p.updated_at as proccess_final_date',
+			        			'p.progress as proccess_progress',
+			        			'p.final_note as proccess_note',
+			        			'p.status as proccess_status',
+			        			'e.title as evaluation_title')
+				        ->where('p.company_id', Auth::user()->company_id)
+				        ->get();
+
+		echo "<pre>";print_r($processos);echo "</pre>";exit;
+	}	
 
 }
 

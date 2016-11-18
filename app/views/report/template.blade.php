@@ -32,119 +32,96 @@
 					@endforeach
 				@endif
 
-    			<div class="row">
-                    <div class="col-lg-4 col-md-6">
-                        <div class="panel panel-green">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-user-plus fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">{{$totalCandidatosCadastrados}}</div>
-                                    </div>
-                                    <div class="col-xs-12 text-right">
-                                        <div style="font-size: 16px;">Candidatos Cadastrados</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="{{URL::to('report/candidate/list')}}">
-                                <div class="panel-footer">
-                                    <span class="pull-left">Ver Detalhes</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="panel panel-blue">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-file-text-o fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">{{$totalProcessosIniciados}}</div>
-                                    </div>
-                                    <div class="col-xs-12 text-right">
-                                        <div style="font-size: 16px;">Processos em Andamento</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">Ver Detalhes</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6">
-                        <div class="panel panel-yellow">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-xs-3">
-                                        <i class="fa fa-refresh fa-5x"></i>
-                                    </div>
-                                    <div class="col-xs-9 text-right">
-                                        <div class="huge">{{$totalProcessosFinalizados}}</div>
-                                    </div>
-                                    <div class="col-xs-12 text-right">
-                                        <div style="font-size: 16px;">Processos Finalizados</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#">
-                                <div class="panel-footer">
-                                    <span class="pull-left">Ver Detalhes</span>
-                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-6 hide">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Bar Chart</h3>
-                            </div>
-
-                            <div class="panel-body">
-                                <canvas id="cbar" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Candidatos por Situação</h3>
-                            </div>
-
-                            <div class="panel-body">
-                                <div style="max-width:400px; margin:0 auto;">
-                                    <canvas class="round" id="cpie" width="400" height="320" style="width: 400px; height: 320px;"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Novos Candidatos por Mês</h3>
-                            </div>
-
-                            <div class="panel-body">
-                                <canvas id="cline" width="503" height="316" style="width: 503px; height: 316px;"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                <dir class="row">
+                    <table class="table table-condensed table-responsive">
+                        <thead>
+                            <tr>
+                                <th>Cód.</th>
+                                <th>Nome</th>
+                                <th>Data Cadastro</th>
+                                <th>Processo(s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Primeiro Candidato</td>
+                                <td>15/05/2015</td>
+                                <td>3</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4">    
+                                    <table class="table table-condensed table-striped table-responsive table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Formulário</th>
+                                                <th>Início</th>
+                                                <th>Fim</th>
+                                                <th>Progresso</th>
+                                                <th>Nota</th>
+                                                <th>Status</th>
+                                                <th>&nbsp;</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Formulário Eventos 2016</td>
+                                                <td>15/05/2016</td>
+                                                <td>17/05/2016</td>
+                                                <td>89,5%</td>
+                                                <td>68,5</td>
+                                                <td>Iniciado</td>
+                                                <td>
+                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
+                                                        <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Formulário Eventos 2016</td>
+                                                <td>15/05/2016</td>
+                                                <td>17/05/2016</td>
+                                                <td>89,5%</td>
+                                                <td>68,5</td>
+                                                <td>Aprovado</td>
+                                                <td>
+                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
+                                                        <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Formulário Eventos 2016</td>
+                                                <td>15/05/2016</td>
+                                                <td>17/05/2016</td>
+                                                <td>89,5%</td>
+                                                <td>68,5</td>
+                                                <td>Em Análise</td>
+                                                <td>
+                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
+                                                        <span class="glyphicon glyphicon-expand" aria-hidden="true"></span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Segundo Candidato</td>
+                                <td>07/05/2016</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Terceiro Candidato</td>
+                                <td>11/06/2015</td>
+                                <td>2</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </dir>  
 				
 			</div> <!-- END CONTAINER -->
 		</div> <!-- CONTEUDO -->
