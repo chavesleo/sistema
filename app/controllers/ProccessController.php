@@ -243,6 +243,34 @@ class ProccessController extends BaseController {
 		//return Response::make('', 500);
 	}
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/*
 	* CALCULA A NOTA DO PROCESSO
 	*/
@@ -289,6 +317,10 @@ class ProccessController extends BaseController {
 							$nota += $pesoDaPergunta->rating;
 						}
 					}
+				}
+
+				#Investimento
+				if($perguntaDestaResposta->type == 'l'){
 					
 				}
 			}

@@ -50,10 +50,6 @@ class ReportController extends BaseController {
 
 		}
 
-/*
-		$teste = new ProccessController;
-		$teste->calculateNoteById(1);
-*/
 		return View::make('report.template', compact('arrayProccessList',
 													'arrayStatus',
 													'totalProcessosAprovados',
@@ -64,25 +60,6 @@ class ReportController extends BaseController {
 													'cssPagina',
 													'jsPagina',
 													'tituloPagina'));
-	}
-
-	public function candidatesList(){
-
-		$menuAtivo = 6;
-		$cssPagina = '';
-		$jsPagina = '';
-		$tituloPagina = 'Relatórios - Candidatos';
-
-		$processos = new Proccess;
-		$listaProcesso = $processos->listAllProccessByCompanyId();
-
-		echo "<pre>";print_r($listaProcesso);echo "</pre>";exit;
-		
-		return View::make('report.candidatelist', compact('menuAtivo',
-														'listaProcesso',
-														'cssPagina',
-														'jsPagina',
-														'tituloPagina'));
 	}
 
 	public function getProccessList(){
@@ -107,8 +84,8 @@ class ReportController extends BaseController {
 
 			foreach ($queryResult as $dadosProcesso) {
 
-//					$calculaProcesso = new ProccessController;
-//					$calculaProcesso->calculateProgressById($dadosProcesso->proccess_id);
+					$calculaProcesso = new ProccessController;
+					$calculaProcesso->calculateProgressById($dadosProcesso->proccess_id);
 					
 					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_id'] = $dadosProcesso->candidate_id;
 					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_name'] = $dadosProcesso->candidate_name;

@@ -234,4 +234,32 @@ Problemas
 3 - Independente da nota, se está no raio da cidade marca como "Em análise"
 
 
+==========================================
+Cenário:
+
+Planos de Expansão
+	1 -  Metropolitana
+		- Porto Alegre (10) - Canoas (5) - Gravataí (5)
+		- Loja: R$ 380.000,00 (2)(1)(1)
+		- Quioque: R$ 118.000,00 (2)(1)(1)
+
+	2 - Interior
+		- Sta Cruz (50)(1) - Sta Maria (50)(2) - Caxias (40)(2) - Pelotas (40)(1) - Passo Fundo (50)(1)
+		- Loja: R$ 195.000,00 (1)(1)(1)(1)
+		- Móvel: R$ 95.000,00 (1)(1)(1)(1)
+
+2 Formulários (Alimentação)
+	- 27 Questões
+	- 29 Questões
+
+20 Candidatos
+	- 11 Em cidades de interesse 
+		- 5 Com valores abaixo
+		- 6 Abaixo do percentual
+	- 9 Em Outras Cidades
+		- 6 Dentro do raio 
+		- 3 Com Investimento
+
+
+
 */

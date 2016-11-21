@@ -34,22 +34,14 @@
 
                 <dir class="row">
                     <table class="table table-condensed table-responsive">
-                        <thead>
-                            <tr style="background-color: #9c9c9c; color: whitesmoke;">
-                                <th>Cód.</th>
-                                <th>Nome</th>
-                                <th>Data Cadastro</th>
-                                <th>Processo(s)</th>
-                            </tr>
-                        </thead>
                         <tbody>
 
                         @forelse($arrayProccessList as $dadosProccessList)
-                            <tr  style="font-weight: bold; background-color: #B9B9B9; color: whitesmoke;">
-                                <td>{{$dadosProccessList['candidate_id']}}</td>
-                                <td>{{$dadosProccessList['candidate_name']}}</td>
-                                <td>{{$dadosProccessList['candidate_date_reg']}}</td>
-                                <td>{{count($dadosProccessList['proccesses'])}}</td>
+                            <tr  style="background-color: #B9B9B9; color: #000;">
+                                <td><strong>Cód.: </strong>{{$dadosProccessList['candidate_id']}}</td>
+                                <td><strong>Nome: </strong>{{$dadosProccessList['candidate_name']}}</td>
+                                <td><strong>Data Cadastro: </strong>{{$dadosProccessList['candidate_date_reg']}}</td>
+                                <td><strong>Processo(s): </strong>{{count($dadosProccessList['proccesses'])}}</td>
                             </tr>
 
                             
@@ -57,13 +49,13 @@
                                     <td colspan="4" style="padding: 0;">
                                         <table class="table table-condensed table-striped table-responsive table-hover" style="margin-bottom: 0px;">
                                             <thead>
-                                                <tr style="background-color: #B9B9B9;">
-                                                    <th>Formulário</th>
-                                                    <th>Início</th>
-                                                    <th>Progresso</th>
-                                                    <th>Nota</th>
-                                                    <th>Status</th>
-                                                    <th>&nbsp;</th>
+                                                <tr style="background-color: #B9B9B9; color: #5e5e5e;">
+                                                    <th class="col-xs-4">Formulário</th>
+                                                    <th class="col-xs-2">Início</th>
+                                                    <th class="col-xs-2">Progresso</th>
+                                                    <th class="col-xs-1">Nota</th>
+                                                    <th class="col-xs-2">Status</th>
+                                                    <th class="col-xs-1">&nbsp;</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
