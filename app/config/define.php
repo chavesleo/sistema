@@ -2,7 +2,7 @@
 
 return array(
 
-	'urlPadrao' => 'http://localhost/sistema/public/',
+	'urlPadrao' => URL::to('/').'/',
 	'pathUpload' => '',
 	'urlUpload' => 'http://localhost/sistema/public/upload/',
 
