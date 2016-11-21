@@ -330,7 +330,7 @@ class ProccessController extends BaseController {
 		$evaluation = Evaluation::where('id', $proccess->evaluation_id)->first();
 		$questionCityInterest = Question::where('type','l')->first();
 		$questionEvaluation = QuestionEvaluation::where('id', $questionCityInterest->id)->first();
-		$questionAnswer = ProccessAnswer::where('question_id',$questionCityInterest->id)->where('proccess_id',$proccess->evaluation_id)->first();
+		$questionAnswer = ProccessAnswer::where('question_id',$questionCityInterest->id)->where('proccess_id',$proccessId)->first();
 		$idCidadeInteresse = ($questionAnswer) ? $questionAnswer->text : false ;
 
 		if($proccess->final_note >= $evaluation->min_note){
@@ -341,50 +341,60 @@ class ProccessController extends BaseController {
 			#se ja foi criada resposta de cidade de interesse
 			if ($idCidadeInteresse) {
 
+				$objCidadeInteresseSelecionada = City::where('id',$idCidadeInteresse)->first();
+
 				#lista cidades do plano de expansão
-				/*
-				$planoExpansao = ExpansionPlan::where('id', $formulario->expansion_plan_id)
+				$planoExpansao = ExpansionPlan::where('id', $evaluation->expansion_plan_id)
 								->with('expansionPlanCities')
 								->first();
 
-				foreach($planoExpansao->expansionPlanCities as $cidadesDoPlano){
-					if ($cidadesDoPlano->city_id == $resposta->text) {
-						#calcula distancia, se ta no raio salva em array
+				//echo "<pre>";print_r($planoExpansao);exit;
+
+				if ($planoExpansao) {
+
+					$auxDistancia = 100;
+
+					foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
+
+						#cidade de interesse marcada está no plano
+						#então já foi calculada média, nao tem o que fazer
+						if ($cidadeDoPlano->city_id == $idCidadeInteresse) {
+							//echo ($idCidadeInteresse);
+							break;
+						}else{
+							#calcula distância, se ta no raio salva em array
+							#se array !vazio pega o menor raio
+
+							$objCidadeDoPlano = City::where('id',$cidadeDoPlano->city_id)->first();
+
+							$distancia = CityController::getDistance($objCidadeDoPlano->lat, 
+																	$objCidadeDoPlano->lng, 
+																	$objCidadeInteresseSelecionada->lat, 
+																	$objCidadeInteresseSelecionada->lng);
+
+							$auxDistancia = ($distancia <= $auxDistancia) ? $distancia : $auxDistancia;
+
+							//salvar cidades e distancias em uma tabela ?
+							
+						}
+						
 					}
 				}
 
-				se array !vazio pega o menor raio
+				/*
+
 				//$proccess->status = 'a';
 				*/
-				
-
 
 			}
 
-
-			echo $idCidadeInteresse;
-			exit('a');
-			/*
-			#1 - Cidades Pŕoximas
-			#2 - Investimento Segmento
-
-			#cidade dentro do raio selecionado
-			/*
-			$listaCidadesPlanoAcao = 'a';
-			$cidadeInteresseRespondida = 'b';
-
-			if ($listaCidadesPlanoAcao == $cidadeInteresseRespondida) {
-				$proccess->status = 'a';
-			}
-
-
-*/
-
+			#2 - Investimento x Formato Franquia
 
 			$proccess->status = 'r';
 		}
 
 		$proccess->save();
+
 
 	}
 

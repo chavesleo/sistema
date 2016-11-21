@@ -211,11 +211,16 @@ SET FOREIGN_KEY_CHECKS = 1;
 ==========================================
 
 - Não Concluídos (Inacabados)
-
 - Aprovados
-
 - Reprovados
-
 - Em Análise (características próximas)
+
+==========================================
+Problemas
+
+1 - Candidatos aprovados fora da cidade de interesse.
+2 - Muitas Cidades dentro do raio.
+3 - Independente da nota, se está no raio da cidade marca como "Em análise"
+
 
 */
