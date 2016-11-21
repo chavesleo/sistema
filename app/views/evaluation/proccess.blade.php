@@ -221,7 +221,7 @@
       <ul class="nav navbar-nav">
         <li>
 			<div class="dropup">
-				<button class="btn btn-block navbar-btn btn-info dropdown-toggle" type="button" data-toggle="dropdown">
+				<button class="btn btn-block navbar-btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" disabled>
 					<span class="glyphicon glyphicon-export" aria-hidden="true"></span>
 					&nbsp;&nbsp;Exportar
 					<span class="caret"></span>
@@ -242,7 +242,7 @@
 			</div>
         </li>
         <li>
-			<button class="btn btn-success navbar-btn btn-block pull-right" type="submit" form="formulario">
+			<button class="btn btn-success navbar-btn btn-block pull-right" type="submit" form="formulario" disabled>
 				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;<span class="">Finalizar</span>
 			</button>
         </li>

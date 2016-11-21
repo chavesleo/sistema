@@ -8,6 +8,7 @@ body{
     border-radius: 4px;
     margin-bottom: 91px;
     background-color: rgba(255,255,255, 0.7);
+    padding-bottom: 5px;
 }
 
 input, select, textarea{
