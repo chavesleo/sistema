@@ -24,7 +24,6 @@ class ProccessController extends BaseController {
 			return Response::view('errors.missing', array(), 404);
 		}
 
-
 		#verifica se sessao já não foi iniciada para este relatorio e redireciona
 		if (Session::has('proccess_init') && in_array($token, Session::get('proccess_init.tk_proccess'))) {
 
@@ -120,17 +119,84 @@ class ProccessController extends BaseController {
 	
 	}
 
+	/*
+	* BOTAO FINALIZAR DO QUESTIONARIO
+	*/
 	public function finish(){
+
 		$dados = Input::all();
-		echo "<pre>";print_r($dados);exit;
+
+		if (is_array($dados['resposta']) && count($dados['resposta']) > 0) {
+
+			foreach ($dados['resposta'] as $idPergunta => $resposta) {
+
+				if (is_array($resposta) || trim($resposta) != '') {
+
+					$question = Question::where('id',$idPergunta)->first();
+
+					#verifica se já não há resposta
+					$objResposta = ProccessAnswer::where('proccess_id', '=', $dados['proccess_id'])
+												->where('question_id', '=', $idPergunta)
+												->first();
+
+
+					if ($objResposta) {
+						$objResposta->text = $resposta;
+					}else{
+						$objResposta = new ProccessAnswer;
+						$objResposta->proccess_id = $dados['proccess_id'];
+						$objResposta->question_id = $idPergunta;
+						$objResposta->text = $resposta;
+					}
+
+					if ($question->type == 'c') {
+						$objResposta->option_id = $resposta;
+
+					}else if($question->type == 'd' && is_array($resposta)){
+						$lista = $separador = '';
+						foreach ($resposta as $idResposta) {
+							$lista .= $separador.$idResposta;
+							$separador = ',';
+						}
+						$objResposta->text = $lista;
+					}//if tipo
+
+					#salva o nome do candidato
+					$processo = Proccess::where('id', $dados['proccess_id'])->first();
+
+					if (trim(strtolower($question->text)) == 'nome' || 
+						trim(strtolower($question->text)) == 'nome completo') {
+						$candidato = Candidate::where('id', $processo->candidate_id)->first();
+						$candidato->fullname = $resposta;
+						$candidato->save();
+					}
+
+					$objResposta->save();
+
+				}//trim vazio
+
+			}//foreach
+
+			#retorna para listagem com mensagem
+			$mensagem['tipo'] = "success";
+			$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp;Formulário enviado!';
+
+			Session::put('alert', $mensagem);
+
+			return Redirect::to($dados['currenturl']);
+
+		}
+
 	}
 
+	/*
+	* SALVA A QUESTAO VIA AJAX
+	*/
 	public function ajaxSaveQuestion(){
 		$dados = Input::all();
 
 		//echo "<pre>";print_r($dados);exit;
 
-		#verifica o tipo de pergunta
 		$question = Question::where('id',$dados['question_id'])->first();
 
 		#verifica se já não há resposta
@@ -177,50 +243,9 @@ class ProccessController extends BaseController {
 		//return Response::make('', 500);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	/*
+	* CALCULA A NOTA DO PROCESSO
+	*/
 	public function calculateNoteById($proccessId){
 
 		$nota = 0;
@@ -277,6 +302,9 @@ class ProccessController extends BaseController {
 
 	}
 
+	/*
+	* CALCULA O PROGRESSO DO PROCESSO
+	*/
 	public function calculateProgressById($proccessId, $ajax = false){
 
 		$processo = Proccess::where('id', $proccessId)->first();
@@ -324,6 +352,9 @@ class ProccessController extends BaseController {
 
 	}
 
+	/*
+	* CALCULA O STATUS DO CANDIDATO
+	*/
 	public function calculateStatus($proccessId){
 
 		$proccess = Proccess::where('id', $proccessId)->first();

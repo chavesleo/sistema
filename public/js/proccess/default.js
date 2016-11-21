@@ -75,6 +75,11 @@ $(document).ready(function(){
 			$(this).parent('div').removeClass('has-warning');
 		}
 	});
+	$('select').each(function(){
+		if ($(this).val() != '') {
+			$(this).parent('div').removeClass('has-warning');
+		}
+	});
 });
 
 function atualizaProgresso(pkpro){

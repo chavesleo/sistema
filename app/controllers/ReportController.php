@@ -107,8 +107,8 @@ class ReportController extends BaseController {
 
 			foreach ($queryResult as $dadosProcesso) {
 
-					$calculaProcesso = new ProccessController;
-					$calculaProcesso->calculateProgressById($dadosProcesso->proccess_id);
+//					$calculaProcesso = new ProccessController;
+//					$calculaProcesso->calculateProgressById($dadosProcesso->proccess_id);
 					
 					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_id'] = $dadosProcesso->candidate_id;
 					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_name'] = $dadosProcesso->candidate_name;

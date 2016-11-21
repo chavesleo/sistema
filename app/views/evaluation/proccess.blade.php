@@ -14,6 +14,19 @@
 
 	<div class="container">
 		<div class="row">&nbsp;</div>
+		{{-- AVISOS DE ALERTA DA SESSAO--}}
+		@if (Session::has('alert'))
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="alert alert-{{Session::get('alert.tipo')}} alert-dismissible" role="alert">
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+						<p>{{Session::get('alert.texto')}}</p>
+					</div>
+					{{Session::forget('alert')}}
+				</div>
+			</div>
+		@endif
+
         <div class="row">
 			<div class="col-lg-12">
 				{{Form::open(array('id'=>'formulario', 'url' => 'proccess/finish', 'method' => 'post', 'role'=>'form', 'autocomplete' => 'off'))}}
@@ -57,7 +70,7 @@
 								<div class="col-sm-6 col-xs-12">
 									<div class="form-group @if($questionEvaluation->question->mandatory == 's') has-warning @endif">
 										<label style="min-height: 20px;"><span class="ordenation">{{$questionEvaluation->order}}</span> - {{$questionEvaluation->question->text}} <small>Use CTRL para múltiplos</small>: <span class="ajax-icon confirm-{{$questionEvaluation->question->id}} glyphicon glyphicon-ok-circle" title="Salvo com sucesso!" aria-hidden="true" style="color: #449D44;"></span><span class="ajax-icon error-{{$questionEvaluation->question->id}} glyphicon glyphicon-remove-circle"  style="color: #C9302C;" aria-hidden="true"  title="Erro ao salvar!" ></span></label>
-										<select multiple name="resposta[{{$questionEvaluation->question->id}}]" @if($questionEvaluation->question->mandatory == 's') required="" @endif pkque="{{$questionEvaluation->question->id}}" value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" class="form-control ajax-save inputVerify">
+										<select multiple name="resposta[{{$questionEvaluation->question->id}}][]" @if($questionEvaluation->question->mandatory == 's') required="" @endif pkque="{{$questionEvaluation->question->id}}" value="{{$arrayRespostas[$questionEvaluation->question->id]['text']}}" class="form-control ajax-save inputVerify">
 											@forelse($questionEvaluation->question->options as $options)
 												<option value="{{$options->id}}" @if(in_array($options->id, $arrayRespostas[$questionEvaluation->question->id]['arrayMultiplasMarcadas']) ) selected @endif >{{$options->text}}</option>
 											@empty
@@ -189,6 +202,7 @@
 					</div>
 					<input id="pkeva" name="evaluation_id" type="hidden" value="{{$evaluation->id}}">
 					<input id="pkpro" name="proccess_id" type="hidden" value="{{Session::get('proccess_init.proccess_id')}}">
+					<input type="hidden" name="currenturl" value="{{URL::current()}}">
         		{{Form::close()}}
 			</div>
         </div>
@@ -242,7 +256,7 @@
 			</div>
         </li>
         <li>
-			<button class="btn btn-success navbar-btn btn-block pull-right" type="submit" form="formulario" disabled>
+			<button class="btn btn-success navbar-btn btn-block pull-right" type="submit" form="formulario">
 				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;<span class="">Finalizar</span>
 			</button>
         </li>
