@@ -123,11 +123,11 @@ class ReportController extends BaseController {
 
 			//echo "<pre>";print_r($arrayRetorno);echo "</pre>";exit;
 
-			return (isset($arrayRetorno)) ? $arrayRetorno : false;
+			return (isset($arrayRetorno)) ? $arrayRetorno : array();
 
 		}
 
-		return false;
+		return array();
 
 	}	
 

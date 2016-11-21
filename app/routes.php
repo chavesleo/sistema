@@ -197,9 +197,20 @@ QUESTIONS TIPO:
 
 */
 
-/* ZERAR TABELAS
+/*  ZERAR TABELAS
 SET FOREIGN_KEY_CHECKS = 0; 
-TRUNCATE `nome_da_tabela`; 
+TRUNCATE `candidate`;
+TRUNCATE `city_interest`;
+TRUNCATE `company`;
+TRUNCATE `evaluation`;
+TRUNCATE `expansion_plan`;
+TRUNCATE `expansion_plan_city`;
+TRUNCATE `option`;
+TRUNCATE `proccess`;
+TRUNCATE `proccess_answer`;
+TRUNCATE `question`;
+TRUNCATE `question_evaluation`;
+TRUNCATE `user`;
 SET FOREIGN_KEY_CHECKS = 1;
 
 
