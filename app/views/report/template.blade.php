@@ -43,8 +43,6 @@
                                 <td><strong>Data Cadastro: </strong>{{$dadosProccessList['candidate_date_reg']}}</td>
                                 <td><strong>Processo(s): </strong>{{count($dadosProccessList['proccesses'])}}</td>
                             </tr>
-
-                            
                                 <tr>
                                     <td colspan="4" style="padding: 0;">
                                         <table class="table table-condensed table-striped table-responsive table-hover" style="margin-bottom: 0px;">
@@ -68,8 +66,8 @@
                                                 <td>{{number_format($dadosProcesso['proccess_note'], 2, ',', '')}}</td>
                                                 <td @if($dadosProcesso['proccess_status'] == 'r') class="text-red" @elseif($dadosProcesso['proccess_status'] == 'a') class="text-green" @elseif($dadosProcesso['proccess_status'] == 'e') class="text-yellow" @endif>{{$arrayStatus[$dadosProcesso['proccess_status']]}}</td>
                                                 <td>
-                                                    <a class="btn btn-info btn-xs" href="#" title="Ver Questionário" role="button">
-                                                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
+                                                        <i class="fa fa-file-text fa-lg" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
                                             </tr>

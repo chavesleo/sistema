@@ -243,33 +243,9 @@ class ProccessController extends BaseController {
 		//return Response::make('', 500);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	######################################################################################
+	#					INICIO DAS FUNÇÕES PARA O RELATÓRIO
+	######################################################################################
 
 	/*
 	* CALCULA A NOTA DO PROCESSO
@@ -367,8 +343,6 @@ class ProccessController extends BaseController {
 		$processo->progress = $arrayPercentCount['percent'];
 		$processo->save();
 
-		//echo "<pre>";print_r($arrayPercentCount);exit;
-
 		#calcula a nota
 		$this->calculateNoteById($proccessId);
 
@@ -389,76 +363,169 @@ class ProccessController extends BaseController {
 	*/
 	public function calculateStatus($proccessId){
 
+		$auxPercentual = $auxCidadeInteresse = $auxInvestimento = $auxCidadeRaio = false;
+
 		$proccess = Proccess::where('id', $proccessId)->first();
-		$evaluation = Evaluation::where('id', $proccess->evaluation_id)->first();
-		$questionCityInterest = Question::where('type','l')->first();
-		$questionEvaluation = QuestionEvaluation::where('id', $questionCityInterest->id)->first();
-		$questionAnswer = ProccessAnswer::where('question_id',$questionCityInterest->id)->where('proccess_id',$proccessId)->first();
-		$idCidadeInteresse = ($questionAnswer) ? $questionAnswer->text : false ;
+		$evaluation = Evaluation::where('id', $proccess->evaluation_id)->first();	
+		
+		#resposta cidade de interesse
+		$questionCityInterest = $this->getQuestion($proccess->evaluation_id, 'l');
+		$respostaCidadeInteresse = ProccessAnswer::where('question_id',$questionCityInterest->id)->where('proccess_id',$proccessId)->first();
+		$idRespostaCidadeInteresse = ($respostaCidadeInteresse) ? $respostaCidadeInteresse->text : false ;
 
-		if($proccess->final_note >= $evaluation->min_note){
-			$proccess->status = 'a';
+		#resposta investimento
+		$questionInvestmet = $this->getQuestion($proccess->evaluation_id, 'm');
+		$respostaInvestimento = ProccessAnswer::where('question_id',$questionInvestmet->id)->where('proccess_id',$proccessId)->first();
+		$valorRespostaInvestimento = ($respostaInvestimento) ? $respostaInvestimento->text : false ;
 
-		}else{
+		//echo "<pre>";print_r($valorRespostaInvestimento);exit;
 
-			#se ja foi criada resposta de cidade de interesse
-			if ($idCidadeInteresse) {
-
-				$objCidadeInteresseSelecionada = City::where('id',$idCidadeInteresse)->first();
-
-				#lista cidades do plano de expansão
-				$planoExpansao = ExpansionPlan::where('id', $evaluation->expansion_plan_id)
-								->with('expansionPlanCities')
-								->first();
-
-				//echo "<pre>";print_r($planoExpansao);exit;
-
-				if ($planoExpansao) {
-
-					$auxDistancia = 100;
-
-					foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
-
-						#cidade de interesse marcada está no plano
-						#então já foi calculada média, nao tem o que fazer
-						if ($cidadeDoPlano->city_id == $idCidadeInteresse) {
-							//echo ($idCidadeInteresse);
-							break;
-						}else{
-							#calcula distância, se ta no raio salva em array
-							#se array !vazio pega o menor raio
-
-							$objCidadeDoPlano = City::where('id',$cidadeDoPlano->city_id)->first();
-
-							$distancia = CityController::getDistance($objCidadeDoPlano->lat, 
-																	$objCidadeDoPlano->lng, 
-																	$objCidadeInteresseSelecionada->lat, 
-																	$objCidadeInteresseSelecionada->lng);
-
-							$auxDistancia = ($distancia <= $auxDistancia) ? $distancia : $auxDistancia;
-
-							//salvar cidades e distancias em uma tabela ?
-							
-						}
-						
-					}
-				}
-
-				/*
-
-				//$proccess->status = 'a';
-				*/
-
-			}
-
-			#2 - Investimento x Formato Franquia
-
-			$proccess->status = 'r';
+		#Percentual Acima
+		if( $proccess->final_note >= $evaluation->min_note ){
+			$auxPercentual = true;
 		}
 
+		#Cidade de Interesse
+		if ($idRespostaCidadeInteresse) {
+			$auxCidadeInteresse = $this->checkIfCityInterestIsInActionPlan($idRespostaCidadeInteresse,
+																			$evaluation->expansion_plan_id);
+		}
+
+		#Cidade no RAIO
+		if (!$auxCidadeInteresse) {
+			$auxCidadeRaio = $this->checkIfCityAroundActionPlan($idRespostaCidadeInteresse,
+																$evaluation->expansion_plan_id);
+		}
+
+		#Investimento
+		if ($valorRespostaInvestimento) {
+			$valorRespostaInvestimento = str_replace('.', '', $valorRespostaInvestimento).'.00';
+			$auxInvestimento = $this->checkValidInvestment(floatval($valorRespostaInvestimento), $evaluation->expansion_plan_id);
+		}
+
+		###################################
+		# CALCULA O STATUS
+		###################################
+
+		#APROVADO - Nota Acima (E) Cidade Interesse (E) Investimento 
+		if ($auxPercentual && $auxCidadeInteresse && $auxInvestimento) {
+			$proccess->status = 'a';
+
+		#REPROVADO
+		}elseif (!$auxPercentual && !$auxCidadeInteresse && 
+				(!$auxCidadeRaio || ( $auxCidadeRaio && !$auxInvestimento) ) ||
+				(!$auxPercentual && $auxCidadeInteresse && !$auxInvestimento) ) {
+				$proccess->status = 'r';
+
+		#EM ANALISE
+		}elseif( ($auxPercentual && !$auxCidadeInteresse && $auxCidadeRaio && $auxInvestimento) ||
+				 (!$auxPercentual && $auxCidadeInteresse && $auxInvestimento) ||
+				 (!$auxPercentual && !$auxCidadeInteresse && $auxCidadeRaio &&  $auxInvestimento)
+				){
+			$proccess->status = 'e';
+
+		#SEM DEFINIÇÃO AINDA
+		}else{
+			if ($auxPercentual) { echo "<br>tem percentual - "; }else{ echo "<br> nao tem percentual - "; }
+			if ($auxCidadeInteresse) { echo "<br>tem cidade interesse - "; }else{echo "<br>tem cidade interesse - ";}
+			if ($auxCidadeRaio) { echo "<br>tem cidade no raio - "; }else{echo "<br>tem cidade no raio - ";}
+			if ($auxInvestimento) { echo "<br>tem investimento - "; }else{echo "<br>nao tem investimento";}
+			$proccess->status = 'o';
+		}
+		
 		$proccess->save();
+	}
 
+	/*
+	* Verifica se está na cidade de intersse
+	*/
+	public function checkIfCityInterestIsInActionPlan($idRespostaCidadeInteresse, $idPlanoExpansao){
+		$objCidadeInteresseSelecionada = City::where('id',$idRespostaCidadeInteresse)->first();
 
+		#lista cidades do plano de expansão
+		$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
+						->with('expansionPlanCities')
+						->first();
+
+		if ($planoExpansao) {
+			foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
+				#cidade de interesse marcada está no plano
+				if ($cidadeDoPlano->city_id == $idRespostaCidadeInteresse) {
+					return true;
+				}
+			}//foreach
+		}//tem plano expansao
+
+		return false;
+	}
+
+	/*
+	* Verifica se a cidade está no raio e pega a mais próxima
+	*/
+	public function checkIfCityAroundActionPlan($idRespostaCidadeInteresse, $idPlanoExpansao){
+		$objCidadeInteresseSelecionada = City::where('id',$idRespostaCidadeInteresse)->first();
+
+		#lista cidades do plano de expansão
+		$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
+						->with('expansionPlanCities')
+						->first();
+
+		if ($planoExpansao) {
+			$auxDistancia = false;
+			foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
+
+				$objCidadeDoPlano = City::where('id',$cidadeDoPlano->city_id)->first();
+
+				if ($objCidadeDoPlano) {
+					$distancia = CityController::getDistance($objCidadeDoPlano->lat, 
+															 $objCidadeDoPlano->lng, 
+															 $objCidadeInteresseSelecionada->lat, 
+															 $objCidadeInteresseSelecionada->lng);
+
+					if (!$auxDistancia) {
+						$auxDistancia = $distancia;
+					}else if($auxDistancia > $distancia){
+						$auxDistancia = $distancia;
+					}else if($auxDistancia == $distancia){
+"Mesma distancia de cidades: Valores de Investimento Distintos";
+					}
+				}//cidade do plano
+			}//foreach
+		}//tem plano expansao
+
+		return $auxDistancia;
+	}
+
+	/*
+	* Verifica se o investimento é valido
+	*/
+	public function checkValidInvestment($investment, $idPlanoExpansao){
+		#lista cidades do plano de expansão
+		$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
+						->with('expansionPlanCities')
+						->first();
+
+		if ($planoExpansao) {
+			foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
+				if ($investment >= $cidadeDoPlano->investment) {
+					return true;
+				}
+			}
+		}//tem plano expansao
+		return false;
+	}
+
+	/*
+	* Pega a questão de determinado tipo de um questionário
+	*/
+	public function getQuestion($evaluationId, $questionType){
+		return DB::table('evaluation')
+        		->join('question_evaluation', 'question_evaluation.evaluation_id', '=', 'evaluation.id')
+	        	->join('question', 'question_evaluation.question_id', '=', 'question.id')
+        		->select('question.*')
+        		->where('evaluation.id', $evaluationId)
+        		->where('question.type', $questionType)
+	        	->first();
 	}
 
 }
