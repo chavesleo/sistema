@@ -33,7 +33,7 @@
 				@endif
                 <div class="row">
                     <div class="col-sm-4">
-                        <canvas id="pieChart"></canvas>        
+                        <canvas id="pieChart"></canvas>
                     </div>
                     <div class="col-sm-8">
                         <canvas id="lineChart"></canvas>
@@ -122,6 +122,7 @@
                 }]
             }
         });
+
         /*
         var barChart = new Chart(document.getElementById("barChart"), {
             type: 'bar',

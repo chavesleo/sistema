@@ -356,9 +356,9 @@ class ProccessController extends BaseController {
 
 	}
 
-	/*
-	* CALCULA O STATUS DO CANDIDATO
-	*/
+	######################################################
+	# CALCULA O STATUS DO CANDIDATO
+	######################################################
 	public function calculateStatus($proccessId, $returnArrayAux = false){
 
 		$auxPercentual = $auxCidadeInteresse = $auxInvestimento = $auxCidadeRaio = false;
@@ -441,9 +441,9 @@ class ProccessController extends BaseController {
 		}
 	}
 
-	/*
-	* Verifica se está na cidade de intersse
-	*/
+	######################################################
+	# Verifica se está na cidade de intersse
+	######################################################
 	public function checkIfCityInterestIsInActionPlan($idRespostaCidadeInteresse, $idPlanoExpansao){
 		$objCidadeInteresseSelecionada = City::where('id',$idRespostaCidadeInteresse)->first();
 
@@ -464,46 +464,47 @@ class ProccessController extends BaseController {
 		return false;
 	}
 
-	/*
-	* Verifica se a cidade está no raio e pega a mais próxima
-	*/
+	######################################################
+	# Verifica se a cidade está no raio e pega a mais próxima
+	######################################################
 	public function checkIfCityAroundActionPlan($idRespostaCidadeInteresse, $idPlanoExpansao){
 		$objCidadeInteresseSelecionada = City::where('id',$idRespostaCidadeInteresse)->first();
+		if($objCidadeInteresseSelecionada){
+			#lista cidades do plano de expansão
+			$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
+							->with('expansionPlanCities')
+							->first();
 
-		#lista cidades do plano de expansão
-		$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
-						->with('expansionPlanCities')
-						->first();
+			if ($planoExpansao) {
+				$auxDistancia = false;
+				foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
 
-		if ($planoExpansao) {
-			$auxDistancia = false;
-			foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
+					$objCidadeDoPlano = City::where('id',$cidadeDoPlano->city_id)->first();
 
-				$objCidadeDoPlano = City::where('id',$cidadeDoPlano->city_id)->first();
+					if ($objCidadeDoPlano) {
+						$distancia = CityController::getDistance($objCidadeDoPlano->lat, 
+																 $objCidadeDoPlano->lng, 
+																 $objCidadeInteresseSelecionada->lat, 
+																 $objCidadeInteresseSelecionada->lng);
 
-				if ($objCidadeDoPlano) {
-					$distancia = CityController::getDistance($objCidadeDoPlano->lat, 
-															 $objCidadeDoPlano->lng, 
-															 $objCidadeInteresseSelecionada->lat, 
-															 $objCidadeInteresseSelecionada->lng);
-
-					if (!$auxDistancia) {
-						$auxDistancia = $distancia;
-					}else if($auxDistancia > $distancia){
-						$auxDistancia = $distancia;
-					}else if($auxDistancia == $distancia){
-"Mesma distancia de cidades: Valores de Investimento Distintos";
-					}
-				}//cidade do plano
-			}//foreach
-		}//tem plano expansao
-
-		return $auxDistancia;
+						if (!$auxDistancia) {
+							$auxDistancia = $distancia;
+						}else if($auxDistancia > $distancia){
+							$auxDistancia = $distancia;
+						}else if($auxDistancia == $distancia){
+	"Mesma distancia de cidades: Valores de Investimento Distintos";
+						}
+					}//cidade do plano
+				}//foreach
+			}//tem plano expansao
+			return $auxDistancia;
+		}
+		return false;
 	}
 
-	/*
-	* Verifica se o investimento é valido
-	*/
+	######################################################
+	# Verifica se o investimento é valido
+	######################################################
 	public function checkValidInvestment($investment, $idPlanoExpansao){
 		#lista cidades do plano de expansão
 		$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
@@ -520,9 +521,9 @@ class ProccessController extends BaseController {
 		return false;
 	}
 
-	/*
-	* Pega a questão de determinado tipo de um questionário
-	*/
+	######################################################
+	# Pega a questão de determinado tipo de um questionário
+	######################################################
 	public function getQuestion($evaluationId, $questionType){
 		return DB::table('evaluation')
         		->join('question_evaluation', 'question_evaluation.evaluation_id', '=', 'evaluation.id')
@@ -533,9 +534,9 @@ class ProccessController extends BaseController {
 	        	->first();
 	}
 
-	/*
-	* MONTA EXIBIÇÃO DO FORMULÁRIO RESPONDIDO
-	*/
+	######################################################
+	#   MONTA EXIBIÇÃO DO FORMULÁRIO RESPONDIDO
+	######################################################
 	public function montaQuestionario($idProcess, $returnFormat){
 
 		# Recalcula Progresso
@@ -618,4 +619,15 @@ class ProccessController extends BaseController {
 		}
 
 	}
+
+	######################################################
+	#   CRIA ANALISE DETALHADA DO PROCESSO
+	######################################################
+	public function detalharAnalise($idProcess, $objAnalisePrimaria){
+		
+		$arrRetorno = array();
+		
+		//echo "<pre>";print_r($objAnalisePrimaria);echo "</pre>";exit;
+	}
+
 }

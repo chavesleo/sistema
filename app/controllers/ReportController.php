@@ -5,6 +5,9 @@ class ReportController extends BaseController {
 
 	private $arrayStatus = array('a' => 'Aprovado', 'e' => 'Em Análise', 'r' => 'Reprovado');
 
+	###########################
+	#   INDEX RELATORIOS
+	###########################
 	public function index(){
 
 		$menuAtivo = 6;
@@ -60,6 +63,9 @@ class ReportController extends BaseController {
 													'tituloPagina'));
 	}
 
+	###########################
+	#   LISTA PROCESSOS INDEX
+	###########################
 	public function getProccessList(){
 
 		$queryResult = DB::table('proccess as p')
@@ -104,21 +110,27 @@ class ReportController extends BaseController {
 
 	}
 
+
+	###########################
+	#   DETALHES DO PROCESSO
+	###########################
 	public function showProccessDetailById($idProcess){
 
 		$menuAtivo = 6;
 		$cssPagina = 'css/report/default.css';
-		$jsPagina = 'js/report/default.js';
+		$jsPagina = '';
 		$tituloPagina = 'Detalhes';
 		$arrayStatus = $this->arrayStatus;
 
 		$objProccessController = new ProccessController;
 		$formularioCompleto = $objProccessController->montaQuestionario($idProcess, 'array');
-		$teste = $objProccessController->calculateStatus($idProcess, true);
+		$objAnalisePrimaria = (object) $objProccessController->calculateStatus($idProcess, true);
+		//$arrayAnaliseDetalhada = $objProccessController->detalharAnalise($idProcess, $objAnalisePrimaria);
 
-		echo "<pre>";print_r($teste);echo "</pre>";exit;
+		//echo "<pre>";print_r($objAnalisePrimaria);echo "</pre>";
 		
 		return View::make('report.proccessdetail', compact('formularioCompleto',
+															'objAnalisePrimaria',
 															'arrayStatus',
 															'menuAtivo',
 															'cssPagina',
