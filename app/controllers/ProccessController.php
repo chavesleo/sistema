@@ -412,7 +412,9 @@ class ProccessController extends BaseController {
 		#REPROVADO
 		}elseif (!$auxPercentual && !$auxCidadeInteresse && 
 				(!$auxCidadeRaio || ( $auxCidadeRaio && !$auxInvestimento) ) ||
-				(!$auxPercentual && $auxCidadeInteresse && !$auxInvestimento) ) {
+				(!$auxPercentual && $auxCidadeInteresse && !$auxInvestimento) ||
+				($auxPercentual && !$auxCidadeInteresse && !$auxCidadeRaio && $auxInvestimento) 
+				) {
 				$proccess->status = 'r';
 
 		#EM ANALISE
@@ -425,10 +427,11 @@ class ProccessController extends BaseController {
 		#SEM DEFINIÇÃO AINDA
 		}else{
 			if ($auxPercentual) { echo "<br>tem percentual - "; }else{ echo "<br> nao tem percentual - "; }
-			if ($auxCidadeInteresse) { echo "<br>tem cidade interesse - "; }else{echo "<br>tem cidade interesse - ";}
-			if ($auxCidadeRaio) { echo "<br>tem cidade no raio - "; }else{echo "<br>tem cidade no raio - ";}
+			if ($auxCidadeInteresse) { echo "<br>tem cidade interesse - "; }else{echo "<br>nao cidade interesse - ";}
+			if ($auxCidadeRaio) { echo "<br>tem cidade no raio - "; }else{echo "<br>nao cidade no raio - ";}
 			if ($auxInvestimento) { echo "<br>tem investimento - "; }else{echo "<br>nao tem investimento";}
 			$proccess->status = 'o';
+			exit;
 		}
 		
 		$proccess->save();
@@ -492,8 +495,8 @@ class ProccessController extends BaseController {
 															 $objCidadeInteresseSelecionada->lat, 
 															 $objCidadeInteresseSelecionada->lng);
 					
+					//echo '<br>'.$cidadeDoPlano->distance .'-'. $distancia ;
 					if (intval($distancia) < floatval($cidadeDoPlano->distance)) {
-						echo '<br>'.$cidadeDoPlano->distance .'-'. $distancia ;
 						if (!$auxDistancia) {
 							$auxDistancia = $distancia;
 						}else if($auxDistancia > $distancia){

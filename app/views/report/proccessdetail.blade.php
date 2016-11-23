@@ -65,10 +65,10 @@
 						<table class="table table-responsive table-hover table-condensed">
 							<tr>
 							@if(!$objAnalisePrimaria->auxPercentual)
-								<th><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></th>
+								<th><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></th>
 								<td>Nota Final <strong>{{str_replace('.',',',$formularioCompleto['nota_final'])}}</strong> ficou <strong>abaixo</strong> do esperado que é <strong>{{str_replace('.',',',$formularioCompleto['nota_minima'])}}</strong> </td>
 							@else
-								<th><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></th>
+								<th><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></th>
 								<td>Nota Final <strong>{{str_replace('.',',',$formularioCompleto['nota_final'])}}</strong> ficou <strong>acima</strong> do esperado que é <strong>{{str_replace('.',',',$formularioCompleto['nota_minima'])}}</strong> </td>
 							@endif
 							</tr>
@@ -100,8 +100,12 @@
 						</div>
 						<table class="table table-responsive table-hover table-condensed">
 							<tr>
-								<th><span class="glyphicon @if(!$objAnalisePrimaria->auxInvestimento) glyphicon-remove @else glyphicon-ok @endif" aria-hidden="true"></span></th>
-								<td>@if(!$objAnalisePrimaria->auxInvestimento) <strong>Não</strong> @endif <strong>Possui</strong> o investimento necessário</td>
+								<th>Formulario</th>
+								<th>Percentual</th>
+							</tr>
+							<tr>
+								<td>Formulário Estático</td>
+								<td>65%</td>
 							</tr>
 						</table>
 					</div>
