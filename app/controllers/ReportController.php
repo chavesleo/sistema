@@ -3,17 +3,18 @@
 
 class ReportController extends BaseController {
 
+	private $arrayStatus = array('a' => 'Aprovado', 'e' => 'Em Análise', 'r' => 'Reprovado');
+
 	public function index(){
 
 		$menuAtivo = 6;
 		$cssPagina = 'css/report/default.css';
-		$jsPagina = 'js/report/default.js';
+		$jsPagina = false;
 		$tituloPagina = 'Relatórios';
 		
 		$totalProcessosAprovados = 0;
 		$totalProcessosEmAnalise = 0;
 		$totalProcessosReprovados = 0;
-		$totalCandidatosCadastrados = 0;
 
 		$questionarios = Evaluation::where('company_id', Auth::user()->company_id)
 										->with('proccesses.candidate')
@@ -21,7 +22,7 @@ class ReportController extends BaseController {
 
 		$arrayProccessList = $this->getProccessList();
 
-		$arrayStatus = array('a' => 'Aprovado', 'e' => 'Em Análise', 'r' => 'Reprovado');
+		$arrayStatus = $this->arrayStatus;
 	
 		//echo "<pre>";print_r($questionarios);echo "</pre>";exit;
 
@@ -43,8 +44,6 @@ class ReportController extends BaseController {
 							exit('erro, processo sem status');
 							break;
 					}
-
-					$totalCandidatosCadastrados += count($processo->candidate);
 				}
 			}
 
@@ -55,7 +54,6 @@ class ReportController extends BaseController {
 													'totalProcessosAprovados',
 													'totalProcessosEmAnalise',
 													'totalProcessosReprovados',
-													'totalCandidatosCadastrados',
 													'menuAtivo',
 													'cssPagina',
 													'jsPagina',
@@ -84,21 +82,19 @@ class ReportController extends BaseController {
 
 			foreach ($queryResult as $dadosProcesso) {
 
-					$calculaProcesso = new ProccessController;
-					$calculaProcesso->calculateProgressById($dadosProcesso->proccess_id);
+					#ajusta data
+					$candidate_date_reg = new DateTime($dadosProcesso->candidate_date_reg);
+					$proccess_init_date = new DateTime($dadosProcesso->proccess_init_date);
 					
 					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_id'] = $dadosProcesso->candidate_id;
 					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_name'] = $dadosProcesso->candidate_name;
-					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_date_reg'] = $dadosProcesso->candidate_date_reg;
-					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_init_date'] = $dadosProcesso->proccess_init_date; 
+					$arrayRetorno[$dadosProcesso->candidate_id]['candidate_date_reg'] = $candidate_date_reg->format('d/m/Y H:i');
+					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_init_date'] = $proccess_init_date->format('d/m/Y H:i'); 
 					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_progress'] = $dadosProcesso->proccess_progress; 
 					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['evaluation_title'] = $dadosProcesso->evaluation_title; 
 					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_status'] = $dadosProcesso->proccess_status; 
 					$arrayRetorno[$dadosProcesso->candidate_id]['proccesses'][$dadosProcesso->proccess_id]['proccess_note'] = $dadosProcesso->proccess_note; 
-				
 			}
-
-			//echo "<pre>";print_r($arrayRetorno);echo "</pre>";exit;
 
 			return (isset($arrayRetorno)) ? $arrayRetorno : array();
 
@@ -106,9 +102,71 @@ class ReportController extends BaseController {
 
 		return array();
 
-	}	
+	}
+
+	public function showProccessDetailById($idProcess){
+
+		$menuAtivo = 6;
+		$cssPagina = 'css/report/default.css';
+		$jsPagina = 'js/report/default.js';
+		$tituloPagina = 'Detalhes';
+		$arrayStatus = $this->arrayStatus;
+
+		$objProccessController = new ProccessController;
+		$formularioCompleto = $objProccessController->montaQuestionario($idProcess, 'array');
+		$teste = $objProccessController->calculateStatus($idProcess, true);
+
+		echo "<pre>";print_r($teste);echo "</pre>";exit;
+		
+		return View::make('report.proccessdetail', compact('formularioCompleto',
+															'arrayStatus',
+															'menuAtivo',
+															'cssPagina',
+															'jsPagina',
+															'tituloPagina'));
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 $Questionarios = Evaluation::where('company_id', Auth::user()->company_id)

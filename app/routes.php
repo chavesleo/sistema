@@ -142,10 +142,9 @@ Route::group(array('prefix' => 'report', 'before' => 'auth'), function(){
 
 	Route::get('/', 'ReportController@index');
 
-	Route::group(array('prefix' => 'candidate'), function(){
+	Route::group(array('prefix' => 'proccessdetails'), function(){
 
-		Route::get('list', 'ReportController@candidatesList');
-
+		Route::get('{id}', 'ReportController@showProccessDetailById');
 
 	});
 });

@@ -31,13 +31,25 @@
 					</div>
 					@endforeach
 				@endif
-
-                <dir class="row">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <canvas id="pieChart"></canvas>        
+                    </div>
+                    <div class="col-sm-8">
+                        <canvas id="lineChart"></canvas>
+                    </div>
+                </div>
+                <div class="row"> &nbsp; </div>
+                <div class="row">
                     <table class="table table-condensed table-responsive">
+                    <thead>
+                        <tr style="background-color: #B9B9B9; color: #000;">
+                            <th class="text-center" colspan="4"><h4>Lista de Candidatos</h4></th>
+                        </tr>
+                    </thead>
                         <tbody>
-
                         @forelse($arrayProccessList as $dadosProccessList)
-                            <tr  style="background-color: #B9B9B9; color: #000;">
+                            <tr style="background-color: #B9B9B9; color: #000;">
                                 <td><strong>Cód.: </strong>{{$dadosProccessList['candidate_id']}}</td>
                                 <td><strong>Nome: </strong>{{$dadosProccessList['candidate_name']}}</td>
                                 <td><strong>Data Cadastro: </strong>{{$dadosProccessList['candidate_date_reg']}}</td>
@@ -66,7 +78,7 @@
                                                 <td>{{number_format($dadosProcesso['proccess_note'], 2, ',', '')}}</td>
                                                 <td @if($dadosProcesso['proccess_status'] == 'r') class="text-red" @elseif($dadosProcesso['proccess_status'] == 'a') class="text-green" @elseif($dadosProcesso['proccess_status'] == 'e') class="text-yellow" @endif>{{$arrayStatus[$dadosProcesso['proccess_status']]}}</td>
                                                 <td>
-                                                    <a class="btn btn-info btn-sm" href="#" title="Ver Questionário" role="button">
+                                                    <a class="btn btn-info btn-sm" href="{{URL::current()}}/proccessdetails/{{$idProcesso}}" title="Ver Questionário" role="button">
                                                         <i class="fa fa-file-text fa-lg" aria-hidden="true"></i>
                                                     </a>
                                                 </td>
@@ -87,10 +99,90 @@
                         @endforelse
                         </tbody>
                     </table>
-                </dir>  
+                </div>  
 				
 			</div> <!-- END CONTAINER -->
 		</div> <!-- CONTEUDO -->
 	</div><!-- affix-row [pre menu]-->
+
+    <script>
+
+        var pieChart = new Chart(document.getElementById("pieChart"), {
+            type: 'pie',
+            data: {
+                labels: ["Reprovados", "Em Análise", "Aprovados"],
+                datasets: [{
+                    data: [ {{$totalProcessosReprovados}}, {{$totalProcessosEmAnalise}}, {{$totalProcessosAprovados}}],
+                    backgroundColor: [
+                    '#E33E2B',
+                    '#F1B500',
+                    '#2CA24C'
+                    ],
+                    borderWidth: 1
+                }]
+            }
+        });
+        /*
+        var barChart = new Chart(document.getElementById("barChart"), {
+            type: 'bar',
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [
+                {
+                    label: "My First dataset",
+                    backgroundColor: [
+                    'rgb(255, 99, 132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 206, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(153, 102, 25)',
+                    'rgb(255, 159, 64)'
+                    ],
+                    borderColor: [
+                    'rgb(255,99,132)',
+                    'rgb(54, 162, 235)',
+                    'rgb(255, 206, 86)',
+                    'rgb(75, 192, 192)',
+                    'rgb(153, 102, 255)',
+                    'rgb(255, 159, 64)'
+                    ],
+                    borderWidth: 1,
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                }
+                ]
+            }
+        });
+        */
+        var myLineChart = new Chart(document.getElementById("lineChart"), {
+            type: 'line',
+            data: {
+                labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                datasets: [
+                    {
+                        label: 'Novos Candidatos por Mês',
+                        fill: false,
+                        lineTension: 0.1,
+                        backgroundColor: "rgb(75,192,192)",
+                        borderColor: "rgb(75,192,192)",
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgb(75,192,192)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgb(75,192,192)",
+                        pointHoverBorderColor: "rgb(220,220,220)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 1,
+                        pointHitRadius: 10,
+                        data: [18, 15, 12, 15, 7, 5, 18, 22, 18, 15, 25, 12],
+                        spanGaps: false,
+                    }
+                ]
+            }
+        });
+    </script>
 
 @endsection

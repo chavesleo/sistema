@@ -8,9 +8,14 @@
 	<link href="{{Config::get('define.urlPadrao')}}packages/sweetalert2/sweetalert2.min.css" rel="stylesheet">
 	<link href="{{Config::get('define.urlPadrao')}}packages/font-awesome-4.6.3/css/font-awesome.min.css" rel="stylesheet">
 	<link href="{{Config::get('define.urlPadrao')}}css/layouts/menu.css" rel="stylesheet">
-	@if($cssPagina)
-		<link href="{{Config::get('define.urlPadrao')}}{{$cssPagina}}" rel="stylesheet">
-	@endif
+	
+@if($cssPagina)
+	<link href="{{Config::get('define.urlPadrao')}}{{$cssPagina}}" rel="stylesheet">
+@endif
+
+@if($menuAtivo == 6)
+	<script src="{{Config::get('define.urlPadrao')}}packages/chartjs/chart.min.js"></script>
+@endif
 </head>
 <body>
 
@@ -130,10 +135,6 @@
 	
 	@if($jsPagina)
 		<script src="{{Config::get('define.urlPadrao')}}{{$jsPagina}}"></script>
-	@endif
-
-	@if($menuAtivo == 6)
-		<script src="{{Config::get('define.urlPadrao')}}js/report/report.js"></script>
 	@endif
 
 </body>

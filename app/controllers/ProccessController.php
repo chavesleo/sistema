@@ -1,7 +1,5 @@
 <?php
 
-//salva as perguntas via ajax e calcula prograsso
-
 class ProccessController extends BaseController {
 
 	public function index($token){
@@ -361,7 +359,7 @@ class ProccessController extends BaseController {
 	/*
 	* CALCULA O STATUS DO CANDIDATO
 	*/
-	public function calculateStatus($proccessId){
+	public function calculateStatus($proccessId, $returnArrayAux = false){
 
 		$auxPercentual = $auxCidadeInteresse = $auxInvestimento = $auxCidadeRaio = false;
 
@@ -434,6 +432,13 @@ class ProccessController extends BaseController {
 		}
 		
 		$proccess->save();
+
+		if ($returnArrayAux) {
+			return array('auxPercentual' => $auxPercentual, 
+						 'auxCidadeInteresse' => $auxCidadeInteresse,
+						 'auxCidadeRaio' => $auxCidadeRaio,
+						 'auxInvestimento' => $auxInvestimento);
+		}
 	}
 
 	/*
@@ -528,4 +533,89 @@ class ProccessController extends BaseController {
 	        	->first();
 	}
 
+	/*
+	* MONTA EXIBIÇÃO DO FORMULÁRIO RESPONDIDO
+	*/
+	public function montaQuestionario($idProcess, $returnFormat){
+
+		# Recalcula Progresso
+		$this->calculateProgressById($idProcess);
+		
+		$arrRetorno = array();
+
+		$processo = Proccess::where('id',$idProcess)
+								->where('company_id', Auth::user()->company_id)
+								->with('answers')
+								->first();
+
+		
+		$formulario = Evaluation::where('id',$processo->evaluation_id)->with('QuestionEvaluations')->first();
+		
+		$arrRetorno['titulo'] = $formulario->title;
+		$arrRetorno['descricao'] = $formulario->description;
+		$arrRetorno['nota_minima'] = $formulario->min_note;
+		$arrRetorno['nota_final'] = $processo->final_note;
+		$arrRetorno['progresso'] = $processo->progress;
+		$arrRetorno['status'] = $processo->status;
+		$arrRetorno['data_ini'] = $processo->created_at->format('d/m/Y H:i');
+
+		if ($formulario) {
+			foreach ($formulario->QuestionEvaluations as $dadosQuetaoFormulario) {
+
+				$questao = Question::where('id', $dadosQuetaoFormulario->question_id)->first();
+				$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['pergunta'] = $questao->text;
+				$respostaQuestao = ProccessAnswer::where('proccess_id',$idProcess)->where('question_id',$questao->id)->first();
+				
+				if(!$respostaQuestao){
+					$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = '';
+				}else{
+					#Opção Única
+					if ($questao->type == 'c') {
+						$opcao = Option::where('id', $respostaQuestao->option_id)->first();
+						if ($opcao) {
+							$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = $opcao->text;
+						}else{
+							$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = '';
+						}
+					
+					#Multi Opção
+					}elseif($questao->type == 'd'){
+						$strResposta = '';
+						$separador = '';
+						
+						$arrayOptionSelected = explode(',', $respostaQuestao->text);
+						foreach ($arrayOptionSelected as $option_id_selected) {
+							$opcao = Option::where('id', $option_id_selected)->first();
+							$strResposta .= $separador.$opcao->text;
+							$separador = ' - ';
+						}
+						$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = $strResposta;
+
+					#Cidade de Interesse
+					}elseif($questao->type == 'l' || $questao->type == 'o'){
+						$cidade = City::where('id', $respostaQuestao->text)->first();
+						if ($cidade) {
+							$uf = State::where('id', $cidade->state_id)->first();
+							$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = array('city_name'=>$cidade->name, 'uf_name'=>$uf->name, 'uf_short'=> $uf->short_name);
+						}else{
+							$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = array('city_name'=>$cidade->name, 'uf_name'=>$uf->name, 'uf_short'=> $uf->short_name);
+						}
+					}elseif($questao->type == 'm'){
+						$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = 'R$ '.$respostaQuestao->text.',00';
+					}else{
+						$arrRetorno['pergunta'][$dadosQuetaoFormulario->order]['resposta'] = $respostaQuestao->text;
+					}
+				}//tem resposta
+			}
+		}
+
+		if ($returnFormat == 'json') {
+			return json_encode($arrRetorno);
+		}
+
+		if ($returnFormat == 'array') {
+			return $arrRetorno;
+		}
+
+	}
 }
