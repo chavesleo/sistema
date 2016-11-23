@@ -84,7 +84,7 @@
 										<td> Selecionou uma cidade próxima que está dentro do raio, a {{round($objAnalisePrimaria->auxCidadeRaio,0)}}km</td>
 									@else
 										<th><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></th>
-										<td>Não</td>
+										<td>Cidade selecionada não está dentro do raio desejado</td>
 									@endif
 								</tr>
 							@endif

@@ -468,25 +468,32 @@ class ProccessController extends BaseController {
 	# Verifica se a cidade está no raio e pega a mais próxima
 	######################################################
 	public function checkIfCityAroundActionPlan($idRespostaCidadeInteresse, $idPlanoExpansao){
+
+		if (!$idRespostaCidadeInteresse || !$idPlanoExpansao) {
+			return false;
+		}
+
 		$objCidadeInteresseSelecionada = City::where('id',$idRespostaCidadeInteresse)->first();
-		if($objCidadeInteresseSelecionada){
-			#lista cidades do plano de expansão
-			$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
-							->with('expansionPlanCities')
-							->first();
 
-			if ($planoExpansao) {
-				$auxDistancia = false;
-				foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
+		#lista cidades do plano de expansão
+		$planoExpansao = ExpansionPlan::where('id', $idPlanoExpansao)
+						->with('expansionPlanCities')
+						->first();
 
-					$objCidadeDoPlano = City::where('id',$cidadeDoPlano->city_id)->first();
+		if ($planoExpansao) {
+			$auxDistancia = false;
+			foreach($planoExpansao->expansionPlanCities as $cidadeDoPlano){
 
-					if ($objCidadeDoPlano) {
-						$distancia = CityController::getDistance($objCidadeDoPlano->lat, 
-																 $objCidadeDoPlano->lng, 
-																 $objCidadeInteresseSelecionada->lat, 
-																 $objCidadeInteresseSelecionada->lng);
+				$objCidadeDoPlano = City::where('id',$cidadeDoPlano->city_id)->first();
 
+				if ($objCidadeDoPlano) {
+					$distancia = CityController::getDistance($objCidadeDoPlano->lat, 
+															 $objCidadeDoPlano->lng, 
+															 $objCidadeInteresseSelecionada->lat, 
+															 $objCidadeInteresseSelecionada->lng);
+					
+					if (intval($distancia) < floatval($cidadeDoPlano->distance)) {
+						echo '<br>'.$cidadeDoPlano->distance .'-'. $distancia ;
 						if (!$auxDistancia) {
 							$auxDistancia = $distancia;
 						}else if($auxDistancia > $distancia){
@@ -494,12 +501,13 @@ class ProccessController extends BaseController {
 						}else if($auxDistancia == $distancia){
 	"Mesma distancia de cidades: Valores de Investimento Distintos";
 						}
-					}//cidade do plano
-				}//foreach
-			}//tem plano expansao
-			return $auxDistancia;
-		}
-		return false;
+					}
+
+				}//cidade do plano
+			}//foreach
+		}//tem plano expansao
+
+		return $auxDistancia;
 	}
 
 	######################################################
