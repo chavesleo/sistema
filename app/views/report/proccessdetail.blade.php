@@ -75,7 +75,7 @@
 
 							<tr>
 								<th><span class="glyphicon @if(!$objAnalisePrimaria->auxCidadeInteresse) glyphicon-remove @else glyphicon-ok @endif" aria-hidden="true"></span></th>
-								<td>@if($objAnalisePrimaria->auxCidadeInteresse) Selecionou uma cidade de Interesse @else Não selecionou uma cidade de Interesse @endif</td>
+								<td>@if($objAnalisePrimaria->auxCidadeInteresse) Selecionou uma cidade de Interesse @else Selecionou uma cidade fora de Interesse @endif</td>
 							</tr>
 							@if(!$objAnalisePrimaria->auxCidadeInteresse)
 								<tr>
@@ -100,12 +100,12 @@
 						</div>
 						<table class="table table-responsive table-hover table-condensed">
 							<tr>
-								<th>Formulario</th>
-								<th>Percentual</th>
+								<th>Formulário</th>
+								<th>Status</th>
 							</tr>
 							<tr>
-								<td>Formulário Estático</td>
-								<td>65%</td>
+								<td>SUL - Interior - 2016/02</td>
+								<td>Reprovado</td>
 							</tr>
 						</table>
 					</div>

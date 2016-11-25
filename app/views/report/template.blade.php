@@ -32,10 +32,10 @@
 					@endforeach
 				@endif
                 <div class="row">
-                    <div class="col-sm-4">
+                    <div class="col-xs-4 col-sm-4">
                         <canvas id="pieChart"></canvas>
                     </div>
-                    <div class="col-sm-8">
+                    <div class="col-xs-8 col-sm-8">
                         <canvas id="lineChart"></canvas>
                     </div>
                 </div>
@@ -112,6 +112,7 @@
             data: {
                 labels: ["Reprovados", "Em Análise", "Aprovados"],
                 datasets: [{
+                    //data: [ {{$totalProcessosReprovados}}, {{$totalProcessosEmAnalise}}, {{$totalProcessosAprovados}}],
                     data: [ {{$totalProcessosReprovados}}, {{$totalProcessosEmAnalise}}, {{$totalProcessosAprovados}}],
                     backgroundColor: [
                     '#E33E2B',
@@ -157,7 +158,7 @@
         var myLineChart = new Chart(document.getElementById("lineChart"), {
             type: 'line',
             data: {
-                labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+                labels: ["Setembro","Outubro", "Novembro"],
                 datasets: [
                     {
                         label: 'Novos Candidatos por Mês',
@@ -178,7 +179,7 @@
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [18, 15, 12, 15, 7, 5, 18, 22, 18, 15, 25, 12],
+                        data: [0,9,14],
                         spanGaps: false,
                     }
                 ]
