@@ -116,6 +116,8 @@ Route::group(array('prefix' => 'proccess'), function(){
 
 	Route::get('export/csv/{id}', 'ProccessController@exportCsv');
 
+	Route::post('changestatus/{id}', 'ProccessController@changeForcedStatus');
+
 });
 
 ######################

@@ -67,6 +67,35 @@ class ProccessController extends BaseController {
 
 	}
 
+	public function changeForcedStatus($id){
+		$dados = Input::all();
+
+		$processo = Proccess::where('id', $id)->where('company_id', Auth::user()->company_id)->first();
+
+		if (!$processo || !$dados['new_status']) {
+			#retorna para listagem com mensagem
+			$mensagem['tipo'] = "danger";
+			$mensagem['texto'] = '<span class="glyphicon glyphicon glyphicon-remove-circle" aria-hidden="true"></span>&nbsp;&nbsp; Acesso Negado!';
+
+			Session::put('alert', $mensagem);
+
+			return Redirect::to('report/proccessdetails/'.$id);
+		}
+
+		$processo->forced_status = 1;
+		$processo->forced_comment = $dados['forced_obs'];
+		$processo->status = $dados['new_status'];
+		$processo->save();
+
+		#retorna para listagem com mensagem
+		$mensagem['tipo'] = "success";
+		$mensagem['texto'] = '<span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span>&nbsp;&nbsp; Status Alterado!';
+
+		Session::put('alert', $mensagem);
+
+		return Redirect::to('report/proccessdetails/'.$id);
+	}
+
 	public function startproccess($token){
 
 		$dados = Input::all();
@@ -438,7 +467,9 @@ class ProccessController extends BaseController {
 			exit;
 		}
 		
-		$proccess->save();
+		if (!$proccess->forced_status && !$proccess->secundary_status) {
+			$proccess->save();
+		}
 
 		if ($returnArrayAux) {
 			return array('auxPercentual' => $auxPercentual, 
@@ -798,6 +829,9 @@ class ProccessController extends BaseController {
 					#APROVADO - Nota Acima (E) Cidade Interesse (E) Investimento 
 					if ($ddForm['analise']['nota_minima'] && $ddForm['analise']['cidade_interesse'] && $ddForm['analise']['investimento']) {
 						$arrayAuxiliar[$idForm]['status'] = "a";
+						$processo->status = 'a';
+						$processo->secundary_status = 1;
+						$processo->save();
 
 					#REPROVADO
 					}elseif (!$ddForm['analise']['nota_minima'] && !$ddForm['analise']['cidade_interesse'] && 
@@ -807,6 +841,8 @@ class ProccessController extends BaseController {
 							) {
 
 								$arrayAuxiliar[$idForm]['status'] = 'r';
+								$processo->secundary_status = 0;
+								$processo->save();
 
 					#EM ANALISE
 					}elseif( ($ddForm['analise']['nota_minima'] && !$ddForm['analise']['cidade_interesse'] && $ddForm['analise']['cidade_no_raio'] && $ddForm['analise']['investimento']) ||
@@ -815,6 +851,9 @@ class ProccessController extends BaseController {
 							){
 								
 								$arrayAuxiliar[$idForm]['status'] = 'e';
+								$processo->status = 'e';
+								$processo->secundary_status = 1;
+								$processo->save();
 
 					}//if status
 

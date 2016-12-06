@@ -209,63 +209,61 @@
 
 	</div>
 
+	<nav class="navbar navbar-default navbar-fixed-bottom">
+	  <div class="container">
+	    <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+				<div id="progress-top" class="progress" title="Progresso">
+			  		<div class="barra-progresso progress-bar active progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{$arrayPercentCount['percent']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$arrayPercentCount['percent']}}%">
+						<p class="text-center">{{$arrayPercentCount['percent_formated']}}%</p>
+		    			<span class="sr-only">{{$arrayPercentCount['percent_formated']}}% Completo</span>
+				  	</div>
+				</div>
+	    </div>
 
+	    <!-- Collect the nav links, forms, and other content for toggling -->
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-<nav class="navbar navbar-default navbar-fixed-bottom">
-  <div class="container">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-			<div id="progress-top" class="progress" title="Progresso">
-		  		<div class="barra-progresso progress-bar active progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="{{$arrayPercentCount['percent']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$arrayPercentCount['percent']}}%">
-					<p class="text-center">{{$arrayPercentCount['percent_formated']}}%</p>
-	    			<span class="sr-only">{{$arrayPercentCount['percent_formated']}}% Completo</span>
-			  	</div>
-			</div>
-    </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-
-      <ul class="nav navbar-nav">
-        <li>
-			<div class="dropup">
-				<button class="btn btn-block navbar-btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" >
-					<span class="glyphicon glyphicon-export" aria-hidden="true"></span>
-					&nbsp;&nbsp;Exportar
-					<span class="caret"></span>
+	      <ul class="nav navbar-nav">
+	        <li>
+				<div class="dropup">
+					<button class="btn btn-block navbar-btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" >
+						<span class="glyphicon glyphicon-export" aria-hidden="true"></span>
+						&nbsp;&nbsp;Exportar
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="{{URL::to('proccess/export/csv/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;CSV</a></li>
+						<li class="divider"></li>
+						<li><a href="{{URL::to('proccess/export/pdf/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;PDF</a></li>
+						<li class="divider"></li>
+						<li><a href="{{URL::to('proccess/export/json/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;JSON</a></li>
+					</ul>
+				</div>
+	        </li>
+	        <li>
+				<div id="progress-mid" class="progress" title="Progresso">
+			  		<div class="barra-progresso progress-bar active progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{$arrayPercentCount['percent']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$arrayPercentCount['percent']}}%">
+						<p class="text-center">{{$arrayPercentCount['percent_formated']}}%</p>
+		    			<span class="sr-only">{{$arrayPercentCount['percent_formated']}}% Completo</span>
+				  	</div>
+				</div>
+	        </li>
+	        <li>
+				<button class="btn btn-success navbar-btn btn-block pull-right" type="submit" form="formulario">
+					<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;<span class="">Finalizar</span>
 				</button>
-				<ul class="dropdown-menu">
-					<li><a href="{{URL::to('proccess/export/csv/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;CSV</a></li>
-					<li class="divider"></li>
-					<li><a href="{{URL::to('proccess/export/pdf/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;PDF</a></li>
-					<li class="divider"></li>
-					<li><a href="{{URL::to('proccess/export/json/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;JSON</a></li>
-				</ul>
-			</div>
-        </li>
-        <li>
-			<div id="progress-mid" class="progress" title="Progresso">
-		  		<div class="barra-progresso progress-bar active progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="{{$arrayPercentCount['percent']}}" aria-valuemin="0" aria-valuemax="100" style="width: {{$arrayPercentCount['percent']}}%">
-					<p class="text-center">{{$arrayPercentCount['percent_formated']}}%</p>
-	    			<span class="sr-only">{{$arrayPercentCount['percent_formated']}}% Completo</span>
-			  	</div>
-			</div>
-        </li>
-        <li>
-			<button class="btn btn-success navbar-btn btn-block pull-right" type="submit" form="formulario">
-				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;&nbsp;<span class="">Finalizar</span>
-			</button>
-        </li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+	        </li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
 
 	<input id="ajaxurl" type="hidden" value="{{Config::get('define.urlPadrao')}}">
 	<input type="hidden" id="defaultRoute" value="{{URL::to('ajax')}}">

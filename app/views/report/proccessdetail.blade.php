@@ -52,12 +52,19 @@
 						</div>
 	                </div>
 	                <div class="col-sm-2 col-sm-offset-2">
-	                	<p>
-	                		<strong>Status:</strong>
-	                		<br>
-	                		<span @if($formularioCompleto['status'] == 'r') class="text-red" @elseif($formularioCompleto['status'] == 'a') class="text-green" @elseif($formularioCompleto['status'] == 'e') class="text-yellow" @endif>{{$arrayStatus[$formularioCompleto['status']]}}<span>
-	                	</p>
+	                	<label>Status: </label>
+	                	<div class="btn-group" role="group" aria-label="...">
+	                		<button class="btn btn-sm btn-default text-bold" style="background-color: #eee; outline:none; cursor: default;" readonly><span @if($formularioCompleto['status'] == 'r') class="text-bold text-red" @elseif($formularioCompleto['status'] == 'a') class="text-bold text-green" @elseif($formularioCompleto['status'] == 'e') class="text-bold text-yellow" @endif>{{$arrayStatus[$formularioCompleto['status']]}}<span></button>
+	                		<button class="btn btn-sm btn-warning" title="Alterar" data-toggle="modal" data-target="#modalChangeStatus"><span class="glyphicon glyphicon glyphicon-pencil" aria-hidden="true"></span></button>
+	                	</div>
 	                </div>
+
+	                @if($objProcessoCorrente->forced_status)
+		                <div class="col-sm-12 alert alert-info" role="alert">
+		                	<p><span class="glyphicon glyphicon-alert" aria-hidden="true"></span> Status alterado manualmente, observação: <b>{{$objProcessoCorrente->forced_comment}}</b></p>
+						</div>
+	                @endif
+
 					<div class="col-sm-6 alert @if($formularioCompleto['status'] == 'r') alert-danger @elseif($formularioCompleto['status'] == 'a') alert-success @elseif($formularioCompleto['status'] == 'e') alert-warning @endif" role="alert">
 						<div class="col-sm-12 text-center">
 							<h4>Este Formlário<h4>
@@ -172,5 +179,40 @@
 			</div> <!-- END CONTAINER -->
 		</div> <!-- CONTEUDO -->
 	</div><!-- affix-row [pre menu]-->
+
+	<div class="modal fade in" id="modalChangeStatus" tabindex="-1" role="dialog" aria-labelledby="modalChangeStatus">
+		<div class="modal-dialog modal-md" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+					<h4 class="modal-title text-center">Alterar Status</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-xs-12">
+							<div class="input-group">
+								<div class="input-group-btn">
+									<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span id="cng-status-title">Status</span> <span class="caret"></span></button>
+									<ul class="dropdown-menu">
+										<li><a href="#" class="cng-status-btn" pk="a">Aprovado</a></li>
+										<li><a href="#" class="cng-status-btn" pk="r">Reprovado</a></li>
+										<li><a href="#" class="cng-status-btn" pk="e">Em Análise</a></li>
+									</ul>
+								</div><!-- /btn-group -->
+								{{Form::open(array('url' => URL::to('proccess/changestatus').'/'.Session::get('proccess_init.proccess_id'), 'id' => 'frm-change-status', 'method' => 'post', 'role'=>'form', 'autocomplete' => 'off'))}}
+								<input name="forced_obs" type="text" placeholder="Observação" maxlength="150" class="form-control" aria-label="Observação">
+								<input id="new_forced_status" name="new_status" type="hidden" >
+								{{Form::close()}}
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+						<div class="col-xs-12">&nbsp;</div>
+						<div class="col-xs-12">
+							<button type="submit" form="frm-change-status" class="btn btn-info btn-block" aria-expanded="true"><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> Salvar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 @endsection

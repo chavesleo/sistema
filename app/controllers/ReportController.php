@@ -121,7 +121,7 @@ class ReportController extends BaseController {
 
 		$menuAtivo = 6;
 		$cssPagina = 'css/report/default.css';
-		$jsPagina = '';
+		$jsPagina = 'js/report/detail.js';
 		$tituloPagina = 'Detalhes';
 		$arrayStatus = $this->arrayStatus;
 
@@ -130,6 +130,8 @@ class ReportController extends BaseController {
 		$objAnalisePrimaria = (object) $objProccessController->calculateStatus($idProcess, true);
 		$arrayAnaliseSecundaria = $objProccessController->comparaRespostasOutrosQuestionarios($idProcess);
 		
+		$objProcessoCorrente = Proccess::where('id', $idProcess)->first();
+
 		//$arrayAnaliseDetalhada = $objProccessController->detalharAnalise($idProcess, $objAnalisePrimaria);
 
 		//echo "<pre>";print_r($arrayAnaliseSecundaria);echo "</pre>";exit;
@@ -138,6 +140,7 @@ class ReportController extends BaseController {
 
 		return View::make('report.proccessdetail', compact('formularioCompleto',
 															'objAnalisePrimaria',
+															'objProcessoCorrente',
 															'arrayAnaliseSecundaria',
 															'arrayStatus',
 															'menuAtivo',

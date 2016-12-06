@@ -55,3 +55,6 @@
 .text-red{
     color: #d9534f !important;
 }
+.text-bold{
+    font-weight: bold !important;
+}
