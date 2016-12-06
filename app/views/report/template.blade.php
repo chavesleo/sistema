@@ -157,7 +157,7 @@
         var myLineChart = new Chart(document.getElementById("lineChart"), {
             type: 'line',
             data: {
-                labels: ["Setembro","Outubro", "Novembro"],
+                labels: ["Setembro",{{$graficoMensal['mes']}}],
                 datasets: [
                     {
                         label: 'Novos Candidatos por Mês',
@@ -178,7 +178,7 @@
                         pointHoverBorderWidth: 2,
                         pointRadius: 1,
                         pointHitRadius: 10,
-                        data: [0,9,14],
+                        data: [0,{{$graficoMensal['total']}}],
                         spanGaps: false,
                     }
                 ]

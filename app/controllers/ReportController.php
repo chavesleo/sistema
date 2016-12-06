@@ -26,8 +26,10 @@ class ReportController extends BaseController {
 		$arrayProccessList = $this->getProccessList();
 
 		$arrayStatus = $this->arrayStatus;
+
+		$graficoMensal = ProccessController::getProccessByMonth();
 	
-		//echo "<pre>";print_r($questionarios);echo "</pre>";exit;
+		//echo "<pre>";print_r($graficoMensal);echo "</pre>";exit;
 
 		#CONTAGEM DOS PROCESSOS INICIADOS
 		if ($questionarios) {
@@ -54,6 +56,7 @@ class ReportController extends BaseController {
 
 		return View::make('report.template', compact('arrayProccessList',
 													'arrayStatus',
+													'graficoMensal',
 													'totalProcessosAprovados',
 													'totalProcessosEmAnalise',
 													'totalProcessosReprovados',
@@ -125,12 +128,17 @@ class ReportController extends BaseController {
 		$objProccessController = new ProccessController;
 		$formularioCompleto = $objProccessController->montaQuestionario($idProcess, 'array');
 		$objAnalisePrimaria = (object) $objProccessController->calculateStatus($idProcess, true);
+		$arrayAnaliseSecundaria = $objProccessController->comparaRespostasOutrosQuestionarios($idProcess);
+		
 		//$arrayAnaliseDetalhada = $objProccessController->detalharAnalise($idProcess, $objAnalisePrimaria);
 
-		//echo "<pre>";print_r($objAnalisePrimaria);echo "</pre>";
+		//echo "<pre>";print_r($arrayAnaliseSecundaria);echo "</pre>";exit;
 		
+		# dispara análise para outros questionários
+
 		return View::make('report.proccessdetail', compact('formularioCompleto',
 															'objAnalisePrimaria',
+															'arrayAnaliseSecundaria',
 															'arrayStatus',
 															'menuAtivo',
 															'cssPagina',

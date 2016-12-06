@@ -171,10 +171,8 @@ Route::get('logout', function(){
 
 /* PERFUMARIA
 
-- por botoes e percentual no menu ao responder questionario
 - Criação de pergunta Intervalo de números com opção e peso
 - Quando for Combo de investimento com investimento do plano de expansão
-
 
 QUESTIONS TIPO: 
 - FAIXA DE NUMERO
@@ -188,9 +186,9 @@ QUESTIONS TIPO:
 * 7 - Responder Formulários 			OK
 * 8 - Exportar
 	8.1 - Candidato
-		8.1.1 - CSV
+		8.1.1 - CSV 					OK
 		8.1.2 - PDF
-		8.1.3 - JSON
+		8.1.3 - JSON 					OK
 	8.2 - Formulários
 		8.2.3 - Formulários com respostas de todos os candidatos em CSV ou JSON
 
@@ -264,6 +262,23 @@ Planos de Expansão
 	- 9 Em Outras Cidades
 		- 6 Dentro do raio 
 		- 3 Com Investimento
+
+
+
+	Aprovado
+		- Nota Acima (E) Cidade Interesse (E) Investimento 
+	Reprovado
+		- Nota abaixo
+		- NOT Cidade Interesse (E) NOT Raio
+		- NOT Investimento
+
+	Em Análise
+		- Nota Acima (E) NOT Cidade Interesse (E) Raio (E) Investimento
+		- Nota Abaixo (E) Cidade Interesse (E) NOT Raio (E) Investimento
+		- Nota Abaixo (E) NOT Cidade Interesse (E) Raio (E) Investimento
+
+	Somente Formulários Reprovados possui Nova análise.
+
 
 
 

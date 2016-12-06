@@ -103,10 +103,24 @@
 								<th>Formulário</th>
 								<th>Status</th>
 							</tr>
-							<tr>
-								<td>SUL - Interior - 2016/02</td>
-								<td>Reprovado</td>
-							</tr>
+
+							@if($formularioCompleto['status'] == 'a')
+								<tr>
+									<td colspan="2">Análise não disponível para formulários aprovados.</td>
+								</tr>
+							@else
+								@forelse($arrayAnaliseSecundaria as $idFormAnaliseSec => $ddFormAnaliseSec)
+								    <tr>
+								    	<td>{{ $ddFormAnaliseSec['title'] }}</td>
+								    	<td><span @if($ddFormAnaliseSec['status'] == 'r') class="text-red" @elseif($ddFormAnaliseSec['status'] == 'a') class="text-green" @elseif($ddFormAnaliseSec['status'] == 'e') class="text-yellow" @endif>{{$arrayStatus[$ddFormAnaliseSec['status']]}}<span></td>
+								    </tr>
+								@empty
+									<tr>
+										<td colspan="2">Todos os formulários já foram verificados.</td>
+									</tr>
+								@endforelse
+							@endif
+
 						</table>
 					</div>
                 </div>
@@ -138,8 +152,23 @@
 					@empty
 						vazio
 					@endforelse
-                </div>  
-				
+                </div>
+				<div class="row"> &nbsp; </div>
+				<div class="row"> 
+	                <div class="col-xs-12">
+						<a href="{{URL::to('proccess/export/csv/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-info" role="button">
+							<span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR CSV
+						</a>
+						<a href="{{URL::to('proccess/export/pdf/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-info" role="button">
+							<span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR PDF
+						</a>
+						
+						<a href="{{URL::to('proccess/export/json/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-info" role="button">
+							<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR JSON
+						</a>
+	                </div>
+                </div>
+				<div class="row"> &nbsp; </div>
 			</div> <!-- END CONTAINER -->
 		</div> <!-- CONTEUDO -->
 	</div><!-- affix-row [pre menu]-->

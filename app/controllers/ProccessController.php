@@ -417,14 +417,16 @@ class ProccessController extends BaseController {
 				(!$auxPercentual && $auxCidadeInteresse && !$auxInvestimento) ||
 				($auxPercentual && !$auxCidadeInteresse && !$auxCidadeRaio && $auxInvestimento) 
 				) {
-				$proccess->status = 'r';
+
+					$proccess->status = 'r';
 
 		#EM ANALISE
 		}elseif( ($auxPercentual && !$auxCidadeInteresse && $auxCidadeRaio && $auxInvestimento) ||
 				 (!$auxPercentual && $auxCidadeInteresse && $auxInvestimento) ||
 				 (!$auxPercentual && !$auxCidadeInteresse && $auxCidadeRaio &&  $auxInvestimento)
 				){
-			$proccess->status = 'e';
+					
+					$proccess->status = 'e';
 
 		#SEM DEFINIÇÃO AINDA
 		}else{
@@ -639,14 +641,242 @@ class ProccessController extends BaseController {
 
 	}
 
-	######################################################
-	#   CRIA ANALISE DETALHADA DO PROCESSO
-	######################################################
-	public function detalharAnalise($idProcess, $objAnalisePrimaria){
+	###################################################################
+	#   Compara as respostas de um processo com outros questionários
+	###################################################################
+	public function comparaRespostasOutrosQuestionarios($proccessId){
+
+		$arrayAuxiliar = array();
+		$nota = 0;
+
+		#lista o processo com suas respostas originais
+		$processo = Proccess::where('id', $proccessId)->with('answers')->first();
+
+		#se processo é aprovado entao nem verifica outros
+		if ($processo->status == 'a') {
+			return $arrayAuxiliar;
+		}
+
+		#verifica se tem alguma resposta já preenchida
+		if ($processo->answers && count($processo->answers) > 0) {
+
+			#lista todos formularios criados da empresa
+			$evaluations = Evaluation::where('id', '<>', $processo->evaluation_id)
+									   ->where('company_id', $processo->company_id)
+									   ->with('QuestionEvaluations')
+									   ->get();
+
+   			if (count($evaluations) < 1) {
+   				return $arrayAuxiliar;
+   			}
+		   	
+			#percorre os formulários encontrados
+	   		foreach ($evaluations as $dadosQuestionarios) {
+
+	   			#vefifica se existe processo respondido para este formulario
+	   			$processoRespondido = Proccess::where('company_id', $processo->company_id)
+	   											->where('evaluation_id', $dadosQuestionarios->id)
+	   											->where('candidate_id', $processo->candidate_id)
+	   											->where('id', '<>', $processo->evaluation_id)
+	   											->get();
+
+	   			if (count($processoRespondido) > 0) {
+	   				return $arrayAuxiliar;
+	   			}
+
+   				#percorre as perguntas dos formulários encontrados
+	   			if($dadosQuestionarios->QuestionEvaluations && count($dadosQuestionarios->QuestionEvaluations) > 0){
+	   				
+	   				foreach($dadosQuestionarios->QuestionEvaluations as $dadosQuestaoFormulario){
+
+	   					#compara o id da pergunta com o da resposta do processo
+	   					foreach ($processo->answers as $dadosResposta) {
+	   						if ($dadosResposta->question_id == $dadosQuestaoFormulario->question_id) {
+	   							
+			   					$questao = Question::where('id', $dadosQuestaoFormulario->question_id)->first();
+
+	   							$arrayAuxiliar[$dadosQuestionarios->id]['title'] = $dadosQuestionarios->title;
+	   							$arrayAuxiliar[$dadosQuestionarios->id]['min_note'] = $dadosQuestionarios->min_note;
+	   							$arrayAuxiliar[$dadosQuestionarios->id]['expansion_plan_id'] = $dadosQuestionarios->expansion_plan_id;
+	   							$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['pergunta'] = $questao->text;
+	   							$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['text'] = $dadosResposta->text;
+	   							$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['rating'] = $dadosQuestaoFormulario->rating;
+
+	   							#OPCAO
+	   							if ($dadosResposta->option_id && $questao->type == 'c') {
+	   								$opcaoMarcada = Option::where('id', $dadosResposta->option_id)->where('question_id', $dadosResposta->question_id)->first();
+	   								$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_id'] =  $dadosResposta->option_id;
+	   								$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_text'] = $opcaoMarcada->text;
+	   								$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_rating'] = $opcaoMarcada->rating;
+									$nota += $opcaoMarcada->rating;
+	   							}
+
+								#Multi Opção
+								if($questao->type == 'd'){
+									$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_rating'] = 0;
+									$arrayOptionSelected = explode(',', $dadosResposta->text);
+									foreach ($arrayOptionSelected as $option_id_selected) {
+										$opcaoMarcada = Option::where('id', $option_id_selected)->first();
+										$nota += $opcaoMarcada->rating;
+										$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_rating'] += $opcaoMarcada->rating;
+									}
+								}
+
+								if ($questao->type == 'l' || $questao->type == 'm') {
+									$planoExpansao = ExpansionPlan::where('id', $dadosQuestionarios->expansion_plan_id)
+																	->with('expansionPlanCities')
+																	->first();
+								}
+
+	   							#cidade de interesse
+	   							if ($questao->type == 'l') {
+									$temCidade = false;
+									foreach($planoExpansao->expansionPlanCities as $cidadesDoPlano){
+										if ($cidadesDoPlano->city_id == $dadosResposta->text) {
+											$temCidade = true;
+										}
+									}
+									if ($temCidade) {
+										$nota += $dadosQuestaoFormulario->rating;
+										$arrayAuxiliar[$dadosQuestionarios->id]['analise']['cidade_interesse'] = 1;
+									}else{
+										$arrayAuxiliar[$dadosQuestionarios->id]['analise']['cidade_interesse'] = false;
+
+										#Cidade no RAIO
+										$auxCidadeRaio = $this->checkIfCityAroundActionPlan($dadosResposta->text,
+																							$dadosQuestionarios->expansion_plan_id);
+
+										$arrayAuxiliar[$dadosQuestionarios->id]['analise']['cidade_no_raio'] = $auxCidadeRaio;
+
+									}
+	   							}
+
+	   							#investimento
+	   							if ($questao->type == 'm') {
+	   								$temInvestimento = false;
+									foreach($planoExpansao->expansionPlanCities as $cidadesDoPlano){
+
+										$investimentoMarcado = str_replace(".", "", $dadosResposta->text).".00";
+
+										if ($investimentoMarcado >= $cidadesDoPlano->investment) {
+											$temInvestimento = true;
+										}
+									}
+									if ($temInvestimento) {
+										$nota += $dadosQuestaoFormulario->rating;
+										$arrayAuxiliar[$dadosQuestionarios->id]['analise']['investimento'] = 1;
+									}else{
+										$arrayAuxiliar[$dadosQuestionarios->id]['analise']['investimento'] = false;
+									}
+	   							}
+
+	   							$arrayAuxiliar[$dadosQuestionarios->id]['final_note'] = $nota;
+
+									#Percentual Acima
+								if( $nota >= $dadosQuestionarios->min_note ){
+									$arrayAuxiliar[$dadosQuestionarios->id]['analise']['nota_minima'] = 1;
+								}else{
+									$arrayAuxiliar[$dadosQuestionarios->id]['analise']['nota_minima'] = false;
+								}
+
+	   						}//se questoes sao iguais
+
+	   					}//foreach perguntas para comparar
+
+	   				}//foreach formulários encontrados
+	   			
+	   			}//percorre as perguntas dos formulários encontrados
+
+	   		}//percorre os formulários encontrados
+
+			###################################
+			# CALCULA O STATUS
+			###################################
+		   	if (count($arrayAuxiliar) > 0) {
+		   		foreach ($arrayAuxiliar as $idForm => $ddForm) {
+		   			
+					#APROVADO - Nota Acima (E) Cidade Interesse (E) Investimento 
+					if ($ddForm['analise']['nota_minima'] && $ddForm['analise']['cidade_interesse'] && $ddForm['analise']['investimento']) {
+						$arrayAuxiliar[$idForm]['status'] = "a";
+
+					#REPROVADO
+					}elseif (!$ddForm['analise']['nota_minima'] && !$ddForm['analise']['cidade_interesse'] && 
+							(!$ddForm['analise']['cidade_no_raio'] || ( $ddForm['analise']['cidade_no_raio'] && !$ddForm['analise']['investimento']) ) ||
+							(!$ddForm['analise']['nota_minima'] && $ddForm['analise']['cidade_interesse'] && !$ddForm['analise']['investimento']) ||
+							($ddForm['analise']['nota_minima'] && !$ddForm['analise']['cidade_interesse'] && !$ddForm['analise']['cidade_no_raio'] && $ddForm['analise']['investimento']) 
+							) {
+
+								$arrayAuxiliar[$idForm]['status'] = 'r';
+
+					#EM ANALISE
+					}elseif( ($ddForm['analise']['nota_minima'] && !$ddForm['analise']['cidade_interesse'] && $ddForm['analise']['cidade_no_raio'] && $ddForm['analise']['investimento']) ||
+							 (!$ddForm['analise']['nota_minima'] && $ddForm['analise']['cidade_interesse'] && $ddForm['analise']['investimento']) ||
+							 (!$ddForm['analise']['nota_minima'] && !$ddForm['analise']['cidade_interesse'] && $ddForm['analise']['cidade_no_raio'] &&  $ddForm['analise']['investimento'])
+							){
+								
+								$arrayAuxiliar[$idForm]['status'] = 'e';
+
+					}//if status
+
+		   		}//foreach forms
+
+		   	}//nao é vazio
+
+		   	//echo "<pre>";print_r($arrayAuxiliar);echo "</pre>";exit;
+		   	return $arrayAuxiliar;
+
+		}//tem respostas preenchidas
 		
-		$arrRetorno = array();
-		
-		//echo "<pre>";print_r($objAnalisePrimaria);echo "</pre>";exit;
+	}
+
+	public static function getProccessByMonth(){
+		$arrayCountMes = array(1 => 0,
+							  2 => 0,
+							  3 => 0,
+							  4 => 0,
+							  5 => 0,
+							  6 => 0,
+							  7 => 0,
+							  8 => 0,
+							  9 => 0,
+							  10 => 0,
+							  11 => 0,
+							  12 => 0);
+
+		$listaMes = '';
+		$listaTotal = '';
+
+		$processos = Proccess::where('company_id', Auth::user()->company_id)
+								->select('created_at')
+								->get();
+
+		if (count($processos) > 0) {
+			foreach ($processos as $ddProcessos) {
+				$dataProcesso = new DateTime($ddProcessos['created_at']);
+				$mes = $dataProcesso->format('n');
+				$arrayCountMes[$mes]++;
+			}
+		}
+
+		foreach($arrayCountMes as $numMes => $totalMes){
+			if ($totalMes) {
+				if ($numMes == 1) { $listaMes .= '"Janeiro",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 2) { $listaMes .= '"Fevereiro",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 3) { $listaMes .= '"Março",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 4) { $listaMes .= '"Abril",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 5) { $listaMes .= '"Maio",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 6) { $listaMes .= '"Junho",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 7) { $listaMes .= '"Julho",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 8) { $listaMes .= '"Agosto",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 9) { $listaMes .= '"Setembro",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 10) { $listaMes .= '"Outrubro",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 11) { $listaMes .= '"Novembro",'; $listaTotal .= $totalMes.','; }
+				if ($numMes == 12) { $listaMes .= '"Dezembro",'; $listaTotal .= $totalMes.','; }
+			}
+			
+		}
+
+		return array('mes'=>substr($listaMes, 0,-1), 'total'=>substr($listaTotal, 0, -1));
 	}
 
 	public function exportJson($idProcess){
