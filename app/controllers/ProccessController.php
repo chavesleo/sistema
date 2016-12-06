@@ -1,5 +1,7 @@
 <?php
 
+use SoapBox\Formatter\Formatter;
+
 class ProccessController extends BaseController {
 
 	public function index($token){
@@ -659,7 +661,9 @@ class ProccessController extends BaseController {
 
 		$arrRetorno = json_decode($this->montaQuestionario($idProcess, 'json'), 1);
 
-		$formatter = Formatter::make($arrRetorno, Formatter::ARR);
+		$arrRetornoTratado = $this->trataVirgulas($arrRetorno);
+
+		$formatter = Formatter::make($arrRetornoTratado, Formatter::ARR);
 
 		$csv = $formatter->toCsv();
 
@@ -668,13 +672,35 @@ class ProccessController extends BaseController {
 		header("Content-type: application/force-download");
 		header("Content-transfer-encoding: binary\n");
 
-		echo $csv;
+		echo $csv;exit;
 
-		exit;
+	}
 
+	public function trataVirgulas($array){
 
-		echo "<pre>";print_r($arrRetorno);echo "</pre>";exit;
+		$arrRetorno = array();
+		
+		foreach ($array as $chave => $valor) {
+			if (is_array($valor) && count($valor) > 0) {
+				
+				foreach ($valor as $ordem => $perguntas) {
+					$auxPergunta = str_replace(",", "&comma;", $perguntas['pergunta']);
+					if (is_array($perguntas['resposta'])) {
+						$auxResposta = '"'.$perguntas['resposta']['city_name'].' - '.$perguntas['resposta']['uf_short'].'"';
+					}else{
+						$auxResposta = str_replace(",", "&comma;", $perguntas['resposta']);
+					}
+					$arrRetorno['perguntas'][$ordem][$auxPergunta] = $auxResposta;
+				}
 
+			}else{
+				$auxChave = str_replace(",", "&comma;", $chave);
+				$auxValor = str_replace(",", "&comma;", $valor);
+				$arrRetorno[$auxChave] = $auxValor;
+			}
+		}
+		
+		return $arrRetorno;
 
 	}
 
