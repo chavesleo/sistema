@@ -235,7 +235,7 @@
       <ul class="nav navbar-nav">
         <li>
 			<div class="dropup">
-				<button class="btn btn-block navbar-btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" disabled>
+				<button class="btn btn-block navbar-btn btn-info dropdown-toggle" type="button" data-toggle="dropdown" >
 					<span class="glyphicon glyphicon-export" aria-hidden="true"></span>
 					&nbsp;&nbsp;Exportar
 					<span class="caret"></span>
@@ -244,6 +244,8 @@
 					<li><a href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;CSV</a></li>
 					<li class="divider"></li>
 					<li><a href="#"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;PDF</a></li>
+					<li class="divider"></li>
+					<li><a href="{{URL::to('proccess/export/json/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;JSON</a></li>
 				</ul>
 			</div>
         </li>

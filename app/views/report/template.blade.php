@@ -112,7 +112,6 @@
             data: {
                 labels: ["Reprovados", "Em Análise", "Aprovados"],
                 datasets: [{
-                    //data: [ {{$totalProcessosReprovados}}, {{$totalProcessosEmAnalise}}, {{$totalProcessosAprovados}}],
                     data: [ {{$totalProcessosReprovados}}, {{$totalProcessosEmAnalise}}, {{$totalProcessosAprovados}}],
                     backgroundColor: [
                     '#E33E2B',

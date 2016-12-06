@@ -110,6 +110,12 @@ Route::group(array('prefix' => 'proccess'), function(){
 
 	Route::post('{token}', 'ProccessController@startproccess');
 
+	Route::get('export/json/{id}', 'ProccessController@exportJson');
+
+	Route::get('export/pdf/{id}', 'ProccessController@exportPdf');
+
+	Route::get('export/csv/{id}', 'ProccessController@exportCsv');
+
 });
 
 ######################

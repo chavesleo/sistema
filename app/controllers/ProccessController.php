@@ -554,11 +554,17 @@ class ProccessController extends BaseController {
 		$this->calculateProgressById($idProcess);
 		
 		$arrRetorno = array();
-
-		$processo = Proccess::where('id',$idProcess)
+		
+		if ($returnFormat == 'json') {
+			$processo = Proccess::where('id',$idProcess)
+								->with('answers')
+								->first();
+		}else{
+			$processo = Proccess::where('id',$idProcess)
 								->where('company_id', Auth::user()->company_id)
 								->with('answers')
 								->first();
+		}
 
 		
 		$formulario = Evaluation::where('id',$processo->evaluation_id)->with('QuestionEvaluations')->first();
@@ -640,5 +646,37 @@ class ProccessController extends BaseController {
 		
 		//echo "<pre>";print_r($objAnalisePrimaria);echo "</pre>";exit;
 	}
+
+	public function exportJson($idProcess){
+		echo $this->montaQuestionario($idProcess, 'json');
+	}
+
+	public function exportPdf($idProcess){
+		echo $this->montaQuestionario($idProcess, 'json');
+	}
+
+	public function exportCsv($idProcess){
+
+		$arrRetorno = json_decode($this->montaQuestionario($idProcess, 'json'), 1);
+
+		$formatter = Formatter::make($arrRetorno, Formatter::ARR);
+
+		$csv = $formatter->toCsv();
+
+		header('Content-Disposition: attachment; filename="export.csv"');
+		header("Cache-control: private");
+		header("Content-type: application/force-download");
+		header("Content-transfer-encoding: binary\n");
+
+		echo $csv;
+
+		exit;
+
+
+		echo "<pre>";print_r($arrRetorno);echo "</pre>";exit;
+
+
+	}
+
 
 }
