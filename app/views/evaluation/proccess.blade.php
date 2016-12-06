@@ -241,9 +241,9 @@
 					<span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu">
-					<li><a href="#"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;CSV</a></li>
+					<li><a href="{{URL::to('proccess/export/csv/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;CSV</a></li>
 					<li class="divider"></li>
-					<li><a href="#"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;PDF</a></li>
+					<li><a href="{{URL::to('proccess/export/pdf/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;PDF</a></li>
 					<li class="divider"></li>
 					<li><a href="{{URL::to('proccess/export/json/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;JSON</a></li>
 				</ul>
