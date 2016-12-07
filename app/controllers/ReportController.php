@@ -155,46 +155,6 @@ class ReportController extends BaseController {
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 $Questionarios = Evaluation::where('company_id', Auth::user()->company_id)
 								->with(array('proccesses' => function($query)

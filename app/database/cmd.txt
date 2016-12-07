@@ -1,0 +1,107 @@
+/* PERFUMARIA
+
+- Criação de pergunta Intervalo de números com opção e peso
+- Quando for Combo de investimento com investimento do plano de expansão
+
+QUESTIONS TIPO: 
+- FAIXA DE NUMERO
+
+* 1 - Cadastro de Empresas - 			OK
+* 2 - Cadastro de Usuários - 			OK
+* 3 - Cadastro de Formulários - 		OK
+* 4 - Cadastro de Perguntas - 			OK ---- faixa de investimento
+* 5 - Cadastro de Plano de Expansão - 	OK
+* 6 - Relatórios						OK
+* 7 - Responder Formulários 			OK
+* 8 - Exportar
+	8.1 - Candidato
+		8.1.1 - CSV 					OK
+		8.1.2 - PDF
+		8.1.3 - JSON 					OK
+	8.2 - Formulários
+		8.2.3 - Formulários com respostas de todos os candidatos em CSV ou JSON - OK 
+
+* 9 - Analisar processos e sugerir:
+	- Perfil do Candidato
+	- Cidades dentro do Raio
+	- Formato de franquia em cidade do Raio com investimento <=
+	- Análise de respostas de processos com perguntas em comum
+
+*/
+
+/*  ZERAR TABELAS
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE `candidate`;
+TRUNCATE `city_interest`;
+TRUNCATE `company`;
+TRUNCATE `evaluation`;
+TRUNCATE `expansion_plan`;
+TRUNCATE `expansion_plan_city`;
+TRUNCATE `option`;
+TRUNCATE `proccess`;
+TRUNCATE `proccess_answer`;
+TRUNCATE `question`;
+TRUNCATE `question_evaluation`;
+TRUNCATE `user`;
+SET FOREIGN_KEY_CHECKS = 1;
+
+
+- Novos Candidatos por Mês
+- Resultados de Processos por status
+- Quantidade de Formulários Respondidos
+- Metas Plano de Expansão x Atingidas
+
+==========================================
+
+- Não Concluídos (Inacabados)
+- Aprovados
+- Reprovados
+- Em Análise (características próximas)
+
+==========================================
+Problemas
+
+1 - Candidatos aprovados fora da cidade de interesse.
+2 - Muitas Cidades dentro do raio.
+3 - Independente da nota, se está no raio da cidade marca como "Em análise"
+
+
+==========================================
+Cenário:
+
+Planos de Expansão
+	1 -  Metropolitana
+		- Porto Alegre (10) - Canoas (5) - Gravataí (5)
+		- Loja: R$ 380.000,00 (2)(1)(1)
+		- Quioque: R$ 118.000,00 (2)(1)(1)
+
+	2 - Interior
+		- Sta Cruz (50)(1) - Sta Maria (50)(2) - Caxias (40)(2) - Pelotas (40)(1) - Passo Fundo (50)(1)
+		- Loja: R$ 195.000,00 (1)(1)(1)(1)
+		- Móvel: R$ 95.000,00 (1)(1)(1)(1)
+
+2 Formulários (Alimentação)
+	- 27 Questões
+	- 29 Questões
+
+20 Candidatos
+	- 11 Em cidades de interesse 
+		- 5 Com valores abaixo
+		- 6 Abaixo do percentual
+	- 9 Em Outras Cidades
+		- 6 Dentro do raio 
+		- 3 Com Investimento
+
+	Aprovado
+		- Nota Acima (E) Cidade Interesse (E) Investimento 
+	Reprovado
+		- Nota abaixo
+		- NOT Cidade Interesse (E) NOT Raio
+		- NOT Investimento
+
+	Em Análise
+		- Nota Acima (E) NOT Cidade Interesse (E) Raio (E) Investimento
+		- Nota Abaixo (E) Cidade Interesse (E) NOT Raio (E) Investimento
+		- Nota Abaixo (E) NOT Cidade Interesse (E) Raio (E) Investimento
+
+*/
