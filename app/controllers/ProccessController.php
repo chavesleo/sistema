@@ -753,13 +753,19 @@ class ProccessController extends BaseController {
 										$opcaoMarcada = Option::where('id', $option_id_selected)->first();
 										$nota += $opcaoMarcada->rating;
 										$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_rating'] += $opcaoMarcada->rating;
+										$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_text'] = $opcaoMarcada->text;
 									}
 								}
 
-								if ($questao->type == 'l' || $questao->type == 'm') {
+								if ($questao->type == 'l') {
 									$planoExpansao = ExpansionPlan::where('id', $dadosQuestionarios->expansion_plan_id)
 																	->with('expansionPlanCities')
 																	->first();
+
+									$objCidadeMarcada = City::where('id', $dadosResposta->text)->with('state')->first();
+									if ($objCidadeMarcada) {
+										$arrayAuxiliar[$dadosQuestionarios->id]['questoes'][$dadosResposta->question_id]['option_text'] = $objCidadeMarcada->name." / ".$objCidadeMarcada->state->short_name;
+									}
 								}
 
 	   							#cidade de interesse

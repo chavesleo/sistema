@@ -5,7 +5,8 @@ $(document).ready(function(){
 		var pk = $(this).attr('pk');
 		$('#cng-status-title').html(tit);
 		$('#new_forced_status').val(pk);
-
 	});
+
+	
 
 });

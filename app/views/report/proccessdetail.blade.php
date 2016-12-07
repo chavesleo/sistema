@@ -117,10 +117,75 @@
 								</tr>
 							@else
 								@forelse($arrayAnaliseSecundaria as $idFormAnaliseSec => $ddFormAnaliseSec)
-								    <tr>
+								    <tr style="cursor: pointer;" data-toggle="modal" data-target="#modal-analise-{{$idFormAnaliseSec}}">
 								    	<td>{{ $ddFormAnaliseSec['title'] }}</td>
 								    	<td><span @if($ddFormAnaliseSec['status'] == 'r') class="text-red" @elseif($ddFormAnaliseSec['status'] == 'a') class="text-green" @elseif($ddFormAnaliseSec['status'] == 'e') class="text-yellow" @endif>{{$arrayStatus[$ddFormAnaliseSec['status']]}}<span></td>
 								    </tr>
+
+<div class="modal fade in" id="modal-analise-{{$idFormAnaliseSec}}" tabindex="-1" role="dialog" aria-labelledby="modal-analise-{{$idFormAnaliseSec}}">
+	<div class="modal-dialog modal-md" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h4 class="modal-title text-center">{{$ddFormAnaliseSec['title']}}</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-xs-12">
+						@if(!$ddFormAnaliseSec['analise']['nota_minima'])
+							<p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							Nota Final <strong>{{str_replace('.',',',$ddFormAnaliseSec['final_note'])}}</strong> ficou <strong>abaixo</strong> do esperado que é <strong>{{str_replace('.',',',$ddFormAnaliseSec['min_note'])}}</strong> </p>
+						@else
+							<p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></p>
+							Nota Final <strong>{{str_replace('.',',',$ddFormAnaliseSec['final_note'])}}</strong> ficou <strong>acima</strong> do esperado que é <strong>{{str_replace('.',',',$ddFormAnaliseSec['min_note'])}}</strong> </p>
+						@endif
+					</div>
+					<div class="col-xs-12">
+						<p><span class="glyphicon @if(!$ddFormAnaliseSec['analise']['cidade_interesse']) glyphicon-remove @else glyphicon-ok @endif" aria-hidden="true"></span>
+						@if($ddFormAnaliseSec['analise']['cidade_interesse']) Selecionou uma cidade de Interesse @else Selecionou uma cidade fora de Interesse @endif</p>
+					</div>
+
+					@if(!$ddFormAnaliseSec['analise']['cidade_interesse'])
+						<tr>
+							@if($ddFormAnaliseSec['analise']['cidade_interesse']) 
+								<th><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></th>
+								<td> Selecionou uma cidade próxima que está dentro do raio, a {{round($ddFormAnaliseSec['analise']['cidade_interesse'],0)}}km</td>
+							@else
+								<th><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></th>
+								<td>Cidade selecionada não está dentro do raio desejado</td>
+							@endif
+						</tr>
+					@endif
+
+					<div class="col-xs-12">
+						<p><span class="glyphicon @if(!$ddFormAnaliseSec['analise']['investimento']) glyphicon-remove @else glyphicon-ok @endif" aria-hidden="true"></span>
+						@if(!$ddFormAnaliseSec['analise']['investimento']) <strong>Não</strong> @endif <strong>Possui</strong> o investimento necessário</p>
+					</div>
+
+					<div class="col-xs-12 alert alert-warning text-center text-bold">
+						Respostas em comum
+					</div>
+						@forelse($ddFormAnaliseSec['questoes'] as $dadosQuestSec)
+							<div class="col-sm-6">
+								<p>
+									<strong>{{$dadosQuestSec['pergunta']}}</strong>
+									<br>
+									<strong>R: </strong>
+									@if(isset($dadosQuestSec['option_text']))
+										{{$dadosQuestSec['option_text']}}
+									@else
+										{{$dadosQuestSec['text']}}
+									@endif
+								</p>
+							</div>
+						@empty
+							<p>Não há questões em comum.</p>
+						@endforelse
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 								@empty
 									<tr>
 										<td colspan="2">Todos os formulários já foram verificados.</td>
@@ -162,16 +227,19 @@
                 </div>
 				<div class="row"> &nbsp; </div>
 				<div class="row"> 
-	                <div class="col-xs-12">
-						<a href="{{URL::to('proccess/export/csv/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-info" role="button">
+	                <div class="col-sm-4">
+						<a href="{{URL::to('proccess/export/csv/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-primary btn-block" role="button">
 							<span class="glyphicon glyphicon-file" aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR CSV
 						</a>
-						<a href="{{URL::to('proccess/export/pdf/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-info" role="button">
-							<span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR PDF
+	                </div>
+	                <div class="col-sm-4">
+						<a href="#" class="btn btn-info btn-block" role="button" disabled>
+							<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR PDF
 						</a>
-						
-						<a href="{{URL::to('proccess/export/json/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-info" role="button">
-							<span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR JSON
+	                </div>
+	                <div class="col-sm-4">
+						<a href="{{URL::to('proccess/export/json/')}}/{{Session::get('proccess_init.proccess_id')}}" target="_blank" class="btn btn-primary btn-block" role="button">
+							<span class="glyphicon glyphicon-link " aria-hidden="true"></span>&nbsp;&nbsp;EXPORTAR JSON
 						</a>
 	                </div>
                 </div>
