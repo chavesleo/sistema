@@ -91,6 +91,10 @@ class ReportController extends BaseController {
 
 			foreach ($queryResult as $dadosProcesso) {
 
+					#calula o progresso e as demais análises
+					$objProcessoCalula = new ProccessController;
+					$objProcessoCalula->calculateProgressById($dadosProcesso->proccess_id, false);
+
 					#ajusta data
 					$candidate_date_reg = new DateTime($dadosProcesso->candidate_date_reg);
 					$proccess_init_date = new DateTime($dadosProcesso->proccess_init_date);

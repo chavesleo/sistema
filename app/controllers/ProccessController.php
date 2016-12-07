@@ -375,6 +375,9 @@ class ProccessController extends BaseController {
 		#calcula a nota
 		$this->calculateNoteById($proccessId);
 
+		#faz análise secundaria
+		$this->comparaRespostasOutrosQuestionarios($proccessId);
+
 		#calcula status
 		$this->calculateStatus($proccessId);
 
