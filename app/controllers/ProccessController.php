@@ -833,7 +833,25 @@ class ProccessController extends BaseController {
 			# CALCULA O STATUS
 			###################################
 		   	if (count($arrayAuxiliar) > 0) {
+		   		
 		   		foreach ($arrayAuxiliar as $idForm => $ddForm) {
+		   				if (!isset($ddForm['analise']['cidade_interesse'])) {
+		   					$arrayAuxiliar[$idForm]['analise']['cidade_interesse'] = false;
+		   					$ddForm['analise']['cidade_interesse'] = false;
+		   				}
+		   				if (!isset($ddForm['analise']['investimento'])) {
+		   					$arrayAuxiliar[$idForm]['analise']['investimento'] = false;
+		   					$ddForm['analise']['investimento'] = false;
+		   				}
+		   				if (!isset($ddForm['analise']['cidade_no_raio'])) {
+		   					$arrayAuxiliar[$idForm]['analise']['cidade_no_raio'] = false;
+		   					$ddForm['analise']['cidade_no_raio'] = false;
+		   				}
+		   				if (!isset($ddForm['analise']['nota_minima'])) {
+		   					$arrayAuxiliar[$idForm]['analise']['nota_minima'] = false;
+		   					$ddForm['analise']['nota_minima'] = false;
+		   				}
+		   		//echo "<pre>";print_r($arrayAuxiliar);echo "</pre>";exit;
 		   			
 					#APROVADO - Nota Acima (E) Cidade Interesse (E) Investimento 
 					if ($ddForm['analise']['nota_minima'] && $ddForm['analise']['cidade_interesse'] && $ddForm['analise']['investimento']) {

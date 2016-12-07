@@ -147,9 +147,9 @@
 
 					@if(!$ddFormAnaliseSec['analise']['cidade_interesse'])
 						<div class="col-xs-12">
-							@if($ddFormAnaliseSec['analise']['cidade_interesse']) 
+							@if($ddFormAnaliseSec['analise']['cidade_no_raio']) 
 								<p><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-								Selecionou uma cidade próxima que está dentro do raio, a {{round($ddFormAnaliseSec['analise']['cidade_interesse'],0)}}km</p>
+								Selecionou uma cidade próxima que está dentro do raio, a {{round($ddFormAnaliseSec['analise']['cidade_no_raio'],0)}}km</p>
 							@else
 								<p><span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 								Cidade selecionada não está dentro do raio desejado</p>
